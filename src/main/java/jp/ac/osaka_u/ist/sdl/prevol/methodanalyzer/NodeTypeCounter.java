@@ -42,7 +42,7 @@ public class NodeTypeCounter extends ASTVisitor {
 	@Override
 	public void preVisit(ASTNode node) {
 		final int nodeType = node.getNodeType();
-		
+
 		if (vector.containsKey(nodeType)) {
 			final int nextNodeCount = vector.get(nodeType) + 1;
 			vector.remove(nodeType);
