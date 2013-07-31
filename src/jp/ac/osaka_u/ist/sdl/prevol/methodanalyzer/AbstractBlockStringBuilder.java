@@ -19,6 +19,10 @@ public abstract class AbstractBlockStringBuilder<T extends ASTNode> {
 		this.node = node;
 	}
 	
+	/**
+	 * 文字列を生成する
+	 * @return
+	 */
 	public abstract String getBlockStr();
 	
 }
