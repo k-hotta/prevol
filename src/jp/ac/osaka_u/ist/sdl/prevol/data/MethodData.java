@@ -39,6 +39,11 @@ public class MethodData {
 	private final VectorData vectorData;
 
 	/**
+	 * CRD
+	 */
+	private final CRD crd;
+
+	/**
 	 * コンストラクタ
 	 * 
 	 * @param revision
@@ -50,15 +55,16 @@ public class MethodData {
 	 */
 	public MethodData(final long revision, final String ownerFile,
 			final String name, final int startLine, final int endLine,
-			final VectorData vectorData) {
+			final VectorData vectorData, final CRD crd) {
 		this.revision = revision;
 		this.ownerFile = ownerFile;
 		this.name = name;
 		this.startLine = startLine;
 		this.endLine = endLine;
 		this.vectorData = vectorData;
+		this.crd = crd;
 	}
-	
+
 	/*
 	 * ゲッタ群
 	 */
@@ -85,6 +91,10 @@ public class MethodData {
 
 	public VectorData getVectorData() {
 		return vectorData;
+	}
+
+	public CRD getCrd() {
+		return crd;
 	}
 
 }
