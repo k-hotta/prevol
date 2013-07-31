@@ -1,5 +1,6 @@
 package jp.ac.osaka_u.ist.sdl.prevol.data;
 
+import static jp.ac.osaka_u.ist.sdl.prevol.utils.Constants.LINE_SEPARATOR;
 import static org.eclipse.jdt.core.dom.ASTNode.ANNOTATION_TYPE_DECLARATION;
 import static org.eclipse.jdt.core.dom.ASTNode.ANNOTATION_TYPE_MEMBER_DECLARATION;
 import static org.eclipse.jdt.core.dom.ASTNode.ANONYMOUS_CLASS_DECLARATION;
@@ -87,6 +88,7 @@ import static org.eclipse.jdt.core.dom.ASTNode.WILDCARD_TYPE;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * メソッドのベクトルデータを表すクラス
@@ -97,6 +99,16 @@ import java.util.Map;
 public class VectorData {
 
 	/**
+	 * ID管理用カウンタ
+	 */
+	private static final AtomicLong count = new AtomicLong(0);
+
+	/**
+	 * id
+	 */
+	private final long id;
+
+	/**
 	 * ベクトルデータ <br>
 	 * キー：　ASTNodeの各子クラスに割り当てられた整数 <br>
 	 * 値：　そのノードの出現数
@@ -104,8 +116,18 @@ public class VectorData {
 	private final Map<Integer, Integer> vector;
 
 	public VectorData(final Map<Integer, Integer> vector) {
+		this.id = count.getAndIncrement();
 		this.vector = new HashMap<Integer, Integer>();
 		this.vector.putAll(vector);
+	}
+
+	/**
+	 * id を取得
+	 * 
+	 * @return
+	 */
+	public final long getId() {
+		return this.id;
 	}
 
 	/**
@@ -132,7 +154,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getAnnotationTypeDeclarationCount() {
-		return vector.get(ANNOTATION_TYPE_DECLARATION);
+		if (vector.containsKey(ANNOTATION_TYPE_DECLARATION)) {
+			return vector.get(ANNOTATION_TYPE_DECLARATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -141,7 +167,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getAnnotationTypeMemberDeclarationCount() {
-		return vector.get(ANNOTATION_TYPE_MEMBER_DECLARATION);
+		if (vector.containsKey(ANNOTATION_TYPE_MEMBER_DECLARATION)) {
+			return vector.get(ANNOTATION_TYPE_MEMBER_DECLARATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -150,7 +180,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getAnonymousClassDeclarationCount() {
-		return vector.get(ANONYMOUS_CLASS_DECLARATION);
+		if (vector.containsKey(ANONYMOUS_CLASS_DECLARATION)) {
+			return vector.get(ANONYMOUS_CLASS_DECLARATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -159,7 +193,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getArrayAccessCount() {
-		return vector.get(ARRAY_ACCESS);
+		if (vector.containsKey(ARRAY_ACCESS)) {
+			return vector.get(ARRAY_ACCESS);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -168,7 +206,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getArrayCreationCount() {
-		return vector.get(ARRAY_CREATION);
+		if (vector.containsKey(ARRAY_CREATION)) {
+			return vector.get(ARRAY_CREATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -177,7 +219,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getArrayInitializerCount() {
-		return vector.get(ARRAY_INITIALIZER);
+		if (vector.containsKey(ARRAY_INITIALIZER)) {
+			return vector.get(ARRAY_INITIALIZER);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -186,7 +232,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getArrayTypeCount() {
-		return vector.get(ARRAY_TYPE);
+		if (vector.containsKey(ARRAY_TYPE)) {
+			return vector.get(ARRAY_TYPE);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -195,7 +245,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getAssertStatementCount() {
-		return vector.get(ASSERT_STATEMENT);
+		if (vector.containsKey(ASSERT_STATEMENT)) {
+			return vector.get(ASSERT_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -204,7 +258,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getAssignmentCount() {
-		return vector.get(ASSIGNMENT);
+		if (vector.containsKey(ASSIGNMENT)) {
+			return vector.get(ASSIGNMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -213,7 +271,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getBlockCount() {
-		return vector.get(BLOCK);
+		if (vector.containsKey(BLOCK)) {
+			return vector.get(BLOCK);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -222,7 +284,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getBlockCommentCount() {
-		return vector.get(BLOCK_COMMENT);
+		if (vector.containsKey(BLOCK_COMMENT)) {
+			return vector.get(BLOCK_COMMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -231,7 +297,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getBooleanLiteralCount() {
-		return vector.get(BOOLEAN_LITERAL);
+		if (vector.containsKey(BOOLEAN_LITERAL)) {
+			return vector.get(BOOLEAN_LITERAL);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -240,7 +310,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getBreakStatementCount() {
-		return vector.get(BREAK_STATEMENT);
+		if (vector.containsKey(BREAK_STATEMENT)) {
+			return vector.get(BREAK_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -249,7 +323,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getCastExpressionCount() {
-		return vector.get(CAST_EXPRESSION);
+		if (vector.containsKey(CAST_EXPRESSION)) {
+			return vector.get(CAST_EXPRESSION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -258,7 +336,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getCatchClauseCount() {
-		return vector.get(CATCH_CLAUSE);
+		if (vector.containsKey(CATCH_CLAUSE)) {
+			return vector.get(CATCH_CLAUSE);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -267,7 +349,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getCharacterLiteralCount() {
-		return vector.get(CHARACTER_LITERAL);
+		if (vector.containsKey(CHARACTER_LITERAL)) {
+			return vector.get(CHARACTER_LITERAL);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -276,7 +362,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getClassInstanceCreationCount() {
-		return vector.get(CLASS_INSTANCE_CREATION);
+		if (vector.containsKey(CLASS_INSTANCE_CREATION)) {
+			return vector.get(CLASS_INSTANCE_CREATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -285,7 +375,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getCompilationUnitCount() {
-		return vector.get(COMPILATION_UNIT);
+		if (vector.containsKey(COMPILATION_UNIT)) {
+			return vector.get(COMPILATION_UNIT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -294,7 +388,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getConditionalExpressionCount() {
-		return vector.get(CONDITIONAL_EXPRESSION);
+		if (vector.containsKey(CONDITIONAL_EXPRESSION)) {
+			return vector.get(CONDITIONAL_EXPRESSION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -303,7 +401,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getConstructorInvocationCount() {
-		return vector.get(CONSTRUCTOR_INVOCATION);
+		if (vector.containsKey(CONSTRUCTOR_INVOCATION)) {
+			return vector.get(CONSTRUCTOR_INVOCATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -312,7 +414,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getContinueStatementCount() {
-		return vector.get(CONTINUE_STATEMENT);
+		if (vector.containsKey(CONTINUE_STATEMENT)) {
+			return vector.get(CONTINUE_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -321,7 +427,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getDoStatementCount() {
-		return vector.get(DO_STATEMENT);
+		if (vector.containsKey(DO_STATEMENT)) {
+			return vector.get(DO_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -330,7 +440,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getEmptyStatementCount() {
-		return vector.get(EMPTY_STATEMENT);
+		if (vector.containsKey(EMPTY_STATEMENT)) {
+			return vector.get(EMPTY_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -339,7 +453,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getEnhancedForStatementCount() {
-		return vector.get(ENHANCED_FOR_STATEMENT);
+		if (vector.containsKey(ENHANCED_FOR_STATEMENT)) {
+			return vector.get(ENHANCED_FOR_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -348,7 +466,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getEnumConstantDeclarationCount() {
-		return vector.get(ENUM_CONSTANT_DECLARATION);
+		if (vector.containsKey(ENUM_CONSTANT_DECLARATION)) {
+			return vector.get(ENUM_CONSTANT_DECLARATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -357,7 +479,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getEnumDeclarationCount() {
-		return vector.get(ENUM_DECLARATION);
+		if (vector.containsKey(ENUM_DECLARATION)) {
+			return vector.get(ENUM_DECLARATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -366,7 +492,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getExpressionStatementCount() {
-		return vector.get(EXPRESSION_STATEMENT);
+		if (vector.containsKey(EXPRESSION_STATEMENT)) {
+			return vector.get(EXPRESSION_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -375,7 +505,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getFieldAccessCount() {
-		return vector.get(FIELD_ACCESS);
+		if (vector.containsKey(FIELD_ACCESS)) {
+			return vector.get(FIELD_ACCESS);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -384,7 +518,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getFieldDeclarationCount() {
-		return vector.get(FIELD_DECLARATION);
+		if (vector.containsKey(FIELD_DECLARATION)) {
+			return vector.get(FIELD_DECLARATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -393,7 +531,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getForStatementCount() {
-		return vector.get(FOR_STATEMENT);
+		if (vector.containsKey(FOR_STATEMENT)) {
+			return vector.get(FOR_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -402,7 +544,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getIfStatementCount() {
-		return vector.get(IF_STATEMENT);
+		if (vector.containsKey(IF_STATEMENT)) {
+			return vector.get(IF_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -411,7 +557,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getImportDeclarationCount() {
-		return vector.get(IMPORT_DECLARATION);
+		if (vector.containsKey(IMPORT_DECLARATION)) {
+			return vector.get(IMPORT_DECLARATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -420,7 +570,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getInfixExpressionCount() {
-		return vector.get(INFIX_EXPRESSION);
+		if (vector.containsKey(INFIX_EXPRESSION)) {
+			return vector.get(INFIX_EXPRESSION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -429,7 +583,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getInitializerCount() {
-		return vector.get(INITIALIZER);
+		if (vector.containsKey(INITIALIZER)) {
+			return vector.get(INITIALIZER);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -438,7 +596,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getInstanceofExpressionCount() {
-		return vector.get(INSTANCEOF_EXPRESSION);
+		if (vector.containsKey(INSTANCEOF_EXPRESSION)) {
+			return vector.get(INSTANCEOF_EXPRESSION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -447,7 +609,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getJavadocCount() {
-		return vector.get(JAVADOC);
+		if (vector.containsKey(JAVADOC)) {
+			return vector.get(JAVADOC);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -456,7 +622,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getLabeledStatementCount() {
-		return vector.get(LABELED_STATEMENT);
+		if (vector.containsKey(LABELED_STATEMENT)) {
+			return vector.get(LABELED_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -465,7 +635,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getLineCommentCount() {
-		return vector.get(LINE_COMMENT);
+		if (vector.containsKey(LINE_COMMENT)) {
+			return vector.get(LINE_COMMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -474,7 +648,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getMarkerAnnotationCount() {
-		return vector.get(MARKER_ANNOTATION);
+		if (vector.containsKey(MARKER_ANNOTATION)) {
+			return vector.get(MARKER_ANNOTATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -483,7 +661,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getMemberRefCount() {
-		return vector.get(MEMBER_REF);
+		if (vector.containsKey(MEMBER_REF)) {
+			return vector.get(MEMBER_REF);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -492,7 +674,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getMemberValuePairCount() {
-		return vector.get(MEMBER_VALUE_PAIR);
+		if (vector.containsKey(MEMBER_VALUE_PAIR)) {
+			return vector.get(MEMBER_VALUE_PAIR);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -501,7 +687,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getMethodDeclarationCount() {
-		return vector.get(METHOD_DECLARATION);
+		if (vector.containsKey(METHOD_DECLARATION)) {
+			return vector.get(METHOD_DECLARATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -510,7 +700,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getMethodInvocationCount() {
-		return vector.get(METHOD_INVOCATION);
+		if (vector.containsKey(METHOD_INVOCATION)) {
+			return vector.get(METHOD_INVOCATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -519,7 +713,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getMethodRefCount() {
-		return vector.get(METHOD_REF);
+		if (vector.containsKey(METHOD_REF)) {
+			return vector.get(METHOD_REF);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -528,7 +726,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getMethodRefParameterCount() {
-		return vector.get(METHOD_REF_PARAMETER);
+		if (vector.containsKey(METHOD_REF_PARAMETER)) {
+			return vector.get(METHOD_REF_PARAMETER);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -537,7 +739,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getModifierCount() {
-		return vector.get(MODIFIER);
+		if (vector.containsKey(MODIFIER)) {
+			return vector.get(MODIFIER);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -546,7 +752,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getNormalAnnotationCount() {
-		return vector.get(NORMAL_ANNOTATION);
+		if (vector.containsKey(NORMAL_ANNOTATION)) {
+			return vector.get(NORMAL_ANNOTATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -555,7 +765,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getNullLiteralCount() {
-		return vector.get(NULL_LITERAL);
+		if (vector.containsKey(NULL_LITERAL)) {
+			return vector.get(NULL_LITERAL);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -564,7 +778,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getNumberLiteralCount() {
-		return vector.get(NUMBER_LITERAL);
+		if (vector.containsKey(NUMBER_LITERAL)) {
+			return vector.get(NUMBER_LITERAL);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -573,7 +791,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getPackageDeclarationCount() {
-		return vector.get(PACKAGE_DECLARATION);
+		if (vector.containsKey(PACKAGE_DECLARATION)) {
+			return vector.get(PACKAGE_DECLARATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -582,7 +804,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getParameterizedTypeCount() {
-		return vector.get(PARAMETERIZED_TYPE);
+		if (vector.containsKey(PARAMETERIZED_TYPE)) {
+			return vector.get(PARAMETERIZED_TYPE);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -591,7 +817,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getParenthesizedExpressionCount() {
-		return vector.get(PARENTHESIZED_EXPRESSION);
+		if (vector.containsKey(PARENTHESIZED_EXPRESSION)) {
+			return vector.get(PARENTHESIZED_EXPRESSION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -600,7 +830,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getPostfixExpressionCount() {
-		return vector.get(POSTFIX_EXPRESSION);
+		if (vector.containsKey(POSTFIX_EXPRESSION)) {
+			return vector.get(POSTFIX_EXPRESSION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -609,7 +843,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getPrefixExpressionCount() {
-		return vector.get(PREFIX_EXPRESSION);
+		if (vector.containsKey(PREFIX_EXPRESSION)) {
+			return vector.get(PREFIX_EXPRESSION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -618,7 +856,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getPrimitiveTypeCount() {
-		return vector.get(PRIMITIVE_TYPE);
+		if (vector.containsKey(PRIMITIVE_TYPE)) {
+			return vector.get(PRIMITIVE_TYPE);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -627,7 +869,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getQualifiedNameCount() {
-		return vector.get(QUALIFIED_NAME);
+		if (vector.containsKey(QUALIFIED_NAME)) {
+			return vector.get(QUALIFIED_NAME);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -636,7 +882,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getQualifiedTypeCount() {
-		return vector.get(QUALIFIED_TYPE);
+		if (vector.containsKey(QUALIFIED_TYPE)) {
+			return vector.get(QUALIFIED_TYPE);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -645,7 +895,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getReturnStatementCount() {
-		return vector.get(RETURN_STATEMENT);
+		if (vector.containsKey(RETURN_STATEMENT)) {
+			return vector.get(RETURN_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -654,7 +908,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getSimpleNameCount() {
-		return vector.get(SIMPLE_NAME);
+		if (vector.containsKey(SIMPLE_NAME)) {
+			return vector.get(SIMPLE_NAME);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -663,7 +921,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getSimpleTypeCount() {
-		return vector.get(SIMPLE_TYPE);
+		if (vector.containsKey(SIMPLE_TYPE)) {
+			return vector.get(SIMPLE_TYPE);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -672,7 +934,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getSingleMemberAnnotationCount() {
-		return vector.get(SINGLE_MEMBER_ANNOTATION);
+		if (vector.containsKey(SINGLE_MEMBER_ANNOTATION)) {
+			return vector.get(SINGLE_MEMBER_ANNOTATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -681,7 +947,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getSingleVariableDeclarationCount() {
-		return vector.get(SINGLE_VARIABLE_DECLARATION);
+		if (vector.containsKey(SINGLE_VARIABLE_DECLARATION)) {
+			return vector.get(SINGLE_VARIABLE_DECLARATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -690,7 +960,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getStringLiteralCount() {
-		return vector.get(STRING_LITERAL);
+		if (vector.containsKey(STRING_LITERAL)) {
+			return vector.get(STRING_LITERAL);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -699,7 +973,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getSuperConstructorInvocationCount() {
-		return vector.get(SUPER_CONSTRUCTOR_INVOCATION);
+		if (vector.containsKey(SUPER_CONSTRUCTOR_INVOCATION)) {
+			return vector.get(SUPER_CONSTRUCTOR_INVOCATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -708,7 +986,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getSuperFieldAccessCount() {
-		return vector.get(SUPER_FIELD_ACCESS);
+		if (vector.containsKey(SUPER_FIELD_ACCESS)) {
+			return vector.get(SUPER_FIELD_ACCESS);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -717,7 +999,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getSuperMethodInvocationCount() {
-		return vector.get(SUPER_METHOD_INVOCATION);
+		if (vector.containsKey(SUPER_METHOD_INVOCATION)) {
+			return vector.get(SUPER_METHOD_INVOCATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -726,7 +1012,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getSwitchCaseCount() {
-		return vector.get(SWITCH_CASE);
+		if (vector.containsKey(SWITCH_CASE)) {
+			return vector.get(SWITCH_CASE);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -735,7 +1025,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getSwitchStatementCount() {
-		return vector.get(SWITCH_STATEMENT);
+		if (vector.containsKey(SWITCH_STATEMENT)) {
+			return vector.get(SWITCH_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -744,7 +1038,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getSynchronizedStatementCount() {
-		return vector.get(SYNCHRONIZED_STATEMENT);
+		if (vector.containsKey(SYNCHRONIZED_STATEMENT)) {
+			return vector.get(SYNCHRONIZED_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -753,7 +1051,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getTagElementCount() {
-		return vector.get(TAG_ELEMENT);
+		if (vector.containsKey(TAG_ELEMENT)) {
+			return vector.get(TAG_ELEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -762,7 +1064,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getTextElementCount() {
-		return vector.get(TEXT_ELEMENT);
+		if (vector.containsKey(TEXT_ELEMENT)) {
+			return vector.get(TEXT_ELEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -771,7 +1077,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getThisExpressionCount() {
-		return vector.get(THIS_EXPRESSION);
+		if (vector.containsKey(THIS_EXPRESSION)) {
+			return vector.get(THIS_EXPRESSION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -780,7 +1090,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getThrowStatementCount() {
-		return vector.get(THROW_STATEMENT);
+		if (vector.containsKey(THROW_STATEMENT)) {
+			return vector.get(THROW_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -789,7 +1103,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getTryStatementCount() {
-		return vector.get(TRY_STATEMENT);
+		if (vector.containsKey(TRY_STATEMENT)) {
+			return vector.get(TRY_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -798,7 +1116,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getTypeDeclarationCount() {
-		return vector.get(TYPE_DECLARATION);
+		if (vector.containsKey(TYPE_DECLARATION)) {
+			return vector.get(TYPE_DECLARATION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -807,7 +1129,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getTypeDeclarationStatementCount() {
-		return vector.get(TYPE_DECLARATION_STATEMENT);
+		if (vector.containsKey(TYPE_DECLARATION_STATEMENT)) {
+			return vector.get(TYPE_DECLARATION_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -816,7 +1142,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getTypeLiteralCount() {
-		return vector.get(TYPE_LITERAL);
+		if (vector.containsKey(TYPE_LITERAL)) {
+			return vector.get(TYPE_LITERAL);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -825,7 +1155,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getTypeParameterCount() {
-		return vector.get(TYPE_PARAMETER);
+		if (vector.containsKey(TYPE_PARAMETER)) {
+			return vector.get(TYPE_PARAMETER);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -834,7 +1168,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getVariableDeclarationExpressionCount() {
-		return vector.get(VARIABLE_DECLARATION_EXPRESSION);
+		if (vector.containsKey(VARIABLE_DECLARATION_EXPRESSION)) {
+			return vector.get(VARIABLE_DECLARATION_EXPRESSION);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -843,7 +1181,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getVariableDeclarationFragmentCount() {
-		return vector.get(VARIABLE_DECLARATION_FRAGMENT);
+		if (vector.containsKey(VARIABLE_DECLARATION_FRAGMENT)) {
+			return vector.get(VARIABLE_DECLARATION_FRAGMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -852,7 +1194,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getVariableDeclarationStatementCount() {
-		return vector.get(VARIABLE_DECLARATION_STATEMENT);
+		if (vector.containsKey(VARIABLE_DECLARATION_STATEMENT)) {
+			return vector.get(VARIABLE_DECLARATION_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -861,7 +1207,11 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getWhileStatementCount() {
-		return vector.get(WHILE_STATEMENT);
+		if (vector.containsKey(WHILE_STATEMENT)) {
+			return vector.get(WHILE_STATEMENT);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -870,7 +1220,181 @@ public class VectorData {
 	 * @return
 	 */
 	public final int getWildcardTypeCount() {
-		return vector.get(WILDCARD_TYPE);
+		if (vector.containsKey(WILDCARD_TYPE)) {
+			return vector.get(WILDCARD_TYPE);
+		} else {
+			return 0;
+		}
+	}
+
+	public final String toString() {
+		final StringBuilder builder = new StringBuilder();
+
+		builder.append("ANNOTATION_TYPE_DECLARATION\t:\t"
+				+ this.getAnnotationTypeDeclarationCount() + LINE_SEPARATOR);
+		builder.append("ANNOTATION_TYPE_MEMBER_DECLARATION\t:\t"
+				+ this.getAnnotationTypeMemberDeclarationCount()
+				+ LINE_SEPARATOR);
+		builder.append("ANONYMOUS_CLASS_DECLARATION\t:\t"
+				+ this.getAnonymousClassDeclarationCount() + LINE_SEPARATOR);
+		builder.append("ARRAY_ACCESS\t:\t" + this.getArrayAccessCount()
+				+ LINE_SEPARATOR);
+		builder.append("ARRAY_CREATION\t:\t" + this.getArrayCreationCount()
+				+ LINE_SEPARATOR);
+		builder.append("ARRAY_INITIALIZER\t:\t"
+				+ this.getArrayInitializerCount() + LINE_SEPARATOR);
+		builder.append("ARRAY_TYPE\t:\t" + this.getArrayTypeCount()
+				+ LINE_SEPARATOR);
+		builder.append("ASSERT_STATEMENT\t:\t" + this.getAssertStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("ASSIGNMENT\t:\t" + this.getAssignmentCount()
+				+ LINE_SEPARATOR);
+		builder.append("BLOCK\t:\t" + this.getBlockCount() + LINE_SEPARATOR);
+		builder.append("BLOCK_COMMENT\t:\t" + this.getBlockCommentCount()
+				+ LINE_SEPARATOR);
+		builder.append("BOOLEAN_LITERAL\t:\t" + this.getBooleanLiteralCount()
+				+ LINE_SEPARATOR);
+		builder.append("BREAK_STATEMENT\t:\t" + this.getBreakStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("CAST_EXPRESSION\t:\t" + this.getCastExpressionCount()
+				+ LINE_SEPARATOR);
+		builder.append("CATCH_CLAUSE\t:\t" + this.getCatchClauseCount()
+				+ LINE_SEPARATOR);
+		builder.append("CHARACTER_LITERAL\t:\t"
+				+ this.getCharacterLiteralCount() + LINE_SEPARATOR);
+		builder.append("CLASS_INSTANCE_CREATION\t:\t"
+				+ this.getClassInstanceCreationCount() + LINE_SEPARATOR);
+		builder.append("COMPILATION_UNIT\t:\t" + this.getCompilationUnitCount()
+				+ LINE_SEPARATOR);
+		builder.append("CONDITIONAL_EXPRESSION\t:\t"
+				+ this.getConditionalExpressionCount() + LINE_SEPARATOR);
+		builder.append("CONSTRUCTOR_INVOCATION\t:\t"
+				+ this.getConstructorInvocationCount() + LINE_SEPARATOR);
+		builder.append("CONTINUE_STATEMENT\t:\t"
+				+ this.getContinueStatementCount() + LINE_SEPARATOR);
+		builder.append("DO_STATEMENT\t:\t" + this.getDoStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("EMPTY_STATEMENT\t:\t" + this.getEmptyStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("ENHANCED_FOR_STATEMENT\t:\t"
+				+ this.getEnhancedForStatementCount() + LINE_SEPARATOR);
+		builder.append("ENUM_CONSTANT_DECLARATION\t:\t"
+				+ this.getEnumConstantDeclarationCount() + LINE_SEPARATOR);
+		builder.append("ENUM_DECLARATION\t:\t" + this.getEnumDeclarationCount()
+				+ LINE_SEPARATOR);
+		builder.append("EXPRESSION_STATEMENT\t:\t"
+				+ this.getExpressionStatementCount() + LINE_SEPARATOR);
+		builder.append("FIELD_ACCESS\t:\t" + this.getFieldAccessCount()
+				+ LINE_SEPARATOR);
+		builder.append("FOR_STATEMENT\t:\t" + this.getForStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("IF_STATEMENT\t:\t" + this.getIfStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("IMPORT_DECLARATION\t:\t"
+				+ this.getImportDeclarationCount() + LINE_SEPARATOR);
+		builder.append("INFIX_EXPRESSION\t:\t" + this.getInfixExpressionCount()
+				+ LINE_SEPARATOR);
+		builder.append("INITIALIZER\t:\t" + this.getInitializerCount()
+				+ LINE_SEPARATOR);
+		builder.append("INSTANCEOF_EXPRESSION\t:\t"
+				+ this.getInstanceofExpressionCount() + LINE_SEPARATOR);
+		builder.append("JAVADOC\t:\t" + this.getJavadocCount() + LINE_SEPARATOR);
+		builder.append("LABELED_STATEMENT\t:\t"
+				+ this.getLabeledStatementCount() + LINE_SEPARATOR);
+		builder.append("LINE_COMMENT\t:\t" + this.getLineCommentCount()
+				+ LINE_SEPARATOR);
+		builder.append("MARKER_ANNOTATION\t:\t"
+				+ this.getMarkerAnnotationCount() + LINE_SEPARATOR);
+		builder.append("MEMBER_REF\t:\t" + this.getMemberRefCount()
+				+ LINE_SEPARATOR);
+		builder.append("MEMBER_VALUE_PAIR\t:\t"
+				+ this.getMemberValuePairCount() + LINE_SEPARATOR);
+		builder.append("METHOD_DECLARATION\t:\t"
+				+ this.getMethodDeclarationCount() + LINE_SEPARATOR);
+		builder.append("METHOD_INVOCATION\t:\t"
+				+ this.getMethodInvocationCount() + LINE_SEPARATOR);
+		builder.append("METHOD_REF\t:\t" + this.getMethodRefCount()
+				+ LINE_SEPARATOR);
+		builder.append("METHOD_REF_PARAMETER\t:\t"
+				+ this.getMethodRefParameterCount() + LINE_SEPARATOR);
+		builder.append("MODIFIER\t:\t" + this.getModifierCount()
+				+ LINE_SEPARATOR);
+		builder.append("NORMAL_ANNOTATION\t:\t"
+				+ this.getNormalAnnotationCount() + LINE_SEPARATOR);
+		builder.append("NULL_LITERAL\t:\t" + this.getNullLiteralCount()
+				+ LINE_SEPARATOR);
+		builder.append("NUMBER_LITERAL\t:\t" + this.getNumberLiteralCount()
+				+ LINE_SEPARATOR);
+		builder.append("PACKAGE_DECLARATION\t:\t"
+				+ this.getPackageDeclarationCount() + LINE_SEPARATOR);
+		builder.append("PARAMETERIZED_TYPE\t:\t"
+				+ this.getParameterizedTypeCount() + LINE_SEPARATOR);
+		builder.append("PARENTHESIZED_EXPRESSION\t:\t"
+				+ this.getParenthesizedExpressionCount() + LINE_SEPARATOR);
+		builder.append("POSTFIX_EXPRESSION\t:\t"
+				+ this.getPostfixExpressionCount() + LINE_SEPARATOR);
+		builder.append("PRFIX_EXPRESSION\t:\t"
+				+ this.getPrefixExpressionCount() + LINE_SEPARATOR);
+		builder.append("PRIMITIVE_TYPE\t:\t" + this.getPrimitiveTypeCount()
+				+ LINE_SEPARATOR);
+		builder.append("QUALIFIED_NAME\t:\t" + this.getQualifiedNameCount()
+				+ LINE_SEPARATOR);
+		builder.append("QUALIFIED_TYPE\t:\t" + this.getQualifiedTypeCount()
+				+ LINE_SEPARATOR);
+		builder.append("RETURN_STATEMENT\t:\t" + this.getReturnStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("SIMPLE_NAME\t:\t" + this.getSimpleNameCount()
+				+ LINE_SEPARATOR);
+		builder.append("SIMPLE_TYPE\t:\t" + this.getSimpleTypeCount()
+				+ LINE_SEPARATOR);
+		builder.append("SINGLE_MEMBER_ANNOTATION\t:\t"
+				+ this.getSingleMemberAnnotationCount() + LINE_SEPARATOR);
+		builder.append("SINGLE_VARIABLE_DECLARATION\t:\t"
+				+ this.getSingleVariableDeclarationCount() + LINE_SEPARATOR);
+		builder.append("STRING_LITERAL\t:\t" + this.getStringLiteralCount()
+				+ LINE_SEPARATOR);
+		builder.append("SUPER_CONSTRUCTOR_INVOCATION\t:\t"
+				+ this.getSuperConstructorInvocationCount() + LINE_SEPARATOR);
+		builder.append("SUPER_FIELD_ACCESS\t:\t"
+				+ this.getSuperFieldAccessCount() + LINE_SEPARATOR);
+		builder.append("SUPER_METHOD_INVOCATION\t:\t"
+				+ this.getSuperMethodInvocationCount() + LINE_SEPARATOR);
+		builder.append("SWITCH_CASE\t:\t" + this.getSwitchCaseCount()
+				+ LINE_SEPARATOR);
+		builder.append("SWITCH_STATEMENT\t:\t" + this.getSwitchStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("SYNCHRONIZED_STATEMENT\t:\t"
+				+ this.getSynchronizedStatementCount() + LINE_SEPARATOR);
+		builder.append("TAG_ELEMENT\t:\t" + this.getTagElementCount()
+				+ LINE_SEPARATOR);
+		builder.append("TEXT_ELEMENT\t:\t" + this.getTextElementCount()
+				+ LINE_SEPARATOR);
+		builder.append("THIS_EXPRESSION\t:\t" + this.getThisExpressionCount()
+				+ LINE_SEPARATOR);
+		builder.append("THROW_STATEMENT\t:\t" + this.getThrowStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("TRY_STATEMENT\t:\t" + this.getTryStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("TYPE_DECLARATION\t:\t" + this.getTypeDeclarationCount()
+				+ LINE_SEPARATOR);
+		builder.append("TYPE_DECLARATION_STATEMENTA\t:\t"
+				+ this.getTypeDeclarationStatementCount() + LINE_SEPARATOR);
+		builder.append("TYPE_LITERAL\t:\t" + this.getTypeLiteralCount()
+				+ LINE_SEPARATOR);
+		builder.append("TYPE_PARAMETER\t:\t" + this.getTypeParameterCount()
+				+ LINE_SEPARATOR);
+		builder.append("VARIABLE_DECLARATION_EXPRESSION\t:\t"
+				+ this.getVariableDeclarationExpressionCount() + LINE_SEPARATOR);
+		builder.append("VARIABLE_DECLARATION_FRAGMENT\t:\t"
+				+ this.getVariableDeclarationFragmentCount() + LINE_SEPARATOR);
+		builder.append("VARIABLE_DECLARATION_STATEMENT\t:\t"
+				+ this.getVariableDeclarationStatementCount() + LINE_SEPARATOR);
+		builder.append("WHILE_STATEMENT\t:\t" + this.getWhileStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("WILDCARD_TYPE\t:\t" + this.getWildcardTypeCount()
+				+ LINE_SEPARATOR);
+
+		return builder.toString();
 	}
 
 }
