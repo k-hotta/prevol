@@ -44,7 +44,7 @@ public class DBMaker {
 
 			// URLを導出
 			final StringBuilder urlBuilder = new StringBuilder();
-			urlBuilder.append("djdbc:sqlite:");
+			urlBuilder.append("jdbc:sqlite:");
 			urlBuilder.append(dbFile);
 
 			final String url = urlBuilder.toString();
