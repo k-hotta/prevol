@@ -20,7 +20,7 @@ public class ASTCreator {
 	 * @return
 	 */
 	public static CompilationUnit createAST(final String sourceCode) {
-		final ASTParser parser = ASTParser.newParser(AST.JLS3);
+		final ASTParser parser = ASTParser.newParser(AST.JLS4);
 
 		parser.setSource(sourceCode.toCharArray());
 
