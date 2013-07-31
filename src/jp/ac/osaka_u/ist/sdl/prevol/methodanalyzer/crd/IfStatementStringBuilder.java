@@ -22,7 +22,7 @@ public class IfStatementStringBuilder extends
 		builder.append("IF,"); // 文の種類
 		builder.append(node.getExpression());
 		
-		return null;
+		return builder.toString();
 	}
 
 }
