@@ -19,7 +19,7 @@ public class CRDElementCalculator {
 	 * @param strBuilder
 	 * @return
 	 */
-	public static final CRDElement calc(final ASTNode node,
+	public final CRDElement calc(final ASTNode node,
 			final AbstractBlockStringBuilder<?> strBuilder) {
 		final MetricsCalculator metricsCalculator = new MetricsCalculator();
 		node.accept(metricsCalculator);
