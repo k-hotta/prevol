@@ -1,5 +1,6 @@
 package jp.ac.osaka_u.ist.sdl.prevol.data;
 
+import static jp.ac.osaka_u.ist.sdl.prevol.utils.Constants.LINE_SEPARATOR;
 import static org.eclipse.jdt.core.dom.ASTNode.ANNOTATION_TYPE_DECLARATION;
 import static org.eclipse.jdt.core.dom.ASTNode.ANNOTATION_TYPE_MEMBER_DECLARATION;
 import static org.eclipse.jdt.core.dom.ASTNode.ANONYMOUS_CLASS_DECLARATION;
@@ -84,11 +85,10 @@ import static org.eclipse.jdt.core.dom.ASTNode.VARIABLE_DECLARATION_STATEMENT;
 import static org.eclipse.jdt.core.dom.ASTNode.WHILE_STATEMENT;
 import static org.eclipse.jdt.core.dom.ASTNode.WILDCARD_TYPE;
 
-import static jp.ac.osaka_u.ist.sdl.prevol.utils.Constants.LINE_SEPARATOR;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * メソッドのベクトルデータを表すクラス
@@ -99,6 +99,16 @@ import java.util.Map;
 public class VectorData {
 
 	/**
+	 * ID管理用カウンタ
+	 */
+	private static final AtomicLong count = new AtomicLong(0);
+
+	/**
+	 * id
+	 */
+	private final long id;
+
+	/**
 	 * ベクトルデータ <br>
 	 * キー：　ASTNodeの各子クラスに割り当てられた整数 <br>
 	 * 値：　そのノードの出現数
@@ -106,8 +116,18 @@ public class VectorData {
 	private final Map<Integer, Integer> vector;
 
 	public VectorData(final Map<Integer, Integer> vector) {
+		this.id = count.getAndIncrement();
 		this.vector = new HashMap<Integer, Integer>();
 		this.vector.putAll(vector);
+	}
+
+	/**
+	 * id を取得
+	 * 
+	 * @return
+	 */
+	public final long getId() {
+		return this.id;
 	}
 
 	/**
