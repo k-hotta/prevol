@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer;
+package jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.crd;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;

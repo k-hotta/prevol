@@ -3,7 +3,9 @@ package jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
+import jp.ac.osaka_u.ist.sdl.prevol.data.CRDElement;
 import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
 
@@ -40,6 +42,11 @@ public class ASTAnalyzer extends ASTVisitor {
 	private CompilationUnit root = null;
 
 	/**
+	 * 着目中のメソッドの外側にあるすべてのブロックのCRDElementを保持するスタック
+	 */
+	private final Stack<CRDElement> parentCrdElements;
+
+	/**
 	 * コンストラクタ
 	 * 
 	 * @param revision
@@ -49,6 +56,7 @@ public class ASTAnalyzer extends ASTVisitor {
 		this.revision = revision;
 		this.fileName = fileName;
 		this.methods = new ArrayList<MethodData>();
+		this.parentCrdElements = new Stack<CRDElement>();
 	}
 
 	/**
@@ -61,10 +69,11 @@ public class ASTAnalyzer extends ASTVisitor {
 	}
 
 	/**
-	 * CompilationUnit を探索するときにルートノードを設定 (一度だけ)
+	 * CompilationUnit 到達時
 	 */
 	@Override
 	public boolean visit(CompilationUnit node) {
+		// ルートノードを設定
 		if (root == null) {
 			this.root = node;
 		}
