@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.TryStatement;
  */
 public class FinallyBlockStringBuilder extends
 		AbstractBlockStringBuilder<Block> {
-	
+
 	private static final String DIVIDER = " ";
 
 	public FinallyBlockStringBuilder(Block node) {
@@ -26,22 +26,25 @@ public class FinallyBlockStringBuilder extends
 		final StringBuilder builder = new StringBuilder();
 
 		builder.append("FINALLY,"); // 文の種類
-		
-		// 親のTry文が catch する例外の型を連結		
+
+		// 親のTry文が catch する例外の型を連結
 		final TryStatement parentTryStatement = (TryStatement) node.getParent();
-		
+
 		@SuppressWarnings("rawtypes")
 		List catchClauses = parentTryStatement.catchClauses();
+
+		boolean catchAnyException = false;
 
 		for (Object obj : catchClauses) {
 			final CatchClause catchClause = (CatchClause) obj;
 			final String caughtExceptionType = catchClause.getException()
 					.getType().toString();
 			builder.append(caughtExceptionType + DIVIDER);
+			catchAnyException = true;
 		}
 
 		// 最後の DIVIDER は不要
-		if (builder.length() > 0) {
+		if (catchAnyException) {
 			builder.delete(builder.length() - DIVIDER.length(),
 					builder.length());
 		}

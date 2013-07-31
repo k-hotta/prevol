@@ -33,12 +33,9 @@ public class ElseStatementStringBuilder extends
 		for (final String predicate : predicates) {
 			builder.append(predicate + DIVIDER);
 		}
-		
+
 		// 最後の DIVIDER は不要なので消去
-		if (builder.length() > 0) {
-			builder.delete(builder.length() - DIVIDER.length(),
-					builder.length());
-		}
+		builder.delete(builder.length() - DIVIDER.length(), builder.length());
 
 		return builder.toString();
 	}

@@ -28,6 +28,8 @@ public class TryStatementStringBuilder extends
 
 		@SuppressWarnings("rawtypes")
 		List catchClauses = node.catchClauses();
+		
+		boolean catchAnyException = false;
 
 		// catch する例外の型を連結
 		for (Object obj : catchClauses) {
@@ -35,10 +37,11 @@ public class TryStatementStringBuilder extends
 			final String caughtExceptionType = catchClause.getException()
 					.getType().toString();
 			builder.append(caughtExceptionType + DIVIDER);
+			catchAnyException = true;
 		}
 
 		// 最後の DIVIDER は不要
-		if (builder.length() > 0) {
+		if (catchAnyException) {
 			builder.delete(builder.length() - DIVIDER.length(),
 					builder.length());
 		}
