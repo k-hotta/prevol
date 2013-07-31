@@ -17,10 +17,14 @@ public class CatchClauseStringBuilder extends
 
 	@Override
 	public String getBlockStr() {
-		final String caughtExceptionType = node.getException().getType()
-				.toString();
+		final StringBuilder builder = new StringBuilder();
 
-		return caughtExceptionType;
+		builder.append("CATCH,"); // 文の種類
+
+		// catch する例外の型
+		builder.append(node.getException().getType().toString());
+
+		return builder.toString();
 	}
 
 }
