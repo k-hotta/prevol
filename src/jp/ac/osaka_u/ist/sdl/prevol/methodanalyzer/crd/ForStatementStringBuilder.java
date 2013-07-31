@@ -22,7 +22,7 @@ public class ForStatementStringBuilder extends
 		builder.append("FOR,"); // ブロックの種類
 		builder.append(node.getExpression().toString()); // 条件式
 		
-		return null;
+		return builder.toString();
 	}
 
 }
