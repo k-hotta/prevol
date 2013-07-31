@@ -108,7 +108,7 @@ public class MethodData {
 		builder.append(LINE_SEPARATOR);
 		builder.append("CRD" + LINE_SEPARATOR);
 		builder.append(crd.toString());
-		builder.append(LINE_SEPARATOR);
+		builder.append(LINE_SEPARATOR + LINE_SEPARATOR);
 		builder.append("vector" + LINE_SEPARATOR);
 		builder.append(vectorData.toString());
 		return builder.toString();

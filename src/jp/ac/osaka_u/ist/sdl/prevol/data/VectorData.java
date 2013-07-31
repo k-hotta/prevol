@@ -84,6 +84,8 @@ import static org.eclipse.jdt.core.dom.ASTNode.VARIABLE_DECLARATION_STATEMENT;
 import static org.eclipse.jdt.core.dom.ASTNode.WHILE_STATEMENT;
 import static org.eclipse.jdt.core.dom.ASTNode.WILDCARD_TYPE;
 
+import static jp.ac.osaka_u.ist.sdl.prevol.utils.Constants.LINE_SEPARATOR;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -1209,123 +1211,168 @@ public class VectorData {
 		final StringBuilder builder = new StringBuilder();
 
 		builder.append("ANNOTATION_TYPE_DECLARATION\t:\t"
-				+ this.getAnnotationTypeDeclarationCount());
+				+ this.getAnnotationTypeDeclarationCount() + LINE_SEPARATOR);
 		builder.append("ANNOTATION_TYPE_MEMBER_DECLARATION\t:\t"
-				+ this.getAnnotationTypeMemberDeclarationCount());
+				+ this.getAnnotationTypeMemberDeclarationCount()
+				+ LINE_SEPARATOR);
 		builder.append("ANONYMOUS_CLASS_DECLARATION\t:\t"
-				+ this.getAnonymousClassDeclarationCount());
-		builder.append("ARRAY_ACCESS\t:\t" + this.getArrayAccessCount());
-		builder.append("ARRAY_CREATION\t:\t" + this.getArrayCreationCount());
+				+ this.getAnonymousClassDeclarationCount() + LINE_SEPARATOR);
+		builder.append("ARRAY_ACCESS\t:\t" + this.getArrayAccessCount()
+				+ LINE_SEPARATOR);
+		builder.append("ARRAY_CREATION\t:\t" + this.getArrayCreationCount()
+				+ LINE_SEPARATOR);
 		builder.append("ARRAY_INITIALIZER\t:\t"
-				+ this.getArrayInitializerCount());
-		builder.append("ARRAY_TYPE\t:\t" + this.getArrayTypeCount());
-		builder.append("ASSERT_STATEMENT\t:\t" + this.getAssertStatementCount());
-		builder.append("ASSIGNMENT\t:\t" + this.getAssignmentCount());
-		builder.append("BLOCK\t:\t" + this.getBlockCount());
-		builder.append("BLOCK_COMMENT\t:\t" + this.getBlockCommentCount());
-		builder.append("BOOLEAN_LITERAL\t:\t" + this.getBooleanLiteralCount());
-		builder.append("BREAK_STATEMENT\t:\t" + this.getBreakStatementCount());
-		builder.append("CAST_EXPRESSION\t:\t" + this.getCastExpressionCount());
-		builder.append("CATCH_CLAUSE\t:\t" + this.getCatchClauseCount());
+				+ this.getArrayInitializerCount() + LINE_SEPARATOR);
+		builder.append("ARRAY_TYPE\t:\t" + this.getArrayTypeCount()
+				+ LINE_SEPARATOR);
+		builder.append("ASSERT_STATEMENT\t:\t" + this.getAssertStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("ASSIGNMENT\t:\t" + this.getAssignmentCount()
+				+ LINE_SEPARATOR);
+		builder.append("BLOCK\t:\t" + this.getBlockCount() + LINE_SEPARATOR);
+		builder.append("BLOCK_COMMENT\t:\t" + this.getBlockCommentCount()
+				+ LINE_SEPARATOR);
+		builder.append("BOOLEAN_LITERAL\t:\t" + this.getBooleanLiteralCount()
+				+ LINE_SEPARATOR);
+		builder.append("BREAK_STATEMENT\t:\t" + this.getBreakStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("CAST_EXPRESSION\t:\t" + this.getCastExpressionCount()
+				+ LINE_SEPARATOR);
+		builder.append("CATCH_CLAUSE\t:\t" + this.getCatchClauseCount()
+				+ LINE_SEPARATOR);
 		builder.append("CHARACTER_LITERAL\t:\t"
-				+ this.getCharacterLiteralCount());
+				+ this.getCharacterLiteralCount() + LINE_SEPARATOR);
 		builder.append("CLASS_INSTANCE_CREATION\t:\t"
-				+ this.getClassInstanceCreationCount());
-		builder.append("COMPILATION_UNIT\t:\t" + this.getCompilationUnitCount());
+				+ this.getClassInstanceCreationCount() + LINE_SEPARATOR);
+		builder.append("COMPILATION_UNIT\t:\t" + this.getCompilationUnitCount()
+				+ LINE_SEPARATOR);
 		builder.append("CONDITIONAL_EXPRESSION\t:\t"
-				+ this.getConditionalExpressionCount());
+				+ this.getConditionalExpressionCount() + LINE_SEPARATOR);
 		builder.append("CONSTRUCTOR_INVOCATION\t:\t"
-				+ this.getConstructorInvocationCount());
+				+ this.getConstructorInvocationCount() + LINE_SEPARATOR);
 		builder.append("CONTINUE_STATEMENT\t:\t"
-				+ this.getContinueStatementCount());
-		builder.append("DO_STATEMENT\t:\t" + this.getDoStatementCount());
-		builder.append("EMPTY_STATEMENT\t:\t" + this.getEmptyStatementCount());
+				+ this.getContinueStatementCount() + LINE_SEPARATOR);
+		builder.append("DO_STATEMENT\t:\t" + this.getDoStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("EMPTY_STATEMENT\t:\t" + this.getEmptyStatementCount()
+				+ LINE_SEPARATOR);
 		builder.append("ENHANCED_FOR_STATEMENT\t:\t"
-				+ this.getEnhancedForStatementCount());
+				+ this.getEnhancedForStatementCount() + LINE_SEPARATOR);
 		builder.append("ENUM_CONSTANT_DECLARATION\t:\t"
-				+ this.getEnumConstantDeclarationCount());
-		builder.append("ENUM_DECLARATION\t:\t" + this.getEnumDeclarationCount());
+				+ this.getEnumConstantDeclarationCount() + LINE_SEPARATOR);
+		builder.append("ENUM_DECLARATION\t:\t" + this.getEnumDeclarationCount()
+				+ LINE_SEPARATOR);
 		builder.append("EXPRESSION_STATEMENT\t:\t"
-				+ this.getExpressionStatementCount());
-		builder.append("FIELD_ACCESS\t:\t" + this.getFieldAccessCount());
-		builder.append("FOR_STATEMENT\t:\t" + this.getForStatementCount());
-		builder.append("IF_STATEMENT\t:\t" + this.getIfStatementCount());
+				+ this.getExpressionStatementCount() + LINE_SEPARATOR);
+		builder.append("FIELD_ACCESS\t:\t" + this.getFieldAccessCount()
+				+ LINE_SEPARATOR);
+		builder.append("FOR_STATEMENT\t:\t" + this.getForStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("IF_STATEMENT\t:\t" + this.getIfStatementCount()
+				+ LINE_SEPARATOR);
 		builder.append("IMPORT_DECLARATION\t:\t"
-				+ this.getImportDeclarationCount());
-		builder.append("INFIX_EXPRESSION\t:\t" + this.getInfixExpressionCount());
-		builder.append("INITIALIZER\t:\t" + this.getInitializerCount());
+				+ this.getImportDeclarationCount() + LINE_SEPARATOR);
+		builder.append("INFIX_EXPRESSION\t:\t" + this.getInfixExpressionCount()
+				+ LINE_SEPARATOR);
+		builder.append("INITIALIZER\t:\t" + this.getInitializerCount()
+				+ LINE_SEPARATOR);
 		builder.append("INSTANCEOF_EXPRESSION\t:\t"
-				+ this.getInstanceofExpressionCount());
-		builder.append("JAVADOC\t:\t" + this.getJavadocCount());
+				+ this.getInstanceofExpressionCount() + LINE_SEPARATOR);
+		builder.append("JAVADOC\t:\t" + this.getJavadocCount() + LINE_SEPARATOR);
 		builder.append("LABELED_STATEMENT\t:\t"
-				+ this.getLabeledStatementCount());
-		builder.append("LINE_COMMENT\t:\t" + this.getLineCommentCount());
+				+ this.getLabeledStatementCount() + LINE_SEPARATOR);
+		builder.append("LINE_COMMENT\t:\t" + this.getLineCommentCount()
+				+ LINE_SEPARATOR);
 		builder.append("MARKER_ANNOTATION\t:\t"
-				+ this.getMarkerAnnotationCount());
-		builder.append("MEMBER_REF\t:\t" + this.getMemberRefCount());
+				+ this.getMarkerAnnotationCount() + LINE_SEPARATOR);
+		builder.append("MEMBER_REF\t:\t" + this.getMemberRefCount()
+				+ LINE_SEPARATOR);
 		builder.append("MEMBER_VALUE_PAIR\t:\t"
-				+ this.getMemberValuePairCount());
+				+ this.getMemberValuePairCount() + LINE_SEPARATOR);
 		builder.append("METHOD_DECLARATION\t:\t"
-				+ this.getMethodDeclarationCount());
+				+ this.getMethodDeclarationCount() + LINE_SEPARATOR);
 		builder.append("METHOD_INVOCATION\t:\t"
-				+ this.getMethodInvocationCount());
-		builder.append("METHOD_REF\t:\t" + this.getMethodRefCount());
+				+ this.getMethodInvocationCount() + LINE_SEPARATOR);
+		builder.append("METHOD_REF\t:\t" + this.getMethodRefCount()
+				+ LINE_SEPARATOR);
 		builder.append("METHOD_REF_PARAMETER\t:\t"
-				+ this.getMethodRefParameterCount());
-		builder.append("MODIFIER\t:\t" + this.getModifierCount());
+				+ this.getMethodRefParameterCount() + LINE_SEPARATOR);
+		builder.append("MODIFIER\t:\t" + this.getModifierCount()
+				+ LINE_SEPARATOR);
 		builder.append("NORMAL_ANNOTATION\t:\t"
-				+ this.getNormalAnnotationCount());
-		builder.append("NULL_LITERAL\t:\t" + this.getNullLiteralCount());
-		builder.append("NUMBER_LITERAL\t:\t" + this.getNumberLiteralCount());
+				+ this.getNormalAnnotationCount() + LINE_SEPARATOR);
+		builder.append("NULL_LITERAL\t:\t" + this.getNullLiteralCount()
+				+ LINE_SEPARATOR);
+		builder.append("NUMBER_LITERAL\t:\t" + this.getNumberLiteralCount()
+				+ LINE_SEPARATOR);
 		builder.append("PACKAGE_DECLARATION\t:\t"
-				+ this.getPackageDeclarationCount());
+				+ this.getPackageDeclarationCount() + LINE_SEPARATOR);
 		builder.append("PARAMETERIZED_TYPE\t:\t"
-				+ this.getParameterizedTypeCount());
+				+ this.getParameterizedTypeCount() + LINE_SEPARATOR);
 		builder.append("PARENTHESIZED_EXPRESSION\t:\t"
-				+ this.getParenthesizedExpressionCount());
+				+ this.getParenthesizedExpressionCount() + LINE_SEPARATOR);
 		builder.append("POSTFIX_EXPRESSION\t:\t"
-				+ this.getPostfixExpressionCount());
+				+ this.getPostfixExpressionCount() + LINE_SEPARATOR);
 		builder.append("PRFIX_EXPRESSION\t:\t"
-				+ this.getPrefixExpressionCount());
-		builder.append("PRIMITIVE_TYPE\t:\t" + this.getPrimitiveTypeCount());
-		builder.append("QUALIFIED_NAME\t:\t" + this.getQualifiedNameCount());
-		builder.append("QUALIFIED_TYPE\t:\t" + this.getQualifiedTypeCount());
-		builder.append("RETURN_STATEMENT\t:\t" + this.getReturnStatementCount());
-		builder.append("SIMPLE_NAME\t:\t" + this.getSimpleNameCount());
-		builder.append("SIMPLE_TYPE\t:\t" + this.getSimpleTypeCount());
+				+ this.getPrefixExpressionCount() + LINE_SEPARATOR);
+		builder.append("PRIMITIVE_TYPE\t:\t" + this.getPrimitiveTypeCount()
+				+ LINE_SEPARATOR);
+		builder.append("QUALIFIED_NAME\t:\t" + this.getQualifiedNameCount()
+				+ LINE_SEPARATOR);
+		builder.append("QUALIFIED_TYPE\t:\t" + this.getQualifiedTypeCount()
+				+ LINE_SEPARATOR);
+		builder.append("RETURN_STATEMENT\t:\t" + this.getReturnStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("SIMPLE_NAME\t:\t" + this.getSimpleNameCount()
+				+ LINE_SEPARATOR);
+		builder.append("SIMPLE_TYPE\t:\t" + this.getSimpleTypeCount()
+				+ LINE_SEPARATOR);
 		builder.append("SINGLE_MEMBER_ANNOTATION\t:\t"
-				+ this.getSingleMemberAnnotationCount());
+				+ this.getSingleMemberAnnotationCount() + LINE_SEPARATOR);
 		builder.append("SINGLE_VARIABLE_DECLARATION\t:\t"
-				+ this.getSingleVariableDeclarationCount());
-		builder.append("STRING_LITERAL\t:\t" + this.getStringLiteralCount());
+				+ this.getSingleVariableDeclarationCount() + LINE_SEPARATOR);
+		builder.append("STRING_LITERAL\t:\t" + this.getStringLiteralCount()
+				+ LINE_SEPARATOR);
 		builder.append("SUPER_CONSTRUCTOR_INVOCATION\t:\t"
-				+ this.getSuperConstructorInvocationCount());
+				+ this.getSuperConstructorInvocationCount() + LINE_SEPARATOR);
 		builder.append("SUPER_FIELD_ACCESS\t:\t"
-				+ this.getSuperFieldAccessCount());
+				+ this.getSuperFieldAccessCount() + LINE_SEPARATOR);
 		builder.append("SUPER_METHOD_INVOCATION\t:\t"
-				+ this.getSuperMethodInvocationCount());
-		builder.append("SWITCH_CASE\t:\t" + this.getSwitchCaseCount());
-		builder.append("SWITCH_STATEMENT\t:\t" + this.getSwitchStatementCount());
+				+ this.getSuperMethodInvocationCount() + LINE_SEPARATOR);
+		builder.append("SWITCH_CASE\t:\t" + this.getSwitchCaseCount()
+				+ LINE_SEPARATOR);
+		builder.append("SWITCH_STATEMENT\t:\t" + this.getSwitchStatementCount()
+				+ LINE_SEPARATOR);
 		builder.append("SYNCHRONIZED_STATEMENT\t:\t"
-				+ this.getSynchronizedStatementCount());
-		builder.append("TAG_ELEMENT\t:\t" + this.getTagElementCount());
-		builder.append("TEXT_ELEMENT\t:\t" + this.getTextElementCount());
-		builder.append("THIS_EXPRESSION\t:\t" + this.getThisExpressionCount());
-		builder.append("THROW_STATEMENT\t:\t" + this.getThrowStatementCount());
-		builder.append("TRY_STATEMENT\t:\t" + this.getTryStatementCount());
-		builder.append("TYPE_DECLARATION\t:\t" + this.getTypeDeclarationCount());
+				+ this.getSynchronizedStatementCount() + LINE_SEPARATOR);
+		builder.append("TAG_ELEMENT\t:\t" + this.getTagElementCount()
+				+ LINE_SEPARATOR);
+		builder.append("TEXT_ELEMENT\t:\t" + this.getTextElementCount()
+				+ LINE_SEPARATOR);
+		builder.append("THIS_EXPRESSION\t:\t" + this.getThisExpressionCount()
+				+ LINE_SEPARATOR);
+		builder.append("THROW_STATEMENT\t:\t" + this.getThrowStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("TRY_STATEMENT\t:\t" + this.getTryStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("TYPE_DECLARATION\t:\t" + this.getTypeDeclarationCount()
+				+ LINE_SEPARATOR);
 		builder.append("TYPE_DECLARATION_STATEMENTA\t:\t"
-				+ this.getTypeDeclarationStatementCount());
-		builder.append("TYPE_LITERAL\t:\t" + this.getTypeLiteralCount());
-		builder.append("TYPE_PARAMETER\t:\t" + this.getTypeParameterCount());
+				+ this.getTypeDeclarationStatementCount() + LINE_SEPARATOR);
+		builder.append("TYPE_LITERAL\t:\t" + this.getTypeLiteralCount()
+				+ LINE_SEPARATOR);
+		builder.append("TYPE_PARAMETER\t:\t" + this.getTypeParameterCount()
+				+ LINE_SEPARATOR);
 		builder.append("VARIABLE_DECLARATION_EXPRESSION\t:\t"
-				+ this.getVariableDeclarationExpressionCount());
+				+ this.getVariableDeclarationExpressionCount() + LINE_SEPARATOR);
 		builder.append("VARIABLE_DECLARATION_FRAGMENT\t:\t"
-				+ this.getVariableDeclarationFragmentCount());
+				+ this.getVariableDeclarationFragmentCount() + LINE_SEPARATOR);
 		builder.append("VARIABLE_DECLARATION_STATEMENT\t:\t"
-				+ this.getVariableDeclarationStatementCount());
-		builder.append("WHILE_STATEMENT\t:\t" + this.getWhileStatementCount());
-		builder.append("WILDCARD_TYPE\t:\t" + this.getWildcardTypeCount());
+				+ this.getVariableDeclarationStatementCount() + LINE_SEPARATOR);
+		builder.append("WHILE_STATEMENT\t:\t" + this.getWhileStatementCount()
+				+ LINE_SEPARATOR);
+		builder.append("WILDCARD_TYPE\t:\t" + this.getWildcardTypeCount()
+				+ LINE_SEPARATOR);
 
 		return builder.toString();
 	}
