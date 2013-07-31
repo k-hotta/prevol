@@ -28,4 +28,9 @@ public class CRDElement {
 		return this.cm;
 	}
 	
+	@Override
+	public String toString() {
+		return this.blockStr + "," + this.cm;
+	}
+	
 }

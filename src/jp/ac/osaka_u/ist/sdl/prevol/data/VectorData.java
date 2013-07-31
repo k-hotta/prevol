@@ -873,4 +873,129 @@ public class VectorData {
 		return vector.get(WILDCARD_TYPE);
 	}
 
+	public final String toString() {
+		final StringBuilder builder = new StringBuilder();
+
+		builder.append("ANNOTATION_TYPE_DECLARATION\t:\t"
+				+ this.getAnnotationTypeDeclarationCount());
+		builder.append("ANNOTATION_TYPE_MEMBER_DECLARATION\t:\t"
+				+ this.getAnnotationTypeMemberDeclarationCount());
+		builder.append("ANONYMOUS_CLASS_DECLARATION\t:\t"
+				+ this.getAnonymousClassDeclarationCount());
+		builder.append("ARRAY_ACCESS\t:\t" + this.getArrayAccessCount());
+		builder.append("ARRAY_CREATION\t:\t" + this.getArrayCreationCount());
+		builder.append("ARRAY_INITIALIZER\t:\t"
+				+ this.getArrayInitializerCount());
+		builder.append("ARRAY_TYPE\t:\t" + this.getArrayTypeCount());
+		builder.append("ASSERT_STATEMENT\t:\t" + this.getAssertStatementCount());
+		builder.append("ASSIGNMENT\t:\t" + this.getAssignmentCount());
+		builder.append("BLOCK\t:\t" + this.getBlockCount());
+		builder.append("BLOCK_COMMENT\t:\t" + this.getBlockCommentCount());
+		builder.append("BOOLEAN_LITERAL\t:\t" + this.getBooleanLiteralCount());
+		builder.append("BREAK_STATEMENT\t:\t" + this.getBreakStatementCount());
+		builder.append("CAST_EXPRESSION\t:\t" + this.getCastExpressionCount());
+		builder.append("CATCH_CLAUSE\t:\t" + this.getCatchClauseCount());
+		builder.append("CHARACTER_LITERAL\t:\t"
+				+ this.getCharacterLiteralCount());
+		builder.append("CLASS_INSTANCE_CREATION\t:\t"
+				+ this.getClassInstanceCreationCount());
+		builder.append("COMPILATION_UNIT\t:\t" + this.getCompilationUnitCount());
+		builder.append("CONDITIONAL_EXPRESSION\t:\t"
+				+ this.getConditionalExpressionCount());
+		builder.append("CONSTRUCTOR_INVOCATION\t:\t"
+				+ this.getConstructorInvocationCount());
+		builder.append("CONTINUE_STATEMENT\t:\t"
+				+ this.getContinueStatementCount());
+		builder.append("DO_STATEMENT\t:\t" + this.getDoStatementCount());
+		builder.append("EMPTY_STATEMENT\t:\t" + this.getEmptyStatementCount());
+		builder.append("ENHANCED_FOR_STATEMENT\t:\t"
+				+ this.getEnhancedForStatementCount());
+		builder.append("ENUM_CONSTANT_DECLARATION\t:\t"
+				+ this.getEnumConstantDeclarationCount());
+		builder.append("ENUM_DECLARATION\t:\t" + this.getEnumDeclarationCount());
+		builder.append("EXPRESSION_STATEMENT\t:\t"
+				+ this.getExpressionStatementCount());
+		builder.append("FIELD_ACCESS\t:\t" + this.getFieldAccessCount());
+		builder.append("FOR_STATEMENT\t:\t" + this.getForStatementCount());
+		builder.append("IF_STATEMENT\t:\t" + this.getIfStatementCount());
+		builder.append("IMPORT_DECLARATION\t:\t"
+				+ this.getImportDeclarationCount());
+		builder.append("INFIX_EXPRESSION\t:\t" + this.getInfixExpressionCount());
+		builder.append("INITIALIZER\t:\t" + this.getInitializerCount());
+		builder.append("INSTANCEOF_EXPRESSION\t:\t"
+				+ this.getInstanceofExpressionCount());
+		builder.append("JAVADOC\t:\t" + this.getJavadocCount());
+		builder.append("LABELED_STATEMENT\t:\t"
+				+ this.getLabeledStatementCount());
+		builder.append("LINE_COMMENT\t:\t" + this.getLineCommentCount());
+		builder.append("MARKER_ANNOTATION\t:\t"
+				+ this.getMarkerAnnotationCount());
+		builder.append("MEMBER_REF\t:\t" + this.getMemberRefCount());
+		builder.append("MEMBER_VALUE_PAIR\t:\t"
+				+ this.getMemberValuePairCount());
+		builder.append("METHOD_DECLARATION\t:\t"
+				+ this.getMethodDeclarationCount());
+		builder.append("METHOD_INVOCATION\t:\t"
+				+ this.getMethodInvocationCount());
+		builder.append("METHOD_REF\t:\t" + this.getMethodRefCount());
+		builder.append("METHOD_REF_PARAMETER\t:\t"
+				+ this.getMethodRefParameterCount());
+		builder.append("MODIFIER\t:\t" + this.getModifierCount());
+		builder.append("NORMAL_ANNOTATION\t:\t"
+				+ this.getNormalAnnotationCount());
+		builder.append("NULL_LITERAL\t:\t" + this.getNullLiteralCount());
+		builder.append("NUMBER_LITERAL\t:\t" + this.getNumberLiteralCount());
+		builder.append("PACKAGE_DECLARATION\t:\t"
+				+ this.getPackageDeclarationCount());
+		builder.append("PARAMETERIZED_TYPE\t:\t"
+				+ this.getParameterizedTypeCount());
+		builder.append("PARENTHESIZED_EXPRESSION\t:\t"
+				+ this.getParenthesizedExpressionCount());
+		builder.append("POSTFIX_EXPRESSION\t:\t"
+				+ this.getPostfixExpressionCount());
+		builder.append("PRFIX_EXPRESSION\t:\t"
+				+ this.getPrefixExpressionCount());
+		builder.append("PRIMITIVE_TYPE\t:\t" + this.getPrimitiveTypeCount());
+		builder.append("QUALIFIED_NAME\t:\t" + this.getQualifiedNameCount());
+		builder.append("QUALIFIED_TYPE\t:\t" + this.getQualifiedTypeCount());
+		builder.append("RETURN_STATEMENT\t:\t" + this.getReturnStatementCount());
+		builder.append("SIMPLE_NAME\t:\t" + this.getSimpleNameCount());
+		builder.append("SIMPLE_TYPE\t:\t" + this.getSimpleTypeCount());
+		builder.append("SINGLE_MEMBER_ANNOTATION\t:\t"
+				+ this.getSingleMemberAnnotationCount());
+		builder.append("SINGLE_VARIABLE_DECLARATION\t:\t"
+				+ this.getSingleVariableDeclarationCount());
+		builder.append("STRING_LITERAL\t:\t" + this.getStringLiteralCount());
+		builder.append("SUPER_CONSTRUCTOR_INVOCATION\t:\t"
+				+ this.getSuperConstructorInvocationCount());
+		builder.append("SUPER_FIELD_ACCESS\t:\t"
+				+ this.getSuperFieldAccessCount());
+		builder.append("SUPER_METHOD_INVOCATION\t:\t"
+				+ this.getSuperMethodInvocationCount());
+		builder.append("SWITCH_CASE\t:\t" + this.getSwitchCaseCount());
+		builder.append("SWITCH_STATEMENT\t:\t" + this.getSwitchStatementCount());
+		builder.append("SYNCHRONIZED_STATEMENT\t:\t"
+				+ this.getSynchronizedStatementCount());
+		builder.append("TAG_ELEMENT\t:\t" + this.getTagElementCount());
+		builder.append("TEXT_ELEMENT\t:\t" + this.getTextElementCount());
+		builder.append("THIS_EXPRESSION\t:\t" + this.getThisExpressionCount());
+		builder.append("THROW_STATEMENT\t:\t" + this.getThrowStatementCount());
+		builder.append("TRY_STATEMENT\t:\t" + this.getTryStatementCount());
+		builder.append("TYPE_DECLARATION\t:\t" + this.getTypeDeclarationCount());
+		builder.append("TYPE_DECLARATION_STATEMENTA\t:\t"
+				+ this.getTypeDeclarationStatementCount());
+		builder.append("TYPE_LITERAL\t:\t" + this.getTypeLiteralCount());
+		builder.append("TYPE_PARAMETER\t:\t" + this.getTypeParameterCount());
+		builder.append("VARIABLE_DECLARATION_EXPRESSION\t:\t"
+				+ this.getVariableDeclarationExpressionCount());
+		builder.append("VARIABLE_DECLARATION_FRAGMENT\t:\t"
+				+ this.getVariableDeclarationFragmentCount());
+		builder.append("VARIABLE_DECLARATION_STATEMENT\t:\t"
+				+ this.getVariableDeclarationStatementCount());
+		builder.append("WHILE_STATEMENT\t:\t" + this.getWhileStatementCount());
+		builder.append("WILDCARD_TYPE\t:\t" + this.getWildcardTypeCount());
+
+		return builder.toString();
+	}
+
 }

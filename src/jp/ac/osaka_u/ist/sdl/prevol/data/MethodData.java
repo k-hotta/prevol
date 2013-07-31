@@ -1,5 +1,7 @@
 package jp.ac.osaka_u.ist.sdl.prevol.data;
 
+import static jp.ac.osaka_u.ist.sdl.prevol.utils.Constants.*;
+
 /**
  * メソッドを表すクラス
  * 
@@ -97,4 +99,18 @@ public class MethodData {
 		return crd;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("rev." + revision + LINE_SEPARATOR);
+		builder.append(ownerFile + " " + name + " " + startLine + "-" + endLine
+				+ LINE_SEPARATOR);
+		builder.append(LINE_SEPARATOR);
+		builder.append("CRD" + LINE_SEPARATOR);
+		builder.append(crd.toString());
+		builder.append(LINE_SEPARATOR);
+		builder.append("vector" + LINE_SEPARATOR);
+		builder.append(vectorData.toString());
+		return builder.toString();
+	}
 }
