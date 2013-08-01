@@ -1,9 +1,5 @@
 package jp.ac.osaka_u.ist.sdl.prevol.db;
 
-import static org.eclipse.jdt.core.dom.ASTNode.ANNOTATION_TYPE_MEMBER_DECLARATION;
-import static org.eclipse.jdt.core.dom.ASTNode.VARIABLE_DECLARATION_EXPRESSION;
-import static org.eclipse.jdt.core.dom.ASTNode.VARIABLE_DECLARATION_STATEMENT;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
