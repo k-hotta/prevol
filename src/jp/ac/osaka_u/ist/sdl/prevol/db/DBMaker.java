@@ -1,9 +1,5 @@
 package jp.ac.osaka_u.ist.sdl.prevol.db;
 
-import static org.eclipse.jdt.core.dom.ASTNode.ANNOTATION_TYPE_MEMBER_DECLARATION;
-import static org.eclipse.jdt.core.dom.ASTNode.VARIABLE_DECLARATION_EXPRESSION;
-import static org.eclipse.jdt.core.dom.ASTNode.VARIABLE_DECLARATION_STATEMENT;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -84,8 +80,7 @@ public class DBMaker {
 
 		builder.append("create table REVISION(");
 		builder.append("REVISION_ID LONG PRIMARY KEY,");
-		builder.append("REVISION_NUM LONG UNIQUE,");
-		builder.append("METHODS_IN_REVISION INTEGER CHECK (METHODS_IN_REVISION >= 0)");
+		builder.append("REVISION_NUM LONG UNIQUE");
 		builder.append(")");
 
 		return builder.toString();

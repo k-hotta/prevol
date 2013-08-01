@@ -96,17 +96,12 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author k-hotta
  * 
  */
-public class VectorData {
+public class VectorData extends AbstractElement {
 
 	/**
 	 * ID管理用カウンタ
 	 */
 	private static final AtomicLong count = new AtomicLong(0);
-
-	/**
-	 * id
-	 */
-	private final long id;
 
 	/**
 	 * ベクトルデータ <br>
@@ -116,20 +111,10 @@ public class VectorData {
 	private final Map<Integer, Integer> vector;
 
 	public VectorData(final Map<Integer, Integer> vector) {
-		this.id = count.getAndIncrement();
+		super(count.getAndIncrement());
 		this.vector = new HashMap<Integer, Integer>();
 		this.vector.putAll(vector);
 	}
-
-	/**
-	 * id を取得
-	 * 
-	 * @return
-	 */
-	public final long getId() {
-		return this.id;
-	}
-
 	/**
 	 * ベクトルデータを一括して取得
 	 * 
