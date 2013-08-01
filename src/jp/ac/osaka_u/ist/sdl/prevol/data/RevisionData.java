@@ -8,14 +8,12 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author k-hotta
  * 
  */
-public class RevisionData {
-
-	private static final AtomicLong count = new AtomicLong(0);
+public class RevisionData extends AbstractElement {
 
 	/**
-	 * ID
+	 * ID管理用カウンタ
 	 */
-	private final long id;
+	private static final AtomicLong count = new AtomicLong(0);
 
 	/**
 	 * リビジョン番号
@@ -23,12 +21,8 @@ public class RevisionData {
 	private final long revisionNum;
 
 	public RevisionData(final long revisionNum) {
-		this.id = count.getAndIncrement();
+		super(count.getAndIncrement());
 		this.revisionNum = revisionNum;
-	}
-
-	public final long getId() {
-		return this.id;
 	}
 
 	public final long getRevisionNum() {

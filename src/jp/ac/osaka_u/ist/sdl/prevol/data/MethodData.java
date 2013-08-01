@@ -10,17 +10,13 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author k-hotta
  * 
  */
-public class MethodData {
+public class MethodData extends AbstractElement {
 
 	/**
 	 * ID管理用カウンタ
 	 */
 	private static final AtomicLong count = new AtomicLong(0);
 
-	/**
-	 * id
-	 */
-	private final long id;
 
 	/**
 	 * 生成されたリビジョンのID
@@ -75,7 +71,7 @@ public class MethodData {
 	public MethodData(final long startRevisionId, final long endRevisionId,
 			final String ownerFile, final String name, final int startLine,
 			final int endLine, final VectorData vectorData, final CRD crd) {
-		this.id = count.getAndIncrement();
+		super(count.getAndIncrement());
 		this.startRevisionId = startRevisionId;
 		this.endRevisionId = endRevisionId;
 		this.ownerFile = ownerFile;
@@ -89,10 +85,6 @@ public class MethodData {
 	/*
 	 * ゲッタ群
 	 */
-
-	public long getId() {
-		return id;
-	}
 
 	public long getStartRevisionId() {
 		return startRevisionId;
