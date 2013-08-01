@@ -16,4 +16,8 @@ interface DefaultMethodAnalyzerSettingValues {
 	
 	static final String DEFAULT_ADDITIONAL_PATH = null;
 	
+	static final String DEFAULT_USERNAME = null;
+	
+	static final String DEFAULT_PASSWD = null;
+	
 }

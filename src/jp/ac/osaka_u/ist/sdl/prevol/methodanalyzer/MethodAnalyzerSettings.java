@@ -42,14 +42,27 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 	 */
 	private final int threads;
 
+	/**
+	 * リポジトリにアクセスするためのユーザ名
+	 */
+	private final String userName;
+
+	/**
+	 * リポジトリにアクセスするためのパスワード
+	 */
+	private final String passwd;
+
 	private MethodAnalyzerSettings(final String repositoryPath,
 			final String dbPath, final String additionalPath,
-			final Language language, final int threads) {
+			final Language language, final int threads, final String userName,
+			final String passwd) {
 		this.repositoryPath = repositoryPath;
 		this.dbPath = dbPath;
 		this.additionalPath = additionalPath;
 		this.language = language;
 		this.threads = threads;
+		this.userName = userName;
+		this.passwd = passwd;
 	}
 
 	final String getRepositoryPath() {
@@ -70,6 +83,14 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 
 	final int getThreads() {
 		return threads;
+	}
+
+	final String getUserName() {
+		return userName;
+	}
+
+	final String getPasswd() {
+		return passwd;
 	}
 
 	/**
@@ -109,8 +130,13 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 		final int threads = (cmd.hasOption("th")) ? Integer.parseInt(cmd
 				.getOptionValue("th")) : DEFAULT_THREADS;
 
+		final String userName = (cmd.hasOption("u")) ? cmd.getOptionValue("u")
+				: DEFAULT_USERNAME;
+		final String passwd = (cmd.hasOption("p")) ? cmd.getOptionValue("p")
+				: DEFAULT_PASSWD;
+
 		return new MethodAnalyzerSettings(repositoryPath, dbPath,
-				additionalPath, language, threads);
+				additionalPath, language, threads, userName, passwd);
 
 	}
 
@@ -157,6 +183,20 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 			th.setArgs(1);
 			th.setRequired(false);
 			options.addOption(th);
+		}
+
+		{
+			final Option u = new Option("u", "user", true, "user name");
+			u.setArgs(1);
+			u.setRequired(false);
+			options.addOption(u);
+		}
+
+		{
+			final Option p = new Option("p", "password", true, "password");
+			p.setArgs(1);
+			p.setRequired(true);
+			options.addOption(p);
 		}
 
 		return options;
