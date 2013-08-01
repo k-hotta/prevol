@@ -1,5 +1,8 @@
 package jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer;
 
+import java.util.List;
+
+import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.svn.SVNRepositoryManager;
 
 /**
@@ -20,6 +23,12 @@ public class MethodAnalyzer {
 			SVNRepositoryManager.setup(settings.getRepositoryPath(),
 					settings.getAdditionalPath(), settings.getUserName(),
 					settings.getPasswd());
+
+			// 分析対象リビジョンを特定
+			final List<RevisionData> targetRevisions = TargetRevisionDetector
+					.detectTargetRevisions(settings.getLanguage(),
+							settings.getStartRevision(),
+							settings.getEndRevision());
 
 		} catch (Exception e) {
 			e.printStackTrace();

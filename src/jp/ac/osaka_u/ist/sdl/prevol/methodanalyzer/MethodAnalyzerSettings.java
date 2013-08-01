@@ -52,10 +52,21 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 	 */
 	private final String passwd;
 
+	/**
+	 * 開始リビジョン
+	 */
+	private final long startRevision;
+
+	/**
+	 * 終了リビジョン
+	 */
+	private final long endRevision;
+
 	private MethodAnalyzerSettings(final String repositoryPath,
 			final String dbPath, final String additionalPath,
 			final Language language, final int threads, final String userName,
-			final String passwd) {
+			final String passwd, final long startRevision,
+			final long endRevision) {
 		this.repositoryPath = repositoryPath;
 		this.dbPath = dbPath;
 		this.additionalPath = additionalPath;
@@ -63,6 +74,8 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 		this.threads = threads;
 		this.userName = userName;
 		this.passwd = passwd;
+		this.startRevision = startRevision;
+		this.endRevision = endRevision;
 	}
 
 	final String getRepositoryPath() {
@@ -91,6 +104,14 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 
 	final String getPasswd() {
 		return passwd;
+	}
+
+	final long getStartRevision() {
+		return startRevision;
+	}
+
+	final long getEndRevision() {
+		return endRevision;
 	}
 
 	/**
@@ -135,8 +156,14 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 		final String passwd = (cmd.hasOption("p")) ? cmd.getOptionValue("p")
 				: DEFAULT_PASSWD;
 
+		final long startRevision = (cmd.hasOption("s")) ? Long.parseLong(cmd
+				.getOptionValue("s")) : DEFAULT_START_REVISION;
+		final long endRevision = (cmd.hasOption("e")) ? Long.parseLong(cmd
+				.getOptionValue("e")) : DEFAULT_END_REVISION;
+
 		return new MethodAnalyzerSettings(repositoryPath, dbPath,
-				additionalPath, language, threads, userName, passwd);
+				additionalPath, language, threads, userName, passwd,
+				startRevision, endRevision);
 
 	}
 
@@ -195,8 +222,22 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 		{
 			final Option p = new Option("p", "password", true, "password");
 			p.setArgs(1);
-			p.setRequired(true);
+			p.setRequired(false);
 			options.addOption(p);
+		}
+
+		{
+			final Option s = new Option("s", "start", true, "start revision");
+			s.setArgs(1);
+			s.setRequired(false);
+			options.addOption(s);
+		}
+
+		{
+			final Option e = new Option("e", "end", true, "end revision");
+			e.setArgs(1);
+			e.setRequired(false);
+			options.addOption(e);
 		}
 
 		return options;

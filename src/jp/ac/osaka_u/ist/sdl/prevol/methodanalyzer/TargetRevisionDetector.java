@@ -39,8 +39,11 @@ public class TargetRevisionDetector {
 			final long endRevisionNum) throws Exception {
 		final SVNRepository repository = SVNRepositoryManager.getRepository();
 
-		final SortedSet<Long> revisions = new TreeSet<Long>();
-		repository.log(null, startRevisionNum, endRevisionNum, true, false,
+		final long latestRevisionNum = repository.getLatestRevision();
+		final long selectedEndRevisionNum = Math.min(endRevisionNum, latestRevisionNum);
+		
+		final SortedSet<Long> revisions = new TreeSet<Long>();	
+		repository.log(null, startRevisionNum, selectedEndRevisionNum, true, false,
 				new ISVNLogEntryHandler() {
 					public void handleLogEntry(SVNLogEntry logEntry)
 							throws SVNException {
@@ -48,22 +51,17 @@ public class TargetRevisionDetector {
 						for (final Map.Entry<String, SVNLogEntryPath> entry : logEntry
 								.getChangedPaths().entrySet()) {
 
-							// .javaなファイルが更新されている場合
+							// 対象ソースファイルが変更されている場合
 							if (language.isTarget(entry.getKey())) {
 								final long revision = logEntry.getRevision();
-								System.out.print(Long.toString(revision));
-								System.out.println(" is being checked.");
 								revisions.add(revision);
 								break;
 							}
 
-							// .javaでないファイルが更新されていない場合でも，
 							// ディレクトリの削除の可能性がある場合は，対象リビジョンに追加
 							else if (('D' == entry.getValue().getType())
 									|| ('R' == entry.getValue().getType())) {
 								final long revision = logEntry.getRevision();
-								System.out.print(Long.toString(revision));
-								System.out.println(" is being checked.");
 								revisions.add(revision);
 								break;
 							}
