@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer;
+package jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.svn;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +8,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
-import jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.svn.SVNRepositoryManager;
 import jp.ac.osaka_u.ist.sdl.prevol.setting.Language;
 
 import org.tmatesoft.svn.core.ISVNLogEntryHandler;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.svn.SVNRepositoryManager;
+import jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.svn.TargetRevisionDetector;
 
 /**
  * リポジトリを解析してメソッド情報をDBに保存する機能のメインクラス
