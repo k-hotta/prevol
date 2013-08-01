@@ -197,10 +197,10 @@ public class ASTAnalyzer extends ASTVisitor {
 		final CRD crd = new CRD(parentCrdElements);
 
 		// メソッド情報をリストに登録
-		// 今解析しているメソッドの endRevisionId は暫定的に
+		// 今解析しているメソッドの endRevisionId は暫定的に最終リビジョンのIDに設定
 		final MethodData methodData = new MethodData(revision.getId(),
-				revision.getId(), fileName, methodName, startLine, endLine,
-				vectorData, crd);
+				latestRevision.getId(), fileName, methodName, startLine,
+				endLine, vectorData, crd);
 		this.methods.add(methodData);
 
 		// 子ノードも探索するので true
