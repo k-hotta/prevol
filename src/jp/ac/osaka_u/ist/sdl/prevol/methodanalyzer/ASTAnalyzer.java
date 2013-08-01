@@ -10,6 +10,7 @@ import java.util.Stack;
 import jp.ac.osaka_u.ist.sdl.prevol.data.CRD;
 import jp.ac.osaka_u.ist.sdl.prevol.data.CRDElement;
 import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
+import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
 import jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.crd.CRDElementCalculator;
 import jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.crd.CatchClauseStringBuilder;
@@ -51,9 +52,15 @@ import org.eclipse.jdt.core.dom.WhileStatement;
 public class ASTAnalyzer extends ASTVisitor {
 
 	/**
-	 * 解析中のリビジョン番号
+	 * 解析中のリビジョン
 	 */
-	private final long revision;
+	private final RevisionData revision;
+
+	/**
+	 * 最終リビジョン <br>
+	 * 各メソッド情報の endrevision を設定するために使用する
+	 */
+	private final RevisionData latestRevision;
 
 	/**
 	 * 解析中のファイル名
@@ -96,8 +103,10 @@ public class ASTAnalyzer extends ASTVisitor {
 	 * @param revision
 	 * @param fileName
 	 */
-	public ASTAnalyzer(final long revision, final String fileName) {
+	public ASTAnalyzer(final RevisionData revision,
+			final RevisionData latestRevision, final String fileName) {
 		this.revision = revision;
+		this.latestRevision = latestRevision;
 		this.fileName = fileName;
 		this.methods = new ArrayList<MethodData>();
 		this.parentCrdElements = new Stack<CRDElement>();
@@ -188,8 +197,10 @@ public class ASTAnalyzer extends ASTVisitor {
 		final CRD crd = new CRD(parentCrdElements);
 
 		// メソッド情報をリストに登録
-		final MethodData methodData = new MethodData(revision, fileName,
-				methodName, startLine, endLine, vectorData, crd);
+		// 今解析しているメソッドの endRevisionId は暫定的に
+		final MethodData methodData = new MethodData(revision.getId(),
+				revision.getId(), fileName, methodName, startLine, endLine,
+				vectorData, crd);
 		this.methods.add(methodData);
 
 		// 子ノードも探索するので true

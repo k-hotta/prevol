@@ -23,9 +23,14 @@ public class MethodData {
 	private final long id;
 
 	/**
-	 * リビジョン番号
+	 * 生成されたリビジョンのID
 	 */
-	private final long revision;
+	private final long startRevisionId;
+
+	/**
+	 * なくなったリビジョンのID
+	 */
+	private final long endRevisionId;
 
 	/**
 	 * 属するファイルの名前
@@ -60,18 +65,19 @@ public class MethodData {
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param revision
+	 * @param startRevisionId
 	 * @param ownerFile
 	 * @param name
 	 * @param startLine
 	 * @param endLine
 	 * @param vectorData
 	 */
-	public MethodData(final long revision, final String ownerFile,
-			final String name, final int startLine, final int endLine,
-			final VectorData vectorData, final CRD crd) {
+	public MethodData(final long startRevisionId, final long endRevisionId,
+			final String ownerFile, final String name, final int startLine,
+			final int endLine, final VectorData vectorData, final CRD crd) {
 		this.id = count.getAndIncrement();
-		this.revision = revision;
+		this.startRevisionId = startRevisionId;
+		this.endRevisionId = endRevisionId;
 		this.ownerFile = ownerFile;
 		this.name = name;
 		this.startLine = startLine;
@@ -88,8 +94,12 @@ public class MethodData {
 		return id;
 	}
 
-	public long getRevision() {
-		return revision;
+	public long getStartRevisionId() {
+		return startRevisionId;
+	}
+
+	public long getEndRevisionId() {
+		return endRevisionId;
 	}
 
 	public String getOwnerFile() {
@@ -119,7 +129,7 @@ public class MethodData {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("rev." + revision + LINE_SEPARATOR);
+		builder.append("rev." + startRevisionId + LINE_SEPARATOR);
 		builder.append(ownerFile + " " + name + " " + startLine + "-" + endLine
 				+ LINE_SEPARATOR);
 		builder.append(LINE_SEPARATOR);
