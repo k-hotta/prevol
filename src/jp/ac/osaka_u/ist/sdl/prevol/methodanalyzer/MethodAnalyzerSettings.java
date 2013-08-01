@@ -22,6 +22,11 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 	private final String repositoryPath;
 
 	/**
+	 * 出力先データベースファイル
+	 */
+	private final String dbPath;
+
+	/**
 	 * 追加パス <br>
 	 * リポジトリの一部だけ対象にしたいときに指定する
 	 */
@@ -38,9 +43,10 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 	private final int threads;
 
 	private MethodAnalyzerSettings(final String repositoryPath,
-			final String additionalPath, final Language language,
-			final int threads) {
+			final String dbPath, final String additionalPath,
+			final Language language, final int threads) {
 		this.repositoryPath = repositoryPath;
+		this.dbPath = dbPath;
 		this.additionalPath = additionalPath;
 		this.language = language;
 		this.threads = threads;
@@ -48,6 +54,10 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 
 	final String getRepositoryPath() {
 		return repositoryPath;
+	}
+
+	final String getDbPath() {
+		return dbPath;
 	}
 
 	final String getAdditionalPath() {
@@ -78,6 +88,8 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 
 		final String repositoryPath = cmd.getOptionValue("r");
 
+		final String dbPath = cmd.getOptionValue("d");
+
 		final String additionalPath = cmd.hasOption("a") ? cmd
 				.getOptionValue("a") : DEFAULT_ADDITIONAL_PATH;
 
@@ -97,8 +109,8 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 		final int threads = (cmd.hasOption("th")) ? Integer.parseInt(cmd
 				.getOptionValue("th")) : DEFAULT_THREADS;
 
-		return new MethodAnalyzerSettings(repositoryPath, additionalPath,
-				language, threads);
+		return new MethodAnalyzerSettings(repositoryPath, dbPath,
+				additionalPath, language, threads);
 
 	}
 
@@ -115,6 +127,13 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 			r.setArgs(1);
 			r.setRequired(true);
 			options.addOption(r);
+		}
+
+		{
+			final Option d = new Option("d", "db", true, "database");
+			d.setArgs(1);
+			d.setRequired(true);
+			options.addOption(d);
 		}
 
 		{
