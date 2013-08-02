@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.TreeMap;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.CRD;
 import jp.ac.osaka_u.ist.sdl.prevol.data.CRDElement;
@@ -73,6 +74,11 @@ public class ASTAnalyzer extends ASTVisitor {
 	private final List<MethodData> methods;
 
 	/**
+	 * 解析した結果得られたVectorData
+	 */
+	private final Map<Long, VectorData> vectors;
+
+	/**
 	 * ルートノード
 	 */
 	private CompilationUnit root = null;
@@ -109,6 +115,7 @@ public class ASTAnalyzer extends ASTVisitor {
 		this.latestRevision = latestRevision;
 		this.ownerFileId = ownerFileId;
 		this.methods = new ArrayList<MethodData>();
+		this.vectors = new TreeMap<Long, VectorData>();
 		this.parentCrdElements = new Stack<CRDElement>();
 		this.crdElementCalculator = new CRDElementCalculator();
 		this.optionalFinallyBlocks = new HashMap<TryStatement, Block>();
@@ -122,6 +129,15 @@ public class ASTAnalyzer extends ASTVisitor {
 	 */
 	public final List<MethodData> getMethods() {
 		return Collections.unmodifiableList(methods);
+	}
+
+	/**
+	 * 解析結果を取得 (VectorData)
+	 * 
+	 * @return
+	 */
+	public final Map<Long, VectorData> getVectors() {
+		return Collections.unmodifiableMap(vectors);
 	}
 
 	/**
@@ -200,8 +216,11 @@ public class ASTAnalyzer extends ASTVisitor {
 		// 今解析しているメソッドの endRevisionId は暫定的に最終リビジョンのIDに設定
 		final MethodData methodData = new MethodData(revision.getId(),
 				latestRevision.getId(), ownerFileId, methodName, startLine,
-				endLine, vectorData, crd);
+				endLine, vectorData.getId(), crd);
 		this.methods.add(methodData);
+		
+		// ベクトルデータを登録
+		this.vectors.put(vectorData.getId(), vectorData);
 
 		// 子ノードも探索するので true
 		// MethodDeclaration の中に MethodDeclaration が存在し得るから

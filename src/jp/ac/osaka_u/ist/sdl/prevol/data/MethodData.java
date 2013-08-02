@@ -48,9 +48,9 @@ public class MethodData extends AbstractElement {
 	private final int endLine;
 
 	/**
-	 * ベクトルデータ
+	 * ベクトルデータのID
 	 */
-	private final VectorData vectorData;
+	private final long vectorId;
 
 	/**
 	 * CRD
@@ -72,8 +72,8 @@ public class MethodData extends AbstractElement {
 	 */
 	public MethodData(final long id, final long startRevisionId,
 			final long endRevisionId, final long fileId, final String name,
-			final int startLine, final int endLine,
-			final VectorData vectorData, final String crdstr) {
+			final int startLine, final int endLine, final long vectorId,
+			final String crdstr) {
 		super(id);
 		this.startRevisionId = startRevisionId;
 		this.endRevisionId = endRevisionId;
@@ -81,7 +81,7 @@ public class MethodData extends AbstractElement {
 		this.name = name;
 		this.startLine = startLine;
 		this.endLine = endLine;
-		this.vectorData = vectorData;
+		this.vectorId = vectorId;
 		this.crd = crdstr;
 	}
 
@@ -97,9 +97,9 @@ public class MethodData extends AbstractElement {
 	 */
 	public MethodData(final long startRevisionId, final long endRevisionId,
 			final long fileId, final String name, final int startLine,
-			final int endLine, final VectorData vectorData, final CRD crd) {
+			final int endLine, final long vectorId, final CRD crd) {
 		this(count.getAndIncrement(), startRevisionId, endRevisionId, fileId,
-				name, startLine, endLine, vectorData, crd.toString());
+				name, startLine, endLine, vectorId, crd.toString());
 	}
 
 	/*
@@ -130,8 +130,8 @@ public class MethodData extends AbstractElement {
 		return endLine;
 	}
 
-	public VectorData getVectorData() {
-		return vectorData;
+	public long getVectorId() {
+		return vectorId;
 	}
 
 	public String getCrd() {
@@ -148,8 +148,7 @@ public class MethodData extends AbstractElement {
 		builder.append("CRD" + LINE_SEPARATOR);
 		builder.append(crd);
 		builder.append(LINE_SEPARATOR + LINE_SEPARATOR);
-		builder.append("vector" + LINE_SEPARATOR);
-		builder.append(vectorData.toString());
+		builder.append("vector : " + vectorId + LINE_SEPARATOR);
 		return builder.toString();
 	}
 }
