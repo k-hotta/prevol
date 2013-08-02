@@ -2,6 +2,7 @@ package jp.ac.osaka_u.ist.sdl.prevol.db.retriever;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.SortedSet;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
@@ -50,6 +51,10 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 		return "END_REVIISON_ID";
 	}
 
+	protected String getFileIdColumnName() {
+		return "OWNER_FILE_ID";
+	}
+
 	/**
 	 * 指定されたリビジョンに存在するメソッドをすべて取得
 	 * 
@@ -64,6 +69,26 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 				+ getEndRevisionIdColumnName() + " >=" + revId;
 
 		return retrieve(query);
+	}
+
+	public SortedSet<MethodData> retrieveInSpecifiedFiles(
+			final Collection<Long> fileIds) throws SQLException {
+		final StringBuilder queryBuilder = new StringBuilder();
+		queryBuilder.append("select * from ");
+		queryBuilder.append(getTableName());
+		queryBuilder.append(" where ");
+		queryBuilder.append(getFileIdColumnName());
+		queryBuilder.append(" in (");
+
+		for (final long id : fileIds) {
+			queryBuilder.append(((Long) id).toString());
+			queryBuilder.append(",");
+		}
+
+		queryBuilder.deleteCharAt(queryBuilder.length() - 1);
+		queryBuilder.append(")");
+
+		return retrieve(queryBuilder.toString());
 	}
 
 }
