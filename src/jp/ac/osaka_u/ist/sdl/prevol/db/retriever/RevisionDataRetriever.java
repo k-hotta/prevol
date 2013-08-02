@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
+import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 
 /**
  * リビジョン情報を復元するクラス
@@ -13,6 +14,10 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
  */
 public class RevisionDataRetriever extends
 		AbstractElementRetriever<RevisionData> {
+
+	public RevisionDataRetriever(DBConnection connection) {
+		super(connection);
+	}
 
 	@Override
 	protected RevisionData createElement(ResultSet rs) throws SQLException {

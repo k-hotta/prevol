@@ -90,6 +90,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
+import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 
 /**
  * ベクトルデータを復元するクラス
@@ -98,6 +99,10 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
  * 
  */
 public class VectorDataRetriever extends AbstractElementRetriever<VectorData> {
+
+	public VectorDataRetriever(DBConnection connection) {
+		super(connection);
+	}
 
 	@Override
 	protected VectorData createElement(ResultSet rs) throws SQLException {

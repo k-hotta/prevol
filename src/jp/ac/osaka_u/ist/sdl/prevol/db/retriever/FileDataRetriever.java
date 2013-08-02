@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.SortedSet;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.FileData;
+import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 
 /**
  * ファイルを復元するクラス
@@ -13,6 +14,10 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.FileData;
  * 
  */
 public class FileDataRetriever extends AbstractElementRetriever<FileData> {
+
+	public FileDataRetriever(DBConnection connection) {
+		super(connection);
+	}
 
 	@Override
 	protected FileData createElement(ResultSet rs) throws SQLException {

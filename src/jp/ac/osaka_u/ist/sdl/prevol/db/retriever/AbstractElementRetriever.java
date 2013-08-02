@@ -23,8 +23,8 @@ public abstract class AbstractElementRetriever<T extends AbstractElement> {
 	 */
 	protected final DBConnection connection;
 
-	public AbstractElementRetriever() {
-		this.connection = DBConnection.getInstance();
+	public AbstractElementRetriever(final DBConnection connection) {
+		this.connection = connection;
 	}
 
 	/**

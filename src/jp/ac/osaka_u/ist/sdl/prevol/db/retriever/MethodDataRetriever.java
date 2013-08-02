@@ -5,8 +5,19 @@ import java.sql.SQLException;
 import java.util.SortedSet;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
+import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 
+/**
+ * メソッドを復元するクラス
+ * 
+ * @author k-hotta
+ * 
+ */
 public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
+
+	public MethodDataRetriever(DBConnection connection) {
+		super(connection);
+	}
 
 	@Override
 	protected MethodData createElement(ResultSet rs) throws SQLException {
