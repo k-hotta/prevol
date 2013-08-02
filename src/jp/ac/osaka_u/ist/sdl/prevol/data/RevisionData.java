@@ -20,9 +20,24 @@ public class RevisionData extends AbstractElement {
 	 */
 	private final long revisionNum;
 
-	public RevisionData(final long revisionNum) {
-		super(count.getAndIncrement());
+	/**
+	 * インスタンス復元用コンストラクタ
+	 * 
+	 * @param id
+	 * @param revisionNum
+	 */
+	public RevisionData(final long id, final long revisionNum) {
+		super(id);
 		this.revisionNum = revisionNum;
+	}
+
+	/**
+	 * 新規インスタンス生成用コンストラクタ
+	 * 
+	 * @param revisionNum
+	 */
+	public RevisionData(final long revisionNum) {
+		this(count.getAndIncrement(), revisionNum);
 	}
 
 	public final long getRevisionNum() {
