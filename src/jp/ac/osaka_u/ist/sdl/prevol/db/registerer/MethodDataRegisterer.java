@@ -32,6 +32,7 @@ public class MethodDataRegisterer extends AbstractElementRegisterer<MethodData> 
 		pstmt.setLong(++column, element.getStartRevisionId());
 		pstmt.setLong(++column, element.getEndRevisionId());
 		pstmt.setLong(++column, element.getFileId());
+		pstmt.setString(++column, element.getName());
 		pstmt.setInt(++column, element.getStartLine());
 		pstmt.setInt(++column, element.getEndLine());
 		pstmt.setString(++column, element.getCrd().toString());
