@@ -1,6 +1,7 @@
 package jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer;
 
 import jp.ac.osaka_u.ist.sdl.prevol.setting.Language;
+import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinterMode;
 
 /**
  * MethodAnalyzer のデフォルト設定を保持するインターフェース
@@ -23,5 +24,7 @@ interface DefaultMethodAnalyzerSettingValues {
 	static final long DEFAULT_START_REVISION = 1;
 
 	static final long DEFAULT_END_REVISION = Long.MAX_VALUE;
+	
+	static final MessagePrinterMode DEFAULT_PRINT_MODE = MessagePrinterMode.VERBOSE;
 
 }

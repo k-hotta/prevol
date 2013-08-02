@@ -1,9 +1,10 @@
-package jp.ac.osaka_u.ist.sdl.prevol.db;
+package jp.ac.osaka_u.ist.sdl.prevol.db.registerer;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
+import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 
 /**
  * RevisionData を登録するクラス
@@ -13,6 +14,10 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
  */
 public class RevisionDataRegisterer extends
 		AbstractElementRegisterer<RevisionData> {
+
+	public RevisionDataRegisterer(DBConnection connection) {
+		super(connection);
+	}
 
 	@Override
 	protected String createPreparedStatementQueue() {

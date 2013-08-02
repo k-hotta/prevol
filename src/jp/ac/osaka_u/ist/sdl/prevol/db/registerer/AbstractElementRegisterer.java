@@ -1,10 +1,11 @@
-package jp.ac.osaka_u.ist.sdl.prevol.db;
+package jp.ac.osaka_u.ist.sdl.prevol.db.registerer;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collection;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.AbstractElement;
+import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 import jp.ac.osaka_u.ist.sdl.prevol.utils.Constants;
 
 /**
@@ -25,8 +26,8 @@ public abstract class AbstractElementRegisterer<T extends AbstractElement> {
 	 */
 	protected final int maxBatchCount = Constants.MAX_BATCH_COUNT;
 
-	protected AbstractElementRegisterer() {
-		this.connection = DBConnection.getInstance();
+	public AbstractElementRegisterer(DBConnection connection) {
+		this.connection = connection;
 	}
 
 	/**

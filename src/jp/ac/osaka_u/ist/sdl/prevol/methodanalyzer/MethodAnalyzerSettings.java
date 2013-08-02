@@ -1,6 +1,7 @@
 package jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer;
 
 import jp.ac.osaka_u.ist.sdl.prevol.setting.Language;
+import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinterMode;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -62,11 +63,16 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 	 */
 	private final long endRevision;
 
+	/**
+	 * メッセージ出力のレベル
+	 */
+	private final MessagePrinterMode printMode;
+
 	private MethodAnalyzerSettings(final String repositoryPath,
 			final String dbPath, final String additionalPath,
 			final Language language, final int threads, final String userName,
 			final String passwd, final long startRevision,
-			final long endRevision) {
+			final long endRevision, final MessagePrinterMode printMode) {
 		this.repositoryPath = repositoryPath;
 		this.dbPath = dbPath;
 		this.additionalPath = additionalPath;
@@ -76,6 +82,7 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 		this.passwd = passwd;
 		this.startRevision = startRevision;
 		this.endRevision = endRevision;
+		this.printMode = printMode;
 	}
 
 	final String getRepositoryPath() {
@@ -112,6 +119,10 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 
 	final long getEndRevision() {
 		return endRevision;
+	}
+	
+	final MessagePrinterMode getPrintMode() {
+		return printMode;
 	}
 
 	/**
@@ -160,10 +171,22 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 				.getOptionValue("s")) : DEFAULT_START_REVISION;
 		final long endRevision = (cmd.hasOption("e")) ? Long.parseLong(cmd
 				.getOptionValue("e")) : DEFAULT_END_REVISION;
+		
+		MessagePrinterMode mode = DEFAULT_PRINT_MODE;
+		if (cmd.hasOption("v")) {
+			final String value = cmd.getOptionValue("v");
+			if (value.equalsIgnoreCase("no")) {
+				mode = MessagePrinterMode.NONE;
+			} else if (value.equals("yes")) {
+				mode = MessagePrinterMode.LITTLE;
+			} else if (value.equals("strong")) {
+				mode = MessagePrinterMode.VERBOSE;
+			}
+		}
 
 		return new MethodAnalyzerSettings(repositoryPath, dbPath,
 				additionalPath, language, threads, userName, passwd,
-				startRevision, endRevision);
+				startRevision, endRevision, mode);
 
 	}
 
@@ -240,6 +263,13 @@ class MethodAnalyzerSettings implements DefaultMethodAnalyzerSettingValues {
 			options.addOption(e);
 		}
 
+		{
+			final Option v = new Option("v", "verbose", true, "verbose output");
+			v.setArgs(1);
+			v.setRequired(false);
+			options.addOption(v);
+		}
+		
 		return options;
 	}
 }

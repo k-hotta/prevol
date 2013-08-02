@@ -17,7 +17,6 @@ public class MethodData extends AbstractElement {
 	 */
 	private static final AtomicLong count = new AtomicLong(0);
 
-
 	/**
 	 * 生成されたリビジョンのID
 	 */
@@ -29,9 +28,9 @@ public class MethodData extends AbstractElement {
 	private final long endRevisionId;
 
 	/**
-	 * 属するファイルの名前
+	 * 属するファイルのID
 	 */
-	private final String ownerFile;
+	private final long fileId;
 
 	/**
 	 * メソッド名
@@ -49,37 +48,58 @@ public class MethodData extends AbstractElement {
 	private final int endLine;
 
 	/**
-	 * ベクトルデータ
+	 * ベクトルデータのID
 	 */
-	private final VectorData vectorData;
+	private final long vectorId;
 
 	/**
 	 * CRD
 	 */
-	private final CRD crd;
+	private final String crd;
 
 	/**
-	 * コンストラクタ
+	 * インスタンス復元用コンストラクタ
+	 * 
+	 * @param id
+	 * @param startRevisionId
+	 * @param endRevisionId
+	 * @param fileId
+	 * @param name
+	 * @param startLine
+	 * @param endLine
+	 * @param vectorData
+	 * @param crdstr
+	 */
+	public MethodData(final long id, final long startRevisionId,
+			final long endRevisionId, final long fileId, final String name,
+			final int startLine, final int endLine, final long vectorId,
+			final String crdstr) {
+		super(id);
+		this.startRevisionId = startRevisionId;
+		this.endRevisionId = endRevisionId;
+		this.fileId = fileId;
+		this.name = name;
+		this.startLine = startLine;
+		this.endLine = endLine;
+		this.vectorId = vectorId;
+		this.crd = crdstr;
+	}
+
+	/**
+	 * インスタンス生成用コンストラクタ
 	 * 
 	 * @param startRevisionId
-	 * @param ownerFile
+	 * @param fileId
 	 * @param name
 	 * @param startLine
 	 * @param endLine
 	 * @param vectorData
 	 */
 	public MethodData(final long startRevisionId, final long endRevisionId,
-			final String ownerFile, final String name, final int startLine,
-			final int endLine, final VectorData vectorData, final CRD crd) {
-		super(count.getAndIncrement());
-		this.startRevisionId = startRevisionId;
-		this.endRevisionId = endRevisionId;
-		this.ownerFile = ownerFile;
-		this.name = name;
-		this.startLine = startLine;
-		this.endLine = endLine;
-		this.vectorData = vectorData;
-		this.crd = crd;
+			final long fileId, final String name, final int startLine,
+			final int endLine, final long vectorId, final CRD crd) {
+		this(count.getAndIncrement(), startRevisionId, endRevisionId, fileId,
+				name, startLine, endLine, vectorId, crd.toString());
 	}
 
 	/*
@@ -94,8 +114,8 @@ public class MethodData extends AbstractElement {
 		return endRevisionId;
 	}
 
-	public String getOwnerFile() {
-		return ownerFile;
+	public long getFileId() {
+		return fileId;
 	}
 
 	public String getName() {
@@ -110,11 +130,11 @@ public class MethodData extends AbstractElement {
 		return endLine;
 	}
 
-	public VectorData getVectorData() {
-		return vectorData;
+	public long getVectorId() {
+		return vectorId;
 	}
 
-	public CRD getCrd() {
+	public String getCrd() {
 		return crd;
 	}
 
@@ -122,14 +142,13 @@ public class MethodData extends AbstractElement {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("rev." + startRevisionId + LINE_SEPARATOR);
-		builder.append(ownerFile + " " + name + " " + startLine + "-" + endLine
+		builder.append(fileId + " " + name + " " + startLine + "-" + endLine
 				+ LINE_SEPARATOR);
 		builder.append(LINE_SEPARATOR);
 		builder.append("CRD" + LINE_SEPARATOR);
-		builder.append(crd.toString());
+		builder.append(crd);
 		builder.append(LINE_SEPARATOR + LINE_SEPARATOR);
-		builder.append("vector" + LINE_SEPARATOR);
-		builder.append(vectorData.toString());
+		builder.append("vector : " + vectorId + LINE_SEPARATOR);
 		return builder.toString();
 	}
 }

@@ -1,11 +1,10 @@
 package jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.TreeMap;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.CRD;
 import jp.ac.osaka_u.ist.sdl.prevol.data.CRDElement;
@@ -63,14 +62,19 @@ public class ASTAnalyzer extends ASTVisitor {
 	private final RevisionData latestRevision;
 
 	/**
-	 * 解析中のファイル名
+	 * 解析中のファイルのID
 	 */
-	private final String fileName;
+	private final long ownerFileId;
 
 	/**
-	 * 解析した結果得られたMethodDataのリスト
+	 * 解析した結果得られたMethodData
 	 */
-	private final List<MethodData> methods;
+	private final Map<Long, MethodData> methods;
+
+	/**
+	 * 解析した結果得られたVectorData
+	 */
+	private final Map<Long, VectorData> vectors;
 
 	/**
 	 * ルートノード
@@ -104,11 +108,12 @@ public class ASTAnalyzer extends ASTVisitor {
 	 * @param fileName
 	 */
 	public ASTAnalyzer(final RevisionData revision,
-			final RevisionData latestRevision, final String fileName) {
+			final RevisionData latestRevision, final long ownerFileId) {
 		this.revision = revision;
 		this.latestRevision = latestRevision;
-		this.fileName = fileName;
-		this.methods = new ArrayList<MethodData>();
+		this.ownerFileId = ownerFileId;
+		this.methods = new TreeMap<Long, MethodData>();
+		this.vectors = new TreeMap<Long, VectorData>();
 		this.parentCrdElements = new Stack<CRDElement>();
 		this.crdElementCalculator = new CRDElementCalculator();
 		this.optionalFinallyBlocks = new HashMap<TryStatement, Block>();
@@ -116,12 +121,21 @@ public class ASTAnalyzer extends ASTVisitor {
 	}
 
 	/**
-	 * 解析結果を取得　(MethodDataのリスト)
+	 * 解析結果を取得　(MethodData)
 	 * 
 	 * @return
 	 */
-	public final List<MethodData> getMethods() {
-		return Collections.unmodifiableList(methods);
+	public final Map<Long, MethodData> getMethods() {
+		return Collections.unmodifiableMap(methods);
+	}
+
+	/**
+	 * 解析結果を取得 (VectorData)
+	 * 
+	 * @return
+	 */
+	public final Map<Long, VectorData> getVectors() {
+		return Collections.unmodifiableMap(vectors);
 	}
 
 	/**
@@ -196,12 +210,15 @@ public class ASTAnalyzer extends ASTVisitor {
 		// CRD の算出
 		final CRD crd = new CRD(parentCrdElements);
 
-		// メソッド情報をリストに登録
+		// メソッド情報を登録
 		// 今解析しているメソッドの endRevisionId は暫定的に最終リビジョンのIDに設定
 		final MethodData methodData = new MethodData(revision.getId(),
-				latestRevision.getId(), fileName, methodName, startLine,
-				endLine, vectorData, crd);
-		this.methods.add(methodData);
+				latestRevision.getId(), ownerFileId, methodName, startLine,
+				endLine, vectorData.getId(), crd);
+		this.methods.put(methodData.getId(), methodData);
+
+		// ベクトルデータを登録
+		this.vectors.put(vectorData.getId(), vectorData);
 
 		// 子ノードも探索するので true
 		// MethodDeclaration の中に MethodDeclaration が存在し得るから
@@ -394,8 +411,10 @@ public class ASTAnalyzer extends ASTVisitor {
 		final Statement elseStatement = node.getElseStatement();
 		if (elseStatement != null) {
 			if (!(elseStatement instanceof IfStatement)) {
-				final Block elseBlock = (Block) elseStatement;
-				this.optionalElseBlocks.put(node, elseBlock);
+				if (elseStatement instanceof Block) {
+					final Block elseBlock = (Block) elseStatement;
+					this.optionalElseBlocks.put(node, elseBlock);
+				}
 			}
 		}
 
