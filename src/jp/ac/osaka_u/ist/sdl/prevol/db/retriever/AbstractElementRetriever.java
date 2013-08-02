@@ -77,11 +77,4 @@ public abstract class AbstractElementRetriever<T extends AbstractElement> {
 	 */
 	protected abstract String getTableName();
 
-	/**
-	 * リビジョンIDを保持する列の名前を取得する
-	 * 
-	 * @return
-	 */
-	protected abstract String getRevIdColumnName();
-
 }

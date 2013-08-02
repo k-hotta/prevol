@@ -31,12 +31,11 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 		return "METHOD";
 	}
 
-	@Override
-	protected String getRevIdColumnName() {
+	protected String getStartRevisionIdColumnName() {
 		return "START_REVISION_ID";
 	}
 
-	protected String getAfterRevIdColumnName() {
+	protected String getEndRevisionIdColumnName() {
 		return "END_REVIISON_ID";
 	}
 
@@ -50,8 +49,8 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 	public SortedSet<MethodData> retrieveInSpecifiedRevision(final long revId)
 			throws SQLException {
 		final String query = "select * from " + getTableName() + " where "
-				+ getRevIdColumnName() + " <= " + revId + " AND "
-				+ getAfterRevIdColumnName() + " >=" + revId;
+				+ getStartRevisionIdColumnName() + " <= " + revId + " AND "
+				+ getEndRevisionIdColumnName() + " >=" + revId;
 
 		return retrieve(query);
 	}

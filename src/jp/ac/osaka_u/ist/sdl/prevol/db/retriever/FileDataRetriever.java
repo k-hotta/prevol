@@ -31,12 +31,11 @@ public class FileDataRetriever extends AbstractElementRetriever<FileData> {
 		return "FILE";
 	}
 
-	@Override
-	protected String getRevIdColumnName() {
+	protected String getStartRevisionIdColumnName() {
 		return "START_REVISION_ID";
 	}
 
-	protected String getAfterRevIdColumnName() {
+	protected String getEndRevisionIdColumnName() {
 		return "END_REVISION_ID";
 	}
 
@@ -50,8 +49,8 @@ public class FileDataRetriever extends AbstractElementRetriever<FileData> {
 	public SortedSet<FileData> retrieveInSpecifiedRevision(final long revId)
 			throws SQLException {
 		final String query = "select * from " + getTableName() + " where "
-				+ getRevIdColumnName() + " <= " + revId + " AND "
-				+ getAfterRevIdColumnName() + " >=" + revId;
+				+ getStartRevisionIdColumnName() + " <= " + revId + " AND "
+				+ getEndRevisionIdColumnName() + " >=" + revId;
 
 		return retrieve(query);
 	}
