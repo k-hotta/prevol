@@ -30,12 +30,32 @@ public class FileData extends AbstractElement {
 	 */
 	private final String path;
 
-	public FileData(final long startRevisionId, final long endRevisionId,
-			final String path) {
-		super(count.getAndIncrement());
+	/**
+	 * インスタンス復元用コンストラクタ
+	 * 
+	 * @param id
+	 * @param startRevisionId
+	 * @param endRevisionId
+	 * @param path
+	 */
+	public FileData(final long id, final long startRevisionId,
+			final long endRevisionId, final String path) {
+		super(id);
 		this.startRevisionId = startRevisionId;
 		this.endRevisionId = endRevisionId;
 		this.path = path;
+	}
+
+	/**
+	 * インスタンス生成用コンストラクタ
+	 * 
+	 * @param startRevisionId
+	 * @param endRevisionId
+	 * @param path
+	 */
+	public FileData(final long startRevisionId, final long endRevisionId,
+			final String path) {
+		this(count.getAndIncrement(), startRevisionId, endRevisionId, path);
 	}
 
 	/*
