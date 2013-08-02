@@ -29,9 +29,9 @@ public class MethodData extends AbstractElement {
 	private final long endRevisionId;
 
 	/**
-	 * 属するファイルの名前
+	 * 属するファイルのID
 	 */
-	private final String ownerFile;
+	private final long fileId;
 
 	/**
 	 * メソッド名
@@ -62,19 +62,19 @@ public class MethodData extends AbstractElement {
 	 * コンストラクタ
 	 * 
 	 * @param startRevisionId
-	 * @param ownerFile
+	 * @param fileId
 	 * @param name
 	 * @param startLine
 	 * @param endLine
 	 * @param vectorData
 	 */
 	public MethodData(final long startRevisionId, final long endRevisionId,
-			final String ownerFile, final String name, final int startLine,
+			final long fileId, final String name, final int startLine,
 			final int endLine, final VectorData vectorData, final CRD crd) {
 		super(count.getAndIncrement());
 		this.startRevisionId = startRevisionId;
 		this.endRevisionId = endRevisionId;
-		this.ownerFile = ownerFile;
+		this.fileId = fileId;
 		this.name = name;
 		this.startLine = startLine;
 		this.endLine = endLine;
@@ -94,8 +94,8 @@ public class MethodData extends AbstractElement {
 		return endRevisionId;
 	}
 
-	public String getOwnerFile() {
-		return ownerFile;
+	public long getFileId() {
+		return fileId;
 	}
 
 	public String getName() {
@@ -122,7 +122,7 @@ public class MethodData extends AbstractElement {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("rev." + startRevisionId + LINE_SEPARATOR);
-		builder.append(ownerFile + " " + name + " " + startLine + "-" + endLine
+		builder.append(fileId + " " + name + " " + startLine + "-" + endLine
 				+ LINE_SEPARATOR);
 		builder.append(LINE_SEPARATOR);
 		builder.append("CRD" + LINE_SEPARATOR);

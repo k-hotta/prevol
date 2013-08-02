@@ -1,14 +1,13 @@
 package jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import jp.ac.osaka_u.ist.sdl.prevol.data.FileData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.svn.RepositoryNotInitializedException;
@@ -65,10 +64,10 @@ public class FilesAnalyzer {
 	 * @throws RepositoryNotInitializedException
 	 * @throws SVNException
 	 */
-	public List<MethodData> analyzeFiles()
+	public Map<FileData, Collection<MethodData>> analyzeFiles()
 			throws RepositoryNotInitializedException, SVNException {
 		final AtomicInteger index = new AtomicInteger(0);
-		final ConcurrentMap<String, Collection<MethodData>> detectedMethods = new ConcurrentHashMap<String, Collection<MethodData>>();
+		final ConcurrentMap<FileData, Collection<MethodData>> detectedMethods = new ConcurrentHashMap<FileData, Collection<MethodData>>();
 
 		final Thread[] threads = new Thread[threadsCount];
 		for (int i = 0; i < threads.length; i++) {
@@ -85,13 +84,7 @@ public class FilesAnalyzer {
 			}
 		}
 
-		final List<MethodData> result = new ArrayList<MethodData>();
-		for (final Map.Entry<String, Collection<MethodData>> entry : detectedMethods
-				.entrySet()) {
-			result.addAll(entry.getValue());
-		}
-
-		return Collections.unmodifiableList(result);
+		return Collections.unmodifiableMap(detectedMethods);
 	}
 
 }

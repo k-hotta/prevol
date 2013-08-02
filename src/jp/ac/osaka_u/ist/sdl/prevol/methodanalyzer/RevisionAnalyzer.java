@@ -73,7 +73,7 @@ public class RevisionAnalyzer {
 							null);
 			final FilesAnalyzer analyzer = new FilesAnalyzer(sourceFiles,
 					revision, latestRevision, threadsCount);
-			final List<MethodData> detectedMethods = analyzer.analyzeFiles();
+			
 		} else {
 			final Map<String, Character> changedFilesOrDirs = changedFilesDetector
 					.detectChangedFiles(revision.getRevisionNum());

@@ -63,9 +63,9 @@ public class ASTAnalyzer extends ASTVisitor {
 	private final RevisionData latestRevision;
 
 	/**
-	 * 解析中のファイル名
+	 * 解析中のファイルのID
 	 */
-	private final String fileName;
+	private final long ownerFileId;
 
 	/**
 	 * 解析した結果得られたMethodDataのリスト
@@ -104,10 +104,10 @@ public class ASTAnalyzer extends ASTVisitor {
 	 * @param fileName
 	 */
 	public ASTAnalyzer(final RevisionData revision,
-			final RevisionData latestRevision, final String fileName) {
+			final RevisionData latestRevision, final long ownerFileId) {
 		this.revision = revision;
 		this.latestRevision = latestRevision;
-		this.fileName = fileName;
+		this.ownerFileId = ownerFileId;
 		this.methods = new ArrayList<MethodData>();
 		this.parentCrdElements = new Stack<CRDElement>();
 		this.crdElementCalculator = new CRDElementCalculator();
@@ -199,7 +199,7 @@ public class ASTAnalyzer extends ASTVisitor {
 		// メソッド情報をリストに登録
 		// 今解析しているメソッドの endRevisionId は暫定的に最終リビジョンのIDに設定
 		final MethodData methodData = new MethodData(revision.getId(),
-				latestRevision.getId(), fileName, methodName, startLine,
+				latestRevision.getId(), ownerFileId, methodName, startLine,
 				endLine, vectorData, crd);
 		this.methods.add(methodData);
 

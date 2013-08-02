@@ -62,6 +62,13 @@ public class DBMaker {
 				stmt.executeUpdate(getMethodTableQuery());
 				stmt.close();
 			}
+			
+			// ファイルテーブルを作成
+			{
+				final Statement stmt = connection.createStatement();
+				stmt.executeUpdate(getFileTableQuery());
+				stmt.close();
+			}
 
 			// ベクトルテーブルを作成
 			{
@@ -86,6 +93,19 @@ public class DBMaker {
 		return builder.toString();
 	}
 
+	private static String getFileTableQuery() {
+		final StringBuilder builder = new StringBuilder();
+
+		builder.append("create table FILE(");
+		builder.append("FILE_ID LONG PRIMARY KEY,");
+		builder.append("START_REVISION_ID LONG,");
+		builder.append("END_REVISION_ID LONG,");
+		builder.append("FILE_PATH TEXT");
+		builder.append(")");
+
+		return builder.toString();
+	}
+	
 	private static String getMethodTableQuery() {
 		final StringBuilder builder = new StringBuilder();
 
@@ -93,7 +113,7 @@ public class DBMaker {
 		builder.append("METHOD_ID LONG PRIMARY KEY,");
 		builder.append("START_REVISION_ID LONG,");
 		builder.append("END_REVISION_ID LONG,");
-		builder.append("FILE_NAME TEXT NOT NULL,");
+		builder.append("OWNER_FILE_ID LONG,");
 		builder.append("METHOD_NAME TEXT NOT NULL,");
 		builder.append("START_LINE INTEGER CHECK (START_LINE >= 0),");
 		builder.append("END_LINE INTEGER CHECK (END_LINE >= 0),");
