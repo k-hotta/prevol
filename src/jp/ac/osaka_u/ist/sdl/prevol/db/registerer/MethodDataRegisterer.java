@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
+import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 
 /**
  * MethodData を登録するクラス
@@ -12,6 +13,10 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
  * 
  */
 public class MethodDataRegisterer extends AbstractElementRegisterer<MethodData> {
+
+	public MethodDataRegisterer(DBConnection connection) {
+		super(connection);
+	}
 
 	@Override
 	protected String createPreparedStatementQueue() {

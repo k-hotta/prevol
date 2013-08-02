@@ -26,8 +26,8 @@ public abstract class AbstractElementRegisterer<T extends AbstractElement> {
 	 */
 	protected final int maxBatchCount = Constants.MAX_BATCH_COUNT;
 
-	protected AbstractElementRegisterer() {
-		this.connection = DBConnection.getInstance();
+	public AbstractElementRegisterer(DBConnection connection) {
+		this.connection = connection;
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.FileData;
+import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 
 /**
  * ファイルを登録するためのクラス
@@ -12,6 +13,10 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.FileData;
  * 
  */
 public class FileDataRegisterer extends AbstractElementRegisterer<FileData> {
+
+	public FileDataRegisterer(DBConnection connection) {
+		super(connection);
+	}
 
 	@Override
 	protected String createPreparedStatementQueue() {

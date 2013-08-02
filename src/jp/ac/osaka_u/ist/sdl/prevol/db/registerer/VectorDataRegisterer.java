@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
+import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 
 /**
  * VectorData を登録するためのクラス
@@ -16,6 +17,10 @@ public class VectorDataRegisterer extends AbstractElementRegisterer<VectorData> 
 	private final static int numberOfColumns = 84;
 
 	private String preparedStatementQueue = null;
+	
+	public VectorDataRegisterer(DBConnection connection) {
+		super(connection);
+	}
 
 	@Override
 	protected String createPreparedStatementQueue() {
