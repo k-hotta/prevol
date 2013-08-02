@@ -20,6 +20,8 @@
 	<classpathentry kind="lib" path="lib/svnkit-1.7.4-v1.jar" sourcepath="lib/svnkit-1.7.4-v1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/svnkit-cli-1.7.4-v1.jar" sourcepath="lib/svnkit-cli-1.7.4-v1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/svnkit-javahl16-1.7.4-v1.jar" sourcepath="lib/svnkit-javahl16-1.7.4-v1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/sequence-library-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/sqljet-1.1.4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
