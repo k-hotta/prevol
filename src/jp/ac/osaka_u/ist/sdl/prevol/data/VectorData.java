@@ -110,11 +110,27 @@ public class VectorData extends AbstractElement {
 	 */
 	private final Map<Integer, Integer> vector;
 
-	public VectorData(final Map<Integer, Integer> vector) {
-		super(count.getAndIncrement());
+	/**
+	 * インスタンス復元用コンストラクタ
+	 * 
+	 * @param id
+	 * @param vector
+	 */
+	public VectorData(final long id, final Map<Integer, Integer> vector) {
+		super(id);
 		this.vector = new HashMap<Integer, Integer>();
 		this.vector.putAll(vector);
 	}
+
+	/**
+	 * インスタンス生成用コンストラクタ
+	 * 
+	 * @param vector
+	 */
+	public VectorData(final Map<Integer, Integer> vector) {
+		this(count.getAndIncrement(), vector);
+	}
+
 	/**
 	 * ベクトルデータを一括して取得
 	 * 
