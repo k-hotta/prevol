@@ -110,7 +110,6 @@ public class DBMaker {
 		builder.append("create table VECTOR(");
 
 		builder.append("VECTOR_ID LONG PRIMARY KEY,");
-		builder.append("METHOD_ID LONG,");
 		builder.append("ANNOTATION_TYPE_DECLARATION INTEGER,");
 		builder.append("ANNOTATION_TYPE_MEMBER_DECLARATION INTEGER,");
 		builder.append("ANONYMOUS_CLASS_DECLARATION INTEGER,");
