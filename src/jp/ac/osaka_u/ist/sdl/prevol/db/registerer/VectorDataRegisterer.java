@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.db;
+package jp.ac.osaka_u.ist.sdl.prevol.db.registerer;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
