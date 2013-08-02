@@ -7,6 +7,7 @@ import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 import jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.svn.SVNRepositoryManager;
 import jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.svn.TargetRevisionDetector;
 import jp.ac.osaka_u.ist.sdl.prevol.setting.Language;
+import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinter;
 
 /**
  * リポジトリを解析してメソッド情報をDBに保存する機能のメインクラス
@@ -22,12 +23,14 @@ public class MethodAnalyzer {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		final long startTime = System.nanoTime();
+		
 		try {
 			// 引数を解析
 			final MethodAnalyzerSettings settings = MethodAnalyzerSettings
 					.parseArgs(args);
 
-			// リポジトリ，データベースを初期化
+			// 初期化
 			initialize(settings);
 
 			// メインの処理を実行
@@ -41,6 +44,12 @@ public class MethodAnalyzer {
 			postprocess();
 
 		}
+		
+		final long endTime = System.nanoTime();
+		final long timeElapsed = (endTime - startTime) / 1000000000;
+		
+		MessagePrinter.stronglyPrintln("operations have finished!!");
+		MessagePrinter.stronglyPrintln("\ttotal elapsed time is " + timeElapsed + " [s]");
 	}
 
 	/**
@@ -51,13 +60,25 @@ public class MethodAnalyzer {
 	 */
 	private static void initialize(final MethodAnalyzerSettings settings)
 			throws Exception {
+		// 出力レベルを設定
+		MessagePrinter.setMode(settings.getPrintMode());
+
+		MessagePrinter.stronglyPrintln("operations start");
+		MessagePrinter.stronglyPrintln();
+
 		// リポジトリを設定
+		MessagePrinter.stronglyPrintln("initializing repository ... ");
 		SVNRepositoryManager.setup(settings.getRepositoryPath(),
 				settings.getAdditionalPath(), settings.getUserName(),
 				settings.getPasswd());
+		MessagePrinter.stronglyPrintln("\tOK");
+		MessagePrinter.stronglyPrintln();
 
 		// データベースとのコネクションを生成
+		MessagePrinter.stronglyPrintln("initializing db ... ");
 		DBConnection.createInstance(settings.getDbPath());
+		MessagePrinter.stronglyPrintln("\tOK");
+		MessagePrinter.stronglyPrintln();
 	}
 
 	/**
@@ -72,16 +93,22 @@ public class MethodAnalyzer {
 		final DBConnection connection = DBConnection.getInstance();
 
 		// 分析対象リビジョンを特定
+		MessagePrinter.stronglyPrintln("detecting target revisions ... ");
 		final List<RevisionData> targetRevisions = TargetRevisionDetector
 				.detectTargetRevisions(settings.getLanguage(),
 						settings.getStartRevision(), settings.getEndRevision());
+		MessagePrinter.stronglyPrintln("\t" + targetRevisions.size()
+				+ " revisions are detected");
+		MessagePrinter.stronglyPrintln();
 
 		// 分析対象リビジョンをDBに登録
 		connection.getRevisionRegisterer().register(targetRevisions);
 
 		// 各リビジョンの分析
+		MessagePrinter.stronglyPrintln("analyzing every revisions ... ");
 		analyzeRevisions(targetRevisions, settings.getLanguage(),
 				settings.getThreads());
+		MessagePrinter.stronglyPrintln();
 	}
 
 	/**
@@ -98,8 +125,14 @@ public class MethodAnalyzer {
 		RevisionData previousRevision = null;
 		final RevisionData latestRevision = targetRevisions.get(targetRevisions
 				.size() - 1);
+		int analyzedRevisions = 0;
 
 		for (final RevisionData revision : targetRevisions) {
+			MessagePrinter.stronglyPrintln("\tnow analyzing revision "
+					+ revision.getRevisionNum() + "\t["
+					+ (++analyzedRevisions) + "/" + targetRevisions.size()
+					+ "]");
+
 			analyzeRevision(revision, previousRevision, latestRevision,
 					language, threadsCount);
 			previousRevision = revision;

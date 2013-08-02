@@ -13,7 +13,7 @@ public class MessagePrinter {
 	/**
 	 * 出力モード
 	 */
-	private static MessagePrinterMode mode = LITTLE;
+	private static MessagePrinterMode mode;
 
 	/**
 	 * 出力モードを設定
