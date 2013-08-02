@@ -62,20 +62,6 @@ public abstract class AbstractElementRetriever<T extends AbstractElement> {
 	}
 
 	/**
-	 * 指定されたリビジョンに存在する要素をすべて取得する
-	 * 
-	 * @param revisionId
-	 * @return
-	 * @throws SQLException
-	 */
-	public SortedSet<T> retrieveInSpecifiedRevision(final long revisionId)
-			throws SQLException {
-		final String query = "select * from " + getTableName() + " where "
-				+ getRevIdColumnName() + " = " + revisionId;
-		return retrieve(query);
-	}
-
-	/**
 	 * レコードから要素を復元する
 	 * 
 	 * @param rs

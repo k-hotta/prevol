@@ -62,7 +62,7 @@ public class DBMaker {
 				stmt.executeUpdate(getMethodTableQuery());
 				stmt.close();
 			}
-			
+
 			// ファイルテーブルを作成
 			{
 				final Statement stmt = connection.createStatement();
@@ -105,7 +105,7 @@ public class DBMaker {
 
 		return builder.toString();
 	}
-	
+
 	private static String getMethodTableQuery() {
 		final StringBuilder builder = new StringBuilder();
 

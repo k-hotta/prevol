@@ -41,9 +41,12 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 	}
 
 	/**
-	 * メソッドテーブルは開始リビジョンと終了リビジョンを持つためオーバーライド
+	 * 指定されたリビジョンに存在するメソッドをすべて取得
+	 * 
+	 * @param revId
+	 * @return
+	 * @throws SQLException
 	 */
-	@Override
 	public SortedSet<MethodData> retrieveInSpecifiedRevision(final long revId)
 			throws SQLException {
 		final String query = "select * from " + getTableName() + " where "

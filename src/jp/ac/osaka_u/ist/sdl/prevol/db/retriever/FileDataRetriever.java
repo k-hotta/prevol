@@ -41,9 +41,12 @@ public class FileDataRetriever extends AbstractElementRetriever<FileData> {
 	}
 
 	/**
-	 * ファイルテーブルは開始リビジョンと終了リビジョンを持つため，単純なリビジョンIDの指定ではダメ
+	 * 指定されたリビジョンに存在するファイルをすべて取得
+	 * 
+	 * @param revId
+	 * @return
+	 * @throws SQLException
 	 */
-	@Override
 	public SortedSet<FileData> retrieveInSpecifiedRevision(final long revId)
 			throws SQLException {
 		final String query = "select * from " + getTableName() + " where "
