@@ -17,7 +17,6 @@ public class MethodData extends AbstractElement {
 	 */
 	private static final AtomicLong count = new AtomicLong(0);
 
-
 	/**
 	 * 生成されたリビジョンのID
 	 */
@@ -56,10 +55,38 @@ public class MethodData extends AbstractElement {
 	/**
 	 * CRD
 	 */
-	private final CRD crd;
+	private final String crd;
 
 	/**
-	 * コンストラクタ
+	 * インスタンス復元用コンストラクタ
+	 * 
+	 * @param id
+	 * @param startRevisionId
+	 * @param endRevisionId
+	 * @param fileId
+	 * @param name
+	 * @param startLine
+	 * @param endLine
+	 * @param vectorData
+	 * @param crdstr
+	 */
+	public MethodData(final long id, final long startRevisionId,
+			final long endRevisionId, final long fileId, final String name,
+			final int startLine, final int endLine,
+			final VectorData vectorData, final String crdstr) {
+		super(id);
+		this.startRevisionId = startRevisionId;
+		this.endRevisionId = endRevisionId;
+		this.fileId = fileId;
+		this.name = name;
+		this.startLine = startLine;
+		this.endLine = endLine;
+		this.vectorData = vectorData;
+		this.crd = crdstr;
+	}
+
+	/**
+	 * インスタンス生成用コンストラクタ
 	 * 
 	 * @param startRevisionId
 	 * @param fileId
@@ -71,15 +98,8 @@ public class MethodData extends AbstractElement {
 	public MethodData(final long startRevisionId, final long endRevisionId,
 			final long fileId, final String name, final int startLine,
 			final int endLine, final VectorData vectorData, final CRD crd) {
-		super(count.getAndIncrement());
-		this.startRevisionId = startRevisionId;
-		this.endRevisionId = endRevisionId;
-		this.fileId = fileId;
-		this.name = name;
-		this.startLine = startLine;
-		this.endLine = endLine;
-		this.vectorData = vectorData;
-		this.crd = crd;
+		this(count.getAndIncrement(), startRevisionId, endRevisionId, fileId,
+				name, startLine, endLine, vectorData, crd.toString());
 	}
 
 	/*
@@ -114,7 +134,7 @@ public class MethodData extends AbstractElement {
 		return vectorData;
 	}
 
-	public CRD getCrd() {
+	public String getCrd() {
 		return crd;
 	}
 
@@ -126,7 +146,7 @@ public class MethodData extends AbstractElement {
 				+ LINE_SEPARATOR);
 		builder.append(LINE_SEPARATOR);
 		builder.append("CRD" + LINE_SEPARATOR);
-		builder.append(crd.toString());
+		builder.append(crd);
 		builder.append(LINE_SEPARATOR + LINE_SEPARATOR);
 		builder.append("vector" + LINE_SEPARATOR);
 		builder.append(vectorData.toString());
