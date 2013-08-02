@@ -2,6 +2,7 @@ package jp.ac.osaka_u.ist.sdl.prevol.db.retriever;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.SortedSet;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
 
@@ -21,18 +22,35 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 		final String crd = rs.getString(++column);
 		final long vectorId = rs.getLong(++column);
 
+		return new MethodData(id, startRevisionId, endRevisionId, fileId, name,
+				startLine, endLine, vectorId, crd);
 	}
 
 	@Override
 	protected String getTableName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "METHOD";
 	}
 
 	@Override
 	protected String getRevIdColumnName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "START_REVISION_ID";
+	}
+
+	protected String getAfterRevIdColumnName() {
+		return "END_REVIISON_ID";
+	}
+
+	/**
+	 * メソッドテーブルは開始リビジョンと終了リビジョンを持つためオーバーライド
+	 */
+	@Override
+	public SortedSet<MethodData> retrieveInSpecifiedRevision(final long revId)
+			throws SQLException {
+		final String query = "select * from " + getTableName() + " where "
+				+ getRevIdColumnName() + " <= " + revId + " AND "
+				+ getAfterRevIdColumnName() + " >=" + revId;
+
+		return retrieve(query);
 	}
 
 }
