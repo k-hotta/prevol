@@ -411,8 +411,10 @@ public class ASTAnalyzer extends ASTVisitor {
 		final Statement elseStatement = node.getElseStatement();
 		if (elseStatement != null) {
 			if (!(elseStatement instanceof IfStatement)) {
-				final Block elseBlock = (Block) elseStatement;
-				this.optionalElseBlocks.put(node, elseBlock);
+				if (elseStatement instanceof Block) {
+					final Block elseBlock = (Block) elseStatement;
+					this.optionalElseBlocks.put(node, elseBlock);
+				}
 			}
 		}
 
