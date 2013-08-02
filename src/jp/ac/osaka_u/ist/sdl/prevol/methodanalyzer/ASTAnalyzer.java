@@ -1,9 +1,7 @@
 package jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -69,9 +67,9 @@ public class ASTAnalyzer extends ASTVisitor {
 	private final long ownerFileId;
 
 	/**
-	 * 解析した結果得られたMethodDataのリスト
+	 * 解析した結果得られたMethodData
 	 */
-	private final List<MethodData> methods;
+	private final Map<Long, MethodData> methods;
 
 	/**
 	 * 解析した結果得られたVectorData
@@ -114,7 +112,7 @@ public class ASTAnalyzer extends ASTVisitor {
 		this.revision = revision;
 		this.latestRevision = latestRevision;
 		this.ownerFileId = ownerFileId;
-		this.methods = new ArrayList<MethodData>();
+		this.methods = new TreeMap<Long, MethodData>();
 		this.vectors = new TreeMap<Long, VectorData>();
 		this.parentCrdElements = new Stack<CRDElement>();
 		this.crdElementCalculator = new CRDElementCalculator();
@@ -123,12 +121,12 @@ public class ASTAnalyzer extends ASTVisitor {
 	}
 
 	/**
-	 * 解析結果を取得　(MethodDataのリスト)
+	 * 解析結果を取得　(MethodData)
 	 * 
 	 * @return
 	 */
-	public final List<MethodData> getMethods() {
-		return Collections.unmodifiableList(methods);
+	public final Map<Long, MethodData> getMethods() {
+		return Collections.unmodifiableMap(methods);
 	}
 
 	/**
@@ -212,13 +210,13 @@ public class ASTAnalyzer extends ASTVisitor {
 		// CRD の算出
 		final CRD crd = new CRD(parentCrdElements);
 
-		// メソッド情報をリストに登録
+		// メソッド情報を登録
 		// 今解析しているメソッドの endRevisionId は暫定的に最終リビジョンのIDに設定
 		final MethodData methodData = new MethodData(revision.getId(),
 				latestRevision.getId(), ownerFileId, methodName, startLine,
 				endLine, vectorData.getId(), crd);
-		this.methods.add(methodData);
-		
+		this.methods.put(methodData.getId(), methodData);
+
 		// ベクトルデータを登録
 		this.vectors.put(vectorData.getId(), vectorData);
 
