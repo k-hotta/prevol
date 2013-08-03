@@ -42,7 +42,7 @@ public class VectorPairDetectThread implements Runnable {
 		while (true) {
 			final int currentIndex = index.getAndIncrement();
 
-			if (currentIndex >= revisionsArray.length) {
+			if (currentIndex >= revisionsArray.length - 1) {
 				break;
 			}
 
@@ -51,8 +51,8 @@ public class VectorPairDetectThread implements Runnable {
 				final RevisionData beforeRevision = revisionsArray[currentIndex];
 				final RevisionData afterRevision = revisionPairs
 						.get(beforeRevision);
-				MessagePrinter.stronglyPrintln("\tnow processing revision "
-						+ beforeRevision.getRevisionNum() + "\t- "
+				MessagePrinter.stronglyPrintln("\tnow processing revisions "
+						+ beforeRevision.getRevisionNum() + " - "
 						+ afterRevision.getRevisionNum() + "\t["
 						+ (currentIndex + 1) + "/" + revisionsArray.length
 						+ "]");
