@@ -76,6 +76,13 @@ public class DBMaker {
 				stmt.executeUpdate(getVectorTableQuery());
 				stmt.close();
 			}
+			
+			// 変更前後のベクトルのペアを表すテーブルを作成
+			{
+				final Statement stmt = connection.createStatement();
+				stmt.executeUpdate(getVectorLinkTableQuery());
+				stmt.close();
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

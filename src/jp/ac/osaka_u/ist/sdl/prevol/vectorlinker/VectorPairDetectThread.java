@@ -4,6 +4,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
+import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinter;
 
 /**
  * ベクトルペアを特定するスレッド
@@ -50,6 +51,11 @@ public class VectorPairDetectThread implements Runnable {
 				final RevisionData beforeRevision = revisionsArray[currentIndex];
 				final RevisionData afterRevision = revisionPairs
 						.get(beforeRevision);
+				MessagePrinter.stronglyPrintln("\tnow processing revision "
+						+ beforeRevision.getRevisionNum() + "\t- "
+						+ afterRevision.getRevisionNum() + "\t["
+						+ (currentIndex + 1) + "/" + revisionsArray.length
+						+ "]");
 
 				final VectorPairDetector detector = new VectorPairDetector(
 						beforeRevision, afterRevision);

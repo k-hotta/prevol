@@ -15,7 +15,7 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
  */
 public class RevisionPairDetector {
 
-	public Map<RevisionData, RevisionData> detectRevisionPairs(
+	public static Map<RevisionData, RevisionData> detectRevisionPairs(
 			final List<RevisionData> revisions) {
 		// 対象リビジョンが1つしかない場合は何もできない
 		if (revisions.size() < 2) {
