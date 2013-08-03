@@ -1,6 +1,5 @@
 package jp.ac.osaka_u.ist.sdl.prevol.utils;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -91,4 +90,3 @@ public class Table<K1, K2, V> {
 	}
 
 }
-

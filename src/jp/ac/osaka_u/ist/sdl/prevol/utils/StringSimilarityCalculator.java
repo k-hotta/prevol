@@ -8,6 +8,13 @@ package jp.ac.osaka_u.ist.sdl.prevol.utils;
  */
 public class StringSimilarityCalculator {
 
+	/**
+	 * レーベンシュタイン距離を計算
+	 * 
+	 * @param str1
+	 * @param str2
+	 * @return
+	 */
 	public static int calcLevenshteinDistance(String str1, String str2) {
 		final int len1 = str1.length();
 		final int len2 = str2.length();
@@ -33,6 +40,21 @@ public class StringSimilarityCalculator {
 			}
 		}
 		return d[len1][len2];
+	}
+
+	/**
+	 * レーベンシュタイン距離ベースの類似度を計算
+	 * 
+	 * @param str1
+	 * @param str2
+	 * @return 1 - [(レーベンシュタイン距離 * 2) / str1とstr2の長さの和]
+	 */
+	public static double calcLebenshteinDistanceBasedSimilarity(String str1,
+			String str2) {
+		final int ld = calcLevenshteinDistance(str1, str2);
+
+		return ((double) 1) - (((double) ld) * 2)
+				/ (((double) str1.length()) + ((double) str2.length()));
 	}
 
 }
