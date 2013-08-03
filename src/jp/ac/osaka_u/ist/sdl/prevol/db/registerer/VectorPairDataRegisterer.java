@@ -12,10 +12,10 @@ import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
  * @author k-hotta
  * 
  */
-public class VectorPairRegisterer extends
+public class VectorPairDataRegisterer extends
 		AbstractElementRegisterer<VectorPairData> {
 
-	public VectorPairRegisterer(DBConnection connection) {
+	public VectorPairDataRegisterer(DBConnection connection) {
 		super(connection);
 	}
 
