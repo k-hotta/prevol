@@ -218,5 +218,21 @@ public class DBMaker {
 
 		return builder.toString();
 	}
+	
+	private static String getVectorLinkTableQuery() {
+		final StringBuilder builder = new StringBuilder();
+
+		builder.append("create table VECTOR_LINK(");
+		builder.append("VECTOR_LINK_ID LONG PRIMARY KEY,");
+		builder.append("BEFORE_REVISION_ID LONG,");
+		builder.append("AFTER_REVISION_ID LONG,");
+		builder.append("BEFORE_METHOD_ID LONG,");
+		builder.append("AFTER_METHOD_ID LONG,");
+		builder.append("BEFORE_VECTOR_ID LONG,");
+		builder.append("AFTER_VECTOR_ID LONG");
+		builder.append(")");
+
+		return builder.toString();
+	}
 
 }
