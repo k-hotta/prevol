@@ -48,7 +48,7 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 	}
 
 	protected String getEndRevisionIdColumnName() {
-		return "END_REVIISON_ID";
+		return "END_REVISION_ID";
 	}
 
 	protected String getFileIdColumnName() {
