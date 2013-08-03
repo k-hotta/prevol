@@ -76,6 +76,13 @@ public class DBMaker {
 				stmt.executeUpdate(getVectorTableQuery());
 				stmt.close();
 			}
+			
+			// 変更前後のベクトルのペアを表すテーブルを作成
+			{
+				final Statement stmt = connection.createStatement();
+				stmt.executeUpdate(getVectorLinkTableQuery());
+				stmt.close();
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -214,6 +221,22 @@ public class DBMaker {
 		builder.append("WHILE_STATEMENT INTEGER,");
 		builder.append("WILDCARD_TYPE INTEGER");
 
+		builder.append(")");
+
+		return builder.toString();
+	}
+	
+	private static String getVectorLinkTableQuery() {
+		final StringBuilder builder = new StringBuilder();
+
+		builder.append("create table VECTOR_LINK(");
+		builder.append("VECTOR_LINK_ID LONG PRIMARY KEY,");
+		builder.append("BEFORE_REVISION_ID LONG,");
+		builder.append("AFTER_REVISION_ID LONG,");
+		builder.append("BEFORE_METHOD_ID LONG,");
+		builder.append("AFTER_METHOD_ID LONG,");
+		builder.append("BEFORE_VECTOR_ID LONG,");
+		builder.append("AFTER_VECTOR_ID LONG");
 		builder.append(")");
 
 		return builder.toString();

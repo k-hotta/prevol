@@ -10,10 +10,12 @@ import jp.ac.osaka_u.ist.sdl.prevol.db.registerer.FileDataRegisterer;
 import jp.ac.osaka_u.ist.sdl.prevol.db.registerer.MethodDataRegisterer;
 import jp.ac.osaka_u.ist.sdl.prevol.db.registerer.RevisionDataRegisterer;
 import jp.ac.osaka_u.ist.sdl.prevol.db.registerer.VectorDataRegisterer;
+import jp.ac.osaka_u.ist.sdl.prevol.db.registerer.VectorPairDataRegisterer;
 import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.FileDataRetriever;
 import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.MethodDataRetriever;
 import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.RevisionDataRetriever;
 import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.VectorDataRetriever;
+import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.VectorPairDataRetriever;
 
 /**
  * DBとの接続を管理するためのクラス
@@ -26,23 +28,27 @@ public class DBConnection {
 	private static DBConnection SINGLETON = null;
 
 	private Connection connection;
-	
+
 	private RevisionDataRegisterer revisionRegisterer;
 
 	private FileDataRegisterer fileRegisterer;
-	
+
 	private MethodDataRegisterer methodRegisterer;
-	
+
 	private VectorDataRegisterer vectorRegisterer;
-	
+
+	private VectorPairDataRegisterer vectorPairRegisterer;
+
 	private RevisionDataRetriever revisionRetriever;
-	
+
 	private FileDataRetriever fileRetriever;
-	
+
 	private MethodDataRetriever methodRetriever;
-	
+
 	private VectorDataRetriever vectorRetriever;
-	
+
+	private VectorPairDataRetriever vectorPairRetriever;
+
 	private DBConnection(final String dbPath) {
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -57,6 +63,8 @@ public class DBConnection {
 			this.fileRetriever = new FileDataRetriever(this);
 			this.methodRetriever = new MethodDataRetriever(this);
 			this.vectorRetriever = new VectorDataRetriever(this);
+			this.vectorPairRegisterer = new VectorPairDataRegisterer(this);
+			this.vectorPairRetriever = new VectorPairDataRetriever(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -98,6 +106,10 @@ public class DBConnection {
 		return vectorRegisterer;
 	}
 
+	public VectorPairDataRegisterer getVectorPairRegisterer() {
+		return vectorPairRegisterer;
+	}
+
 	public RevisionDataRetriever getRevisionRetriever() {
 		return revisionRetriever;
 	}
@@ -112,6 +124,10 @@ public class DBConnection {
 
 	public VectorDataRetriever getVectorRetriever() {
 		return vectorRetriever;
+	}
+
+	public VectorPairDataRetriever getVectorPairRetriever() {
+		return vectorPairRetriever;
 	}
 
 	public void close() {

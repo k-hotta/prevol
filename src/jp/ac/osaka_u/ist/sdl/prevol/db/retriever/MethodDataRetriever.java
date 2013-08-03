@@ -48,7 +48,7 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 	}
 
 	protected String getEndRevisionIdColumnName() {
-		return "END_REVIISON_ID";
+		return "END_REVISION_ID";
 	}
 
 	protected String getFileIdColumnName() {
@@ -89,6 +89,34 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 		queryBuilder.append(")");
 
 		return retrieve(queryBuilder.toString());
+	}
+
+	/**
+	 * 引数で指定されたリビジョンを開始リビジョンとするメソッドをすべて取得
+	 * 
+	 * @param revisionId
+	 * @return
+	 */
+	public SortedSet<MethodData> retrieveGeneratedInSpecifiedRevision(
+			final long revisionId) throws SQLException {
+		final String query = "select * from " + getTableName() + " where "
+				+ getStartRevisionIdColumnName() + " = " + revisionId;
+
+		return retrieve(query);
+	}
+	
+	/**
+	 * 引数で指定されたリビジョンを終了リビジョンとするメソッドをすべて取得
+	 * 
+	 * @param revisionId
+	 * @return
+	 */
+	public SortedSet<MethodData> retrieveDeadInSpecifiedRevision(
+			final long revisionId) throws SQLException {
+		final String query = "select * from " + getTableName() + " where "
+				+ getEndRevisionIdColumnName() + " = " + revisionId;
+
+		return retrieve(query);
 	}
 
 }
