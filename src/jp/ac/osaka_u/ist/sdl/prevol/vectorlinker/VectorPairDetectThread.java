@@ -54,8 +54,8 @@ public class VectorPairDetectThread implements Runnable {
 				MessagePrinter.stronglyPrintln("\tnow processing revisions "
 						+ beforeRevision.getRevisionNum() + " - "
 						+ afterRevision.getRevisionNum() + "\t["
-						+ (currentIndex + 1) + "/" + revisionsArray.length
-						+ "]");
+						+ (currentIndex + 1) + "/"
+						+ (revisionsArray.length - 1) + "]");
 
 				final VectorPairDetector detector = new VectorPairDetector(
 						beforeRevision, afterRevision);
