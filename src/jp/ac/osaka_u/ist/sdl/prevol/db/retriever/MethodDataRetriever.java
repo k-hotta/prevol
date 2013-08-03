@@ -91,4 +91,32 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 		return retrieve(queryBuilder.toString());
 	}
 
+	/**
+	 * 引数で指定されたリビジョンを開始リビジョンとするメソッドをすべて取得
+	 * 
+	 * @param revisionId
+	 * @return
+	 */
+	public SortedSet<MethodData> retrieveGeneratedInSpecifiedRevision(
+			final long revisionId) throws SQLException {
+		final String query = "select * from " + getTableName() + " where "
+				+ getStartRevisionIdColumnName() + " = " + revisionId;
+
+		return retrieve(query);
+	}
+	
+	/**
+	 * 引数で指定されたリビジョンを終了リビジョンとするメソッドをすべて取得
+	 * 
+	 * @param revisionId
+	 * @return
+	 */
+	public SortedSet<MethodData> retrieveDeadInSpecifiedRevision(
+			final long revisionId) throws SQLException {
+		final String query = "select * from " + getTableName() + " where "
+				+ getEndRevisionIdColumnName() + " = " + revisionId;
+
+		return retrieve(query);
+	}
+
 }
