@@ -41,19 +41,26 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 	private final double similarityThreshold;
 
 	/**
+	 * 変化の無いメソッド対を無視するかどうか
+	 */
+	private final boolean ignoreUnchangedMethodPairs;
+
+	/**
 	 * メッセージ出力のレベル
 	 */
 	private final MessagePrinterMode printMode;
 
-	private VectorLinkerSettings(final String dbPath,
-			final int threads, final long startRevision,
-			final long endRevision,
-			final double similarityThreshold, final MessagePrinterMode printMode) {
+	private VectorLinkerSettings(final String dbPath, final int threads,
+			final long startRevision, final long endRevision,
+			final double similarityThreshold,
+			final boolean ignoreUnchangedMethodPairs,
+			final MessagePrinterMode printMode) {
 		this.dbPath = dbPath;
 		this.threads = threads;
 		this.startRevision = startRevision;
 		this.endRevision = endRevision;
 		this.similarityThreshold = similarityThreshold;
+		this.ignoreUnchangedMethodPairs = ignoreUnchangedMethodPairs;
 		this.printMode = printMode;
 	}
 
@@ -75,6 +82,10 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 
 	final double getSimilarityThreshold() {
 		return similarityThreshold;
+	}
+
+	final boolean isIgnoreUnchangedMethodPairs() {
+		return ignoreUnchangedMethodPairs;
 	}
 
 	final MessagePrinterMode getPrintMode() {
@@ -103,9 +114,19 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 				.getOptionValue("s")) : DEFAULT_START_REVISION;
 		final long endRevision = (cmd.hasOption("e")) ? Long.parseLong(cmd
 				.getOptionValue("e")) : DEFAULT_END_REVISION;
+
 		final double similarityThreshold = (cmd.hasOption("b")) ? Double
 				.parseDouble(cmd.getOptionValue("b"))
 				: DEFAULT_SIMILARITY_THRESHOLD;
+
+		boolean ignoreUnchangedMethodPairs = DEFAULT_IGNORE_UNCHANGED_METHOD_PAIRS;
+		if (cmd.hasOption("iu")) {
+			if (cmd.getOptionValue("iu").equalsIgnoreCase("no")) {
+				ignoreUnchangedMethodPairs = false;
+			} else {
+				ignoreUnchangedMethodPairs = true;
+			}
+		}
 
 		MessagePrinterMode mode = DEFAULT_PRINT_MODE;
 		if (cmd.hasOption("v")) {
@@ -119,9 +140,9 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 			}
 		}
 
-		return new VectorLinkerSettings(dbPath,
-				threads, startRevision, endRevision,
-				similarityThreshold, mode);
+		return new VectorLinkerSettings(dbPath, threads, startRevision,
+				endRevision, similarityThreshold, ignoreUnchangedMethodPairs,
+				mode);
 	}
 
 	/**
@@ -138,7 +159,7 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 			d.setRequired(true);
 			options.addOption(d);
 		}
-		
+
 		{
 			final Option th = new Option("th", "threads", true,
 					"the number of maximum threads");
@@ -173,6 +194,14 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 			b.setArgs(1);
 			b.setRequired(false);
 			options.addOption(b);
+		}
+
+		{
+			final Option iu = new Option("iu", "ignore", true,
+					"ignore unchanged methods");
+			iu.setArgs(1);
+			iu.setRequired(false);
+			options.addOption(iu);
 		}
 
 		return options;

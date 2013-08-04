@@ -17,6 +17,8 @@ interface DefaultVectorLinkerSettingValues {
 	static final long DEFAULT_END_REVISION = Long.MAX_VALUE;
 
 	static final double DEFAULT_SIMILARITY_THRESHOLD = 0.0;
+	
+	static final boolean DEFAULT_IGNORE_UNCHANGED_METHOD_PAIRS = true;
 
 	static final MessagePrinterMode DEFAULT_PRINT_MODE = MessagePrinterMode.VERBOSE;
 

@@ -116,6 +116,8 @@ public class VectorLinker {
 			final Map<RevisionData, RevisionData> revisionPairs) {
 		final int threadsCount = settings.getThreads();
 		final double threshold = settings.getSimilarityThreshold();
+		final boolean ignoreUnchangedMethodPairs = settings
+				.isIgnoreUnchangedMethodPairs();
 
 		final AtomicInteger index = new AtomicInteger(0);
 		final RevisionData[] revisionsArray = revisions
@@ -126,7 +128,8 @@ public class VectorLinker {
 		final Thread[] threads = new Thread[threadsCount];
 		for (int i = 0; i < threads.length; i++) {
 			threads[i] = new Thread(new VectorPairDetectThread(index,
-					revisionsArray, concurrentRevisionPairs, threshold));
+					revisionsArray, concurrentRevisionPairs, threshold,
+					ignoreUnchangedMethodPairs));
 			threads[i].start();
 		}
 

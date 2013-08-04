@@ -34,14 +34,20 @@ public class VectorPairDetectThread implements Runnable {
 	 */
 	private final double threshold;
 
+	/**
+	 * 中身に変化の無いメソッド対を無視するかどうか
+	 */
+	private final boolean ignoreUnchangedMethodPairs;
+
 	public VectorPairDetectThread(final AtomicInteger index,
 			final RevisionData[] revisionsArray,
 			final ConcurrentMap<RevisionData, RevisionData> revisionPairs,
-			final double threshold) {
+			final double threshold, final boolean ignoreUnchangedMethodPairs) {
 		this.index = index;
 		this.revisionsArray = revisionsArray;
 		this.revisionPairs = revisionPairs;
 		this.threshold = threshold;
+		this.ignoreUnchangedMethodPairs = ignoreUnchangedMethodPairs;
 	}
 
 	@Override
@@ -65,7 +71,8 @@ public class VectorPairDetectThread implements Runnable {
 						+ (revisionsArray.length - 1) + "]");
 
 				final VectorPairDetector detector = new VectorPairDetector(
-						beforeRevision, afterRevision, threshold);
+						beforeRevision, afterRevision, threshold,
+						ignoreUnchangedMethodPairs);
 				detector.detectAndRegister();
 
 			} catch (Exception e) {

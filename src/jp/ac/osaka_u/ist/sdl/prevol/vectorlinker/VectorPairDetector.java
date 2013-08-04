@@ -24,6 +24,8 @@ public class VectorPairDetector {
 
 	private final double threshold;
 
+	private final boolean ignoreUnchangedMethodPairs;
+
 	private final DBConnection connection;
 
 	private final Set<MethodData> methodsDeadInBeforeRevision;
@@ -31,11 +33,12 @@ public class VectorPairDetector {
 	private final Set<MethodData> methodsCreatedInAfterRevision;
 
 	public VectorPairDetector(final RevisionData beforeRevision,
-			final RevisionData afterRevision, final double threshold)
-			throws SQLException {
+			final RevisionData afterRevision, final double threshold,
+			final boolean ignoreUnchangedMethodPairs) throws SQLException {
 		this.beforeRevision = beforeRevision;
 		this.afterRevision = afterRevision;
 		this.threshold = threshold;
+		this.ignoreUnchangedMethodPairs = ignoreUnchangedMethodPairs;
 		this.connection = DBConnection.getInstance();
 		methodsDeadInBeforeRevision = connection.getMethodRetriever()
 				.retrieveDeadInSpecifiedRevision(beforeRevision.getId());
@@ -51,7 +54,7 @@ public class VectorPairDetector {
 	public void detectAndRegister() throws SQLException {
 		final MethodPairDetector methodPairDetector = new MethodPairDetector(
 				methodsDeadInBeforeRevision, methodsCreatedInAfterRevision,
-				threshold);
+				threshold, ignoreUnchangedMethodPairs);
 		final Map<MethodData, MethodData> methodPairs = methodPairDetector
 				.detectMethodPairs();
 

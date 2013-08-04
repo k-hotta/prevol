@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
-import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.utils.StringSimilarityCalculator;
 import jp.ac.osaka_u.ist.sdl.prevol.utils.Table;
 
@@ -50,6 +49,11 @@ public class MethodPairDetector {
 	private final double threshold;
 
 	/**
+	 * ハッシュ値に変化の無いメソッド対を無視するかどうか
+	 */
+	private final boolean ignoreUnchangedMethodPairs;
+
+	/**
 	 * コンストラクタ <br>
 	 * メソッド対の特定に必要となるデータ (類似度テーブルとか) はここで作成する
 	 * 
@@ -57,7 +61,8 @@ public class MethodPairDetector {
 	 * @param afterMethods
 	 */
 	public MethodPairDetector(final Set<MethodData> beforeMethods,
-			final Set<MethodData> afterMethods, final double threshold) {
+			final Set<MethodData> afterMethods, final double threshold,
+			final boolean ignoreUnchangedMethodPairs) {
 		this.beforeMethods = beforeMethods;
 		this.afterMethods = afterMethods;
 		this.similarityTable = createSimilarityTable(beforeMethods,
@@ -65,6 +70,7 @@ public class MethodPairDetector {
 		this.wishLists = detectWishLists(beforeMethods, afterMethods,
 				similarityTable);
 		this.threshold = threshold;
+		this.ignoreUnchangedMethodPairs = ignoreUnchangedMethodPairs;
 	}
 
 	/**
@@ -278,7 +284,7 @@ public class MethodPairDetector {
 
 	/**
 	 * 引数で受け取ったマップのキーと値を逆にしたマップを生成する <br>
-	 * 類似度が閾値未満のエントリの削除もここで行う
+	 * 条件を満たさないエントリの削除もここで行う
 	 * 
 	 * @param target
 	 * @return
@@ -288,9 +294,7 @@ public class MethodPairDetector {
 		final Map<MethodData, MethodData> result = new TreeMap<MethodData, MethodData>();
 
 		for (final Map.Entry<MethodData, MethodData> entry : target.entrySet()) {
-			final double similarity = similarityTable.getValueAt(entry
-					.getValue().getId(), entry.getKey().getId());
-			if (similarity >= threshold) {
+			if (satisfyConditions(entry.getValue(), entry.getKey())) {
 				result.put(entry.getValue(), entry.getKey());
 			}
 		}
@@ -298,4 +302,26 @@ public class MethodPairDetector {
 		return result;
 	}
 
+	/**
+	 * 引数で与えられたメソッド対が考慮対象か否かを判別する
+	 * 
+	 * @param beforeMethod
+	 * @param afterMethod
+	 * @return
+	 */
+	private boolean satisfyConditions(final MethodData beforeMethod,
+			final MethodData afterMethod) {
+		// 類似度が閾値以上か？
+		final double similarity = similarityTable.getValueAt(
+				beforeMethod.getId(), afterMethod.getId());
+		final boolean satisfySimilarityThreshold = (similarity >= threshold);
+
+		// ハッシュ値に変化はあるか?
+		// 変化のあるなしを無視する設定ならば恒真
+		final boolean satisfyChangedCondition = (ignoreUnchangedMethodPairs) ? (beforeMethod
+				.getHash() != afterMethod.getHash()) : true;
+
+		// どちらも満たしている場合のみが対象となる
+		return satisfySimilarityThreshold && satisfyChangedCondition;
+	}
 }
