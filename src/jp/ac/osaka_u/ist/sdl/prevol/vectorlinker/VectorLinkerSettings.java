@@ -37,17 +37,23 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 	private final long endRevision;
 
 	/**
+	 * CRD類似度の下限値
+	 */
+	private final double similarityThreshold;
+
+	/**
 	 * メッセージ出力のレベル
 	 */
 	private final MessagePrinterMode printMode;
 
 	private VectorLinkerSettings(final String dbPath, final int threads,
 			final long startRevision, final long endRevision,
-			final MessagePrinterMode printMode) {
+			final double similarityThreshold, final MessagePrinterMode printMode) {
 		this.dbPath = dbPath;
 		this.threads = threads;
 		this.startRevision = startRevision;
 		this.endRevision = endRevision;
+		this.similarityThreshold = similarityThreshold;
 		this.printMode = printMode;
 	}
 
@@ -65,6 +71,10 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 
 	final long getEndRevision() {
 		return endRevision;
+	}
+
+	final double getSimilarityThreshold() {
+		return similarityThreshold;
 	}
 
 	final MessagePrinterMode getPrintMode() {
@@ -93,6 +103,9 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 				.getOptionValue("s")) : DEFAULT_START_REVISION;
 		final long endRevision = (cmd.hasOption("e")) ? Long.parseLong(cmd
 				.getOptionValue("e")) : DEFAULT_END_REVISION;
+		final double similarityThreshold = (cmd.hasOption("b")) ? Double
+				.parseDouble(cmd.getOptionValue("b"))
+				: DEFAULT_SIMILARITY_THRESHOLD;
 
 		MessagePrinterMode mode = DEFAULT_PRINT_MODE;
 		if (cmd.hasOption("v")) {
@@ -107,7 +120,7 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 		}
 
 		return new VectorLinkerSettings(dbPath, threads, startRevision,
-				endRevision, mode);
+				endRevision, similarityThreshold, mode);
 	}
 
 	/**
@@ -152,6 +165,13 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 			v.setArgs(1);
 			v.setRequired(false);
 			options.addOption(v);
+		}
+
+		{
+			final Option b = new Option("b", "bound", true, "lower limit");
+			b.setArgs(1);
+			b.setRequired(false);
+			options.addOption(b);
 		}
 
 		return options;

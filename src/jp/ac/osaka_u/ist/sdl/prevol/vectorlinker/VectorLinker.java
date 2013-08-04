@@ -42,12 +42,13 @@ public class VectorLinker {
 		} finally {
 			postprocess();
 		}
-		
+
 		final long endTime = System.nanoTime();
 		final long timeElapsed = (endTime - startTime) / 1000000000;
-		
+
 		MessagePrinter.stronglyPrintln("operations have finished!!");
-		MessagePrinter.stronglyPrintln("\ttotal elapsed time is " + timeElapsed + " [s]");
+		MessagePrinter.stronglyPrintln("\ttotal elapsed time is " + timeElapsed
+				+ " [s]");
 	}
 
 	/**
@@ -113,6 +114,7 @@ public class VectorLinker {
 			final List<RevisionData> revisions,
 			final Map<RevisionData, RevisionData> revisionPairs) {
 		final int threadsCount = settings.getThreads();
+		final double threshold = settings.getSimilarityThreshold();
 
 		final AtomicInteger index = new AtomicInteger(0);
 		final RevisionData[] revisionsArray = revisions
@@ -123,7 +125,7 @@ public class VectorLinker {
 		final Thread[] threads = new Thread[threadsCount];
 		for (int i = 0; i < threads.length; i++) {
 			threads[i] = new Thread(new VectorPairDetectThread(index,
-					revisionsArray, concurrentRevisionPairs));
+					revisionsArray, concurrentRevisionPairs, threshold));
 			threads[i].start();
 		}
 

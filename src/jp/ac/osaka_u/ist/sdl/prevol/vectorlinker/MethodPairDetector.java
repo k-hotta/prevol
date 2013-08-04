@@ -55,6 +55,11 @@ public class MethodPairDetector {
 	private final Map<MethodData, Queue<MethodData>> wishLists;
 
 	/**
+	 * メソッド対応付けを行う際の類似度の閾値(下限)
+	 */
+	private final double threshold;
+
+	/**
 	 * コンストラクタ <br>
 	 * メソッド対の特定に必要となるデータ (類似度テーブルとか) はここで作成する
 	 * 
@@ -65,7 +70,8 @@ public class MethodPairDetector {
 	 */
 	public MethodPairDetector(final RevisionData beforeRevision,
 			final Set<MethodData> beforeMethods,
-			final RevisionData afterRevision, final Set<MethodData> afterMethods) {
+			final RevisionData afterRevision,
+			final Set<MethodData> afterMethods, final double threshold) {
 		this.beforeRevision = beforeRevision;
 		this.beforeMethods = beforeMethods;
 		this.afterRevision = afterRevision;
@@ -74,6 +80,7 @@ public class MethodPairDetector {
 				afterMethods);
 		this.wishLists = detectWishLists(beforeMethods, afterMethods,
 				similarityTable);
+		this.threshold = threshold;
 	}
 
 	/**
@@ -191,7 +198,7 @@ public class MethodPairDetector {
 		}
 
 		// 特定されたメソッド対のキーと値を入れ替えて返す
-		return Collections.unmodifiableMap(getReversedMap(reversedResult));
+		return Collections.unmodifiableMap(tailorReversedMap(reversedResult));
 	}
 
 	/**
@@ -286,17 +293,22 @@ public class MethodPairDetector {
 	}
 
 	/**
-	 * 引数で受け取ったマップのキーと値を逆にしたマップを生成する
+	 * 引数で受け取ったマップのキーと値を逆にしたマップを生成する <br>
+	 * 類似度が閾値未満のエントリの削除もここで行う
 	 * 
 	 * @param target
 	 * @return
 	 */
-	private Map<MethodData, MethodData> getReversedMap(
+	private Map<MethodData, MethodData> tailorReversedMap(
 			final Map<MethodData, MethodData> target) {
 		final Map<MethodData, MethodData> result = new TreeMap<MethodData, MethodData>();
 
 		for (final Map.Entry<MethodData, MethodData> entry : target.entrySet()) {
-			result.put(entry.getValue(), entry.getKey());
+			final double similarity = similarityTable.getValueAt(entry
+					.getValue().getId(), entry.getKey().getId());
+			if (similarity >= threshold) {
+				result.put(entry.getValue(), entry.getKey());
+			}
 		}
 
 		return result;

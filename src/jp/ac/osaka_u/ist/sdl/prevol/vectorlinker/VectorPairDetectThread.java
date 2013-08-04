@@ -29,12 +29,19 @@ public class VectorPairDetectThread implements Runnable {
 	 */
 	private final ConcurrentMap<RevisionData, RevisionData> revisionPairs;
 
+	/**
+	 * メソッド対を特定するときのCRD類似度の閾値(下限)
+	 */
+	private final double threshold;
+
 	public VectorPairDetectThread(final AtomicInteger index,
 			final RevisionData[] revisionsArray,
-			final ConcurrentMap<RevisionData, RevisionData> revisionPairs) {
+			final ConcurrentMap<RevisionData, RevisionData> revisionPairs,
+			final double threshold) {
 		this.index = index;
 		this.revisionsArray = revisionsArray;
 		this.revisionPairs = revisionPairs;
+		this.threshold = threshold;
 	}
 
 	@Override
@@ -58,7 +65,7 @@ public class VectorPairDetectThread implements Runnable {
 						+ (revisionsArray.length - 1) + "]");
 
 				final VectorPairDetector detector = new VectorPairDetector(
-						beforeRevision, afterRevision);
+						beforeRevision, afterRevision, threshold);
 				detector.detectAndRegister();
 
 			} catch (Exception e) {
