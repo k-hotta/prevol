@@ -21,7 +21,7 @@ public class MethodDataRegisterer extends AbstractElementRegisterer<MethodData> 
 
 	@Override
 	protected String createPreparedStatementQueue() {
-		return "insert into METHOD values (?,?,?,?,?,?,?,?,?)";
+		return "insert into METHOD values (?,?,?,?,?,?,?,?,?,?)";
 	}
 
 	@Override
