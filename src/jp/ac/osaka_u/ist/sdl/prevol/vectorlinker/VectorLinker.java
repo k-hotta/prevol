@@ -66,14 +66,6 @@ public class VectorLinker {
 		MessagePrinter.stronglyPrintln("operations start");
 		MessagePrinter.stronglyPrintln();
 
-		// リポジトリを設定
-		MessagePrinter.stronglyPrintln("initializing repository ... ");
-		SVNRepositoryManager.setup(settings.getRepositoryPath(),
-				settings.getAdditionalPath(), settings.getUserName(),
-				settings.getPasswd());
-		MessagePrinter.stronglyPrintln("\tOK");
-		MessagePrinter.stronglyPrintln();
-
 		// データベースとのコネクションを生成
 		MessagePrinter.stronglyPrintln("initializing db ... ");
 		DBConnection.createInstance(settings.getDbPath());
