@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
 import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
@@ -73,6 +74,9 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 
 	public SortedSet<MethodData> retrieveInSpecifiedFiles(
 			final Collection<Long> fileIds) throws SQLException {
+		if (fileIds.isEmpty()) {
+			return new TreeSet<MethodData>();
+		}
 		final StringBuilder queryBuilder = new StringBuilder();
 		queryBuilder.append("select * from ");
 		queryBuilder.append(getTableName());
