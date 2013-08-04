@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
+import jp.ac.osaka_u.ist.sdl.prevol.methodanalyzer.svn.SVNRepositoryManager;
 import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinter;
 
 /**
@@ -63,6 +64,14 @@ public class VectorLinker {
 		MessagePrinter.setMode(settings.getPrintMode());
 
 		MessagePrinter.stronglyPrintln("operations start");
+		MessagePrinter.stronglyPrintln();
+
+		// リポジトリを設定
+		MessagePrinter.stronglyPrintln("initializing repository ... ");
+		SVNRepositoryManager.setup(settings.getRepositoryPath(),
+				settings.getAdditionalPath(), settings.getUserName(),
+				settings.getPasswd());
+		MessagePrinter.stronglyPrintln("\tOK");
 		MessagePrinter.stronglyPrintln();
 
 		// データベースとのコネクションを生成

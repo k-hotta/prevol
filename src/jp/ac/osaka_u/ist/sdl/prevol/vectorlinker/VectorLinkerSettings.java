@@ -22,9 +22,30 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 	private final String dbPath;
 
 	/**
+	 * リポジトリのパス
+	 */
+	private final String repositoryPath;
+
+	/**
+	 * 追加パス <br>
+	 * リポジトリの一部だけ対象にしたいときに指定する
+	 */
+	private final String additionalPath;
+
+	/**
 	 * スレッド数
 	 */
 	private final int threads;
+
+	/**
+	 * リポジトリにアクセスするためのユーザ名
+	 */
+	private final String userName;
+
+	/**
+	 * リポジトリにアクセスするためのパスワード
+	 */
+	private final String passwd;
 
 	/**
 	 * 開始リビジョン
@@ -46,13 +67,19 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 	 */
 	private final MessagePrinterMode printMode;
 
-	private VectorLinkerSettings(final String dbPath, final int threads,
-			final long startRevision, final long endRevision,
+	private VectorLinkerSettings(final String dbPath,
+			final String repositoryPath, final String additionalPath,
+			final int threads, final long startRevision,
+			final long endRevision, final String userName, final String passwd,
 			final double similarityThreshold, final MessagePrinterMode printMode) {
 		this.dbPath = dbPath;
+		this.repositoryPath = repositoryPath;
+		this.additionalPath = additionalPath;
 		this.threads = threads;
 		this.startRevision = startRevision;
 		this.endRevision = endRevision;
+		this.userName = userName;
+		this.passwd = passwd;
 		this.similarityThreshold = similarityThreshold;
 		this.printMode = printMode;
 	}
@@ -61,10 +88,26 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 		return dbPath;
 	}
 
+	final String getRepositoryPath() {
+		return repositoryPath;
+	}
+
+	final String getAdditionalPath() {
+		return additionalPath;
+	}
+
 	final int getThreads() {
 		return threads;
 	}
 
+	final String getUserName() {
+		return userName;
+	}
+
+	final String getPasswd() {
+		return passwd;
+	}
+	
 	final long getStartRevision() {
 		return startRevision;
 	}
@@ -96,8 +139,17 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 
 		final String dbPath = cmd.getOptionValue("d");
 
+		final String repositoryPath = cmd.getOptionValue("r");
+		final String additionalPath = cmd.hasOption("a") ? cmd
+				.getOptionValue("a") : DEFAULT_ADDITIONAL_PATH;
+
 		final int threads = (cmd.hasOption("th")) ? Integer.parseInt(cmd
 				.getOptionValue("th")) : DEFAULT_THREADS;
+
+		final String userName = (cmd.hasOption("u")) ? cmd.getOptionValue("u")
+				: DEFAULT_USERNAME;
+		final String passwd = (cmd.hasOption("p")) ? cmd.getOptionValue("p")
+				: DEFAULT_PASSWD;
 
 		final long startRevision = (cmd.hasOption("s")) ? Long.parseLong(cmd
 				.getOptionValue("s")) : DEFAULT_START_REVISION;
@@ -119,8 +171,9 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 			}
 		}
 
-		return new VectorLinkerSettings(dbPath, threads, startRevision,
-				endRevision, similarityThreshold, mode);
+		return new VectorLinkerSettings(dbPath, repositoryPath, additionalPath,
+				threads, startRevision, endRevision, userName, passwd,
+				similarityThreshold, mode);
 	}
 
 	/**
@@ -139,11 +192,40 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 		}
 
 		{
+			final Option r = new Option("r", "repository", true, "repository");
+			r.setArgs(1);
+			r.setRequired(true);
+			options.addOption(r);
+		}
+
+		{
+			final Option a = new Option("a", "additional", true,
+					"additional path");
+			a.setArgs(1);
+			a.setRequired(false);
+			options.addOption(a);
+		}
+
+		{
 			final Option th = new Option("th", "threads", true,
 					"the number of maximum threads");
 			th.setArgs(1);
 			th.setRequired(false);
 			options.addOption(th);
+		}
+
+		{
+			final Option u = new Option("u", "user", true, "user name");
+			u.setArgs(1);
+			u.setRequired(false);
+			options.addOption(u);
+		}
+
+		{
+			final Option p = new Option("p", "password", true, "password");
+			p.setArgs(1);
+			p.setRequired(false);
+			options.addOption(p);
 		}
 
 		{
