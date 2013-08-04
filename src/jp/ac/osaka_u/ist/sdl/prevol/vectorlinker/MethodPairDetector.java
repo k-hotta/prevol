@@ -25,19 +25,9 @@ import jp.ac.osaka_u.ist.sdl.prevol.utils.Table;
 public class MethodPairDetector {
 
 	/**
-	 * 変更前リビジョン
-	 */
-	private final RevisionData beforeRevision;
-
-	/**
 	 * 変更前リビジョンに存在するメソッドの集合
 	 */
 	private final Set<MethodData> beforeMethods;
-
-	/**
-	 * 変更後リビジョン
-	 */
-	private final RevisionData afterRevision;
 
 	/**
 	 * 変更後リビジョンに存在するメソッドの集合
@@ -63,18 +53,12 @@ public class MethodPairDetector {
 	 * コンストラクタ <br>
 	 * メソッド対の特定に必要となるデータ (類似度テーブルとか) はここで作成する
 	 * 
-	 * @param beforeRevision
 	 * @param beforeMethods
-	 * @param afterRevision
 	 * @param afterMethods
 	 */
-	public MethodPairDetector(final RevisionData beforeRevision,
-			final Set<MethodData> beforeMethods,
-			final RevisionData afterRevision,
+	public MethodPairDetector(final Set<MethodData> beforeMethods,
 			final Set<MethodData> afterMethods, final double threshold) {
-		this.beforeRevision = beforeRevision;
 		this.beforeMethods = beforeMethods;
-		this.afterRevision = afterRevision;
 		this.afterMethods = afterMethods;
 		this.similarityTable = createSimilarityTable(beforeMethods,
 				afterMethods);

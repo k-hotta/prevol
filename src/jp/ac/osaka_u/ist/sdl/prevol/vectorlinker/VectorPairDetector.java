@@ -50,8 +50,8 @@ public class VectorPairDetector {
 	 */
 	public void detectAndRegister() throws SQLException {
 		final MethodPairDetector methodPairDetector = new MethodPairDetector(
-				beforeRevision, methodsDeadInBeforeRevision, afterRevision,
-				methodsCreatedInAfterRevision, threshold);
+				methodsDeadInBeforeRevision, methodsCreatedInAfterRevision,
+				threshold);
 		final Map<MethodData, MethodData> methodPairs = methodPairDetector
 				.detectMethodPairs();
 
