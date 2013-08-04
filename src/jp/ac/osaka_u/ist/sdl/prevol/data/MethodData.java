@@ -58,6 +58,11 @@ public class MethodData extends AbstractElement {
 	private final String crd;
 
 	/**
+	 * このメソッドのソースコード (正規化後) から生成したハッシュ
+	 */
+	private final int hash;
+
+	/**
 	 * インスタンス復元用コンストラクタ
 	 * 
 	 * @param id
@@ -73,7 +78,7 @@ public class MethodData extends AbstractElement {
 	public MethodData(final long id, final long startRevisionId,
 			final long endRevisionId, final long fileId, final String name,
 			final int startLine, final int endLine, final long vectorId,
-			final String crdstr) {
+			final String crdstr, final int hash) {
 		super(id);
 		this.startRevisionId = startRevisionId;
 		this.endRevisionId = endRevisionId;
@@ -83,6 +88,7 @@ public class MethodData extends AbstractElement {
 		this.endLine = endLine;
 		this.vectorId = vectorId;
 		this.crd = crdstr;
+		this.hash = hash;
 	}
 
 	/**
@@ -97,9 +103,10 @@ public class MethodData extends AbstractElement {
 	 */
 	public MethodData(final long startRevisionId, final long endRevisionId,
 			final long fileId, final String name, final int startLine,
-			final int endLine, final long vectorId, final CRD crd) {
+			final int endLine, final long vectorId, final CRD crd,
+			final int hash) {
 		this(count.getAndIncrement(), startRevisionId, endRevisionId, fileId,
-				name, startLine, endLine, vectorId, crd.toString());
+				name, startLine, endLine, vectorId, crd.toString(), hash);
 	}
 
 	/*
@@ -136,6 +143,10 @@ public class MethodData extends AbstractElement {
 
 	public String getCrd() {
 		return crd;
+	}
+
+	public int getHash() {
+		return hash;
 	}
 
 	@Override

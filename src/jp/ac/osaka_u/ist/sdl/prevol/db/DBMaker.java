@@ -125,7 +125,8 @@ public class DBMaker {
 		builder.append("START_LINE INTEGER CHECK (START_LINE >= 0),");
 		builder.append("END_LINE INTEGER CHECK (END_LINE >= 0),");
 		builder.append("CRD TEXT NOT NULL,");
-		builder.append("VECTOR_ID LONG");
+		builder.append("VECTOR_ID LONG,");
+		builder.append("METHOD_HASH INTEGER");
 		builder.append(")");
 
 		return builder.toString();

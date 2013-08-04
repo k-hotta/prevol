@@ -37,6 +37,7 @@ public class MethodDataRegisterer extends AbstractElementRegisterer<MethodData> 
 		pstmt.setInt(++column, element.getEndLine());
 		pstmt.setString(++column, element.getCrd().toString());
 		pstmt.setLong(++column, element.getVectorId());
+		pstmt.setInt(++column, element.getHash());
 	}
 
 	/**
@@ -69,5 +70,5 @@ public class MethodDataRegisterer extends AbstractElementRegisterer<MethodData> 
 
 		pstmt.close();
 	}
-	
+
 }
