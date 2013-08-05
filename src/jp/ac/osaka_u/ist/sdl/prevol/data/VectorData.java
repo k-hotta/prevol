@@ -1398,4 +1398,93 @@ public class VectorData extends AbstractElement {
 		return builder.toString();
 	}
 
+	public final String toCsvRecord() {
+		final StringBuilder builder = new StringBuilder();
+
+		builder.append(this.getAnnotationTypeDeclarationCount() + ",");
+		builder.append(this.getAnnotationTypeMemberDeclarationCount() + ",");
+		builder.append(this.getAnonymousClassDeclarationCount() + ",");
+		builder.append(this.getArrayAccessCount() + ",");
+		builder.append(this.getArrayCreationCount() + ",");
+		builder.append(this.getArrayInitializerCount() + ",");
+		builder.append(this.getArrayTypeCount() + ",");
+		builder.append(this.getAssertStatementCount() + ",");
+		builder.append(this.getAssignmentCount() + ",");
+		builder.append(this.getBlockCount() + ",");
+		builder.append(this.getBlockCommentCount() + ",");
+		builder.append(this.getBooleanLiteralCount() + ",");
+		builder.append(this.getBreakStatementCount() + ",");
+		builder.append(this.getCastExpressionCount() + ",");
+		builder.append(this.getCatchClauseCount() + ",");
+		builder.append(this.getCharacterLiteralCount() + ",");
+		builder.append(this.getClassInstanceCreationCount() + ",");
+		builder.append(this.getCompilationUnitCount() + ",");
+		builder.append(this.getConditionalExpressionCount() + ",");
+		builder.append(this.getConstructorInvocationCount() + ",");
+		builder.append(this.getContinueStatementCount() + ",");
+		builder.append(this.getDoStatementCount() + ",");
+		builder.append(this.getEmptyStatementCount() + ",");
+		builder.append(this.getEnhancedForStatementCount() + ",");
+		builder.append(this.getEnumConstantDeclarationCount() + ",");
+		builder.append(this.getEnumDeclarationCount() + ",");
+		builder.append(this.getExpressionStatementCount() + ",");
+		builder.append(this.getFieldAccessCount() + ",");
+		builder.append(this.getForStatementCount() + ",");
+		builder.append(this.getIfStatementCount() + ",");
+		builder.append(this.getImportDeclarationCount() + ",");
+		builder.append(this.getInfixExpressionCount() + ",");
+		builder.append(this.getInitializerCount() + ",");
+		builder.append(this.getInstanceofExpressionCount() + ",");
+		builder.append(this.getJavadocCount() + ",");
+		builder.append(this.getLabeledStatementCount() + ",");
+		builder.append(this.getLineCommentCount() + ",");
+		builder.append(this.getMarkerAnnotationCount() + ",");
+		builder.append(this.getMemberRefCount() + ",");
+		builder.append(this.getMemberValuePairCount() + ",");
+		builder.append(this.getMethodDeclarationCount() + ",");
+		builder.append(this.getMethodInvocationCount() + ",");
+		builder.append(this.getMethodRefCount() + ",");
+		builder.append(this.getMethodRefParameterCount() + ",");
+		builder.append(this.getModifierCount() + ",");
+		builder.append(this.getNormalAnnotationCount() + ",");
+		builder.append(this.getNullLiteralCount() + ",");
+		builder.append(this.getNumberLiteralCount() + ",");
+		builder.append(this.getPackageDeclarationCount() + ",");
+		builder.append(this.getParameterizedTypeCount() + ",");
+		builder.append(this.getParenthesizedExpressionCount() + ",");
+		builder.append(this.getPostfixExpressionCount() + ",");
+		builder.append(this.getPrefixExpressionCount() + ",");
+		builder.append(this.getPrimitiveTypeCount() + ",");
+		builder.append(this.getQualifiedNameCount() + ",");
+		builder.append(this.getQualifiedTypeCount() + ",");
+		builder.append(this.getReturnStatementCount() + ",");
+		builder.append(this.getSimpleNameCount() + ",");
+		builder.append(this.getSimpleTypeCount() + ",");
+		builder.append(this.getSingleMemberAnnotationCount() + ",");
+		builder.append(this.getSingleVariableDeclarationCount() + ",");
+		builder.append(this.getStringLiteralCount() + ",");
+		builder.append(this.getSuperConstructorInvocationCount() + ",");
+		builder.append(this.getSuperFieldAccessCount() + ",");
+		builder.append(this.getSuperMethodInvocationCount() + ",");
+		builder.append(this.getSwitchCaseCount() + ",");
+		builder.append(this.getSwitchStatementCount() + ",");
+		builder.append(this.getSynchronizedStatementCount() + ",");
+		builder.append(this.getTagElementCount() + ",");
+		builder.append(this.getTextElementCount() + ",");
+		builder.append(this.getThisExpressionCount() + ",");
+		builder.append(this.getThrowStatementCount() + ",");
+		builder.append(this.getTryStatementCount() + ",");
+		builder.append(this.getTypeDeclarationCount() + ",");
+		builder.append(this.getTypeDeclarationStatementCount() + ",");
+		builder.append(this.getTypeLiteralCount() + ",");
+		builder.append(this.getTypeParameterCount() + ",");
+		builder.append(this.getVariableDeclarationExpressionCount() + ",");
+		builder.append(this.getVariableDeclarationFragmentCount() + ",");
+		builder.append(this.getVariableDeclarationStatementCount() + ",");
+		builder.append(this.getWhileStatementCount() + ",");
+		builder.append(this.getWildcardTypeCount());
+
+		return builder.toString();
+	}
+
 }
