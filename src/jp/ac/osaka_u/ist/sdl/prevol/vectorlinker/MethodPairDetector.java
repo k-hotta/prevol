@@ -88,7 +88,7 @@ public class MethodPairDetector {
 				final double similarity = StringSimilarityCalculator
 						.calcLebenshteinDistanceBasedSimilarity(
 								beforeMethod.getCrd(), afterMethod.getCrd());
-				if (satisfyConditions(beforeMethod, afterMethod, similarity)) {
+				if (satisfyAllConditions(beforeMethod, afterMethod, similarity)) {
 					similarityTable.changeValueAt(beforeMethod.getId(),
 							afterMethod.getId(), similarity);
 					similarities.put(afterMethod, similarity);
@@ -323,7 +323,7 @@ public class MethodPairDetector {
 		final Map<MethodData, MethodData> result = new TreeMap<MethodData, MethodData>();
 
 		for (final Map.Entry<MethodData, MethodData> entry : target.entrySet()) {
-			if (satisfyConditions(entry.getValue(), entry.getKey())) {
+			if (satisfyConditionsWithoutSimilarity(entry.getValue(), entry.getKey())) {
 				result.put(entry.getValue(), entry.getKey());
 			}
 		}
@@ -339,15 +339,15 @@ public class MethodPairDetector {
 	 * @param afterMethod
 	 * @return
 	 */
-	private boolean satisfyConditions(final MethodData beforeMethod,
+	private boolean satisfyAllConditions(final MethodData beforeMethod,
 			final MethodData afterMethod, final double similarity) {
 		// 類似度が閾値以上か？
 		final boolean satisfySimilarityThreshold = (similarity >= threshold);
 
 		// ハッシュ値に変化はあるか?
 		// 変化のあるなしを無視する設定ならば恒真
-		final boolean satisfyChangedCondition = satisfyConditions(beforeMethod,
-				afterMethod);
+		final boolean satisfyChangedCondition = satisfyConditionsWithoutSimilarity(
+				beforeMethod, afterMethod);
 
 		// どちらも満たしている場合のみが対象となる
 		return satisfySimilarityThreshold && satisfyChangedCondition;
@@ -361,7 +361,7 @@ public class MethodPairDetector {
 	 * @param afterMethod
 	 * @return
 	 */
-	private boolean satisfyConditions(final MethodData beforeMethod,
+	private boolean satisfyConditionsWithoutSimilarity(final MethodData beforeMethod,
 			final MethodData afterMethod) {
 		// ハッシュ値に変化はあるか?
 		// 変化のあるなしを無視する設定ならば恒真
