@@ -30,6 +30,21 @@ public class Table<K1, K2, V> {
 	}
 
 	/**
+	 * Judge whether the specified sell is filled with any value
+	 * 
+	 * @param k1
+	 * @param k2
+	 * @return
+	 */
+	public boolean containsValueAt(final K1 k1, final K2 k2) {
+		if (!contents.containsKey(k1)) {
+			return false;
+		}
+
+		return contents.get(k1).containsKey(k2);
+	}
+
+	/**
 	 * Get the value of the specified cell
 	 * 
 	 * @param k1
