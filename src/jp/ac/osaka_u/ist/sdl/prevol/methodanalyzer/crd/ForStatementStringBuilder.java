@@ -18,10 +18,12 @@ public class ForStatementStringBuilder extends
 	@Override
 	public String getBlockStr() {
 		final StringBuilder builder = new StringBuilder();
-		
+
 		builder.append("FOR,"); // ブロックの種類
-		builder.append(node.getExpression().toString()); // 条件式
-		
+		if (node.getExpression() != null) {
+			builder.append(node.getExpression().toString()); // 条件式
+		}
+
 		return builder.toString();
 	}
 

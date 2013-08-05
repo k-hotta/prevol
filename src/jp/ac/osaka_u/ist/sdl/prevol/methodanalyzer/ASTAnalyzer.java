@@ -214,7 +214,7 @@ public class ASTAnalyzer extends ASTVisitor {
 		// 今解析しているメソッドの endRevisionId は暫定的に最終リビジョンのIDに設定
 		final MethodData methodData = new MethodData(revision.getId(),
 				latestRevision.getId(), ownerFileId, methodName, startLine,
-				endLine, vectorData.getId(), crd);
+				endLine, vectorData.getId(), crd, node.toString().hashCode());
 		this.methods.put(methodData.getId(), methodData);
 
 		// ベクトルデータを登録

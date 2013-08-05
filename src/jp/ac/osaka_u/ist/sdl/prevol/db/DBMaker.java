@@ -56,10 +56,24 @@ public class DBMaker {
 				stmt.close();
 			}
 
+			// リビジョンテーブルにインデックスを作成
+			{
+				final Statement stmt = connection.createStatement();
+				createIndexesOnRevisionTable(stmt);
+				stmt.close();
+			}
+
 			// メソッドテーブルを作成
 			{
 				final Statement stmt = connection.createStatement();
 				stmt.executeUpdate(getMethodTableQuery());
+				stmt.close();
+			}
+
+			// メソッドテーブルにインデックスを作成
+			{
+				final Statement stmt = connection.createStatement();
+				createIndexesOnMethodTable(stmt);
 				stmt.close();
 			}
 
@@ -70,17 +84,38 @@ public class DBMaker {
 				stmt.close();
 			}
 
+			// ファイルテーブルにインデックスを作成
+			{
+				final Statement stmt = connection.createStatement();
+				createIndexesOnFileTable(stmt);
+				stmt.close();
+			}
+
 			// ベクトルテーブルを作成
 			{
 				final Statement stmt = connection.createStatement();
 				stmt.executeUpdate(getVectorTableQuery());
 				stmt.close();
 			}
-			
+
+			// ベクトルテーブルにインデックスを作成
+			{
+				final Statement stmt = connection.createStatement();
+				createIndexesOnVectorTable(stmt);
+				stmt.close();
+			}
+
 			// 変更前後のベクトルのペアを表すテーブルを作成
 			{
 				final Statement stmt = connection.createStatement();
 				stmt.executeUpdate(getVectorLinkTableQuery());
+				stmt.close();
+			}
+
+			// 変更前後のベクトルのペアを表すテーブルにインデックスを作成
+			{
+				final Statement stmt = connection.createStatement();
+				createIndexesOnVectorLinkTable(stmt);
 				stmt.close();
 			}
 
@@ -100,6 +135,11 @@ public class DBMaker {
 		return builder.toString();
 	}
 
+	private static void createIndexesOnRevisionTable(final Statement stmt)
+			throws Exception {
+		stmt.executeUpdate("create index REVISION_ID_INDEX_REVISION on REVISION(REVISION_ID)");
+	}
+
 	private static String getFileTableQuery() {
 		final StringBuilder builder = new StringBuilder();
 
@@ -111,6 +151,14 @@ public class DBMaker {
 		builder.append(")");
 
 		return builder.toString();
+	}
+
+	private static void createIndexesOnFileTable(final Statement stmt)
+			throws Exception {
+		stmt.executeUpdate("create index FILE_ID_INDEX_FILE on FILE(FILE_ID)");
+		stmt.executeUpdate("create index START_REVISION_ID_INDEX_FILE on FILE(START_REVISION_ID)");
+		stmt.executeUpdate("create index END_REVISION_ID_INDEX_FILE on FILE(END_REVISION_ID)");
+		stmt.executeUpdate("create index START_END_REVISION_ID_INDEX_FILE on FILE(START_REVISION_ID,END_REVISION_ID)");
 	}
 
 	private static String getMethodTableQuery() {
@@ -125,10 +173,22 @@ public class DBMaker {
 		builder.append("START_LINE INTEGER CHECK (START_LINE >= 0),");
 		builder.append("END_LINE INTEGER CHECK (END_LINE >= 0),");
 		builder.append("CRD TEXT NOT NULL,");
-		builder.append("VECTOR_ID LONG");
+		builder.append("VECTOR_ID LONG,");
+		builder.append("METHOD_HASH INTEGER");
 		builder.append(")");
 
 		return builder.toString();
+	}
+
+	private static void createIndexesOnMethodTable(final Statement stmt)
+			throws Exception {
+		stmt.executeUpdate("create index METHOD_ID_INDEX_METHOD on METHOD(METHOD_ID)");
+		stmt.executeUpdate("create index START_REVISION_ID_INDEX_METHOD on METHOD(START_REVISION_ID)");
+		stmt.executeUpdate("create index END_REVISION_ID_INDEX_METHOD on METHOD(END_REVISION_ID)");
+		stmt.executeUpdate("create index OWNER_FILE_ID_INDEX_METHOD on METHOD(OWNER_FILE_ID)");
+		stmt.executeUpdate("create index VECTOR_ID_INDEX_METHOD on METHOD(VECTOR_ID)");
+		stmt.executeUpdate("create index METHOD_HASH_INDEX_METHOD on METHOD(METHOD_HASH)");
+		stmt.executeUpdate("create index START_END_REVISION_ID_INDEX_METHOD on METHOD(START_REVISION_ID,END_REVISION_ID)");
 	}
 
 	private static String getVectorTableQuery() {
@@ -225,7 +285,12 @@ public class DBMaker {
 
 		return builder.toString();
 	}
-	
+
+	private static void createIndexesOnVectorTable(final Statement stmt)
+			throws Exception {
+		stmt.executeUpdate("create index VECTOR_ID_INDEX_VECTOR on VECTOR(VECTOR_ID)");
+	}
+
 	private static String getVectorLinkTableQuery() {
 		final StringBuilder builder = new StringBuilder();
 
@@ -240,6 +305,17 @@ public class DBMaker {
 		builder.append(")");
 
 		return builder.toString();
+	}
+
+	private static void createIndexesOnVectorLinkTable(final Statement stmt)
+			throws Exception {
+		stmt.executeUpdate("create index VECTOR_LINK_ID_INDEX_VECTOR_LINK on VECTOR_LINK(VECTOR_LINK_ID)");
+		stmt.executeUpdate("create index BEFORE_REVISION_ID_INDEX_VECTOR_LINK on VECTOR_LINK(BEFORE_REVISION_ID)");
+		stmt.executeUpdate("create index AFTER_REVISION_ID_INDEX_VECTOR_LINK on VECTOR_LINK(AFTER_REVISION_ID)");
+		stmt.executeUpdate("create index BEFORE_METHOD_ID_INDEX_VECTOR_LINK on VECTOR_LINK(BEFORE_METHOD_ID)");
+		stmt.executeUpdate("create index AFTER_METHOD_ID_INDEX_VECTOR_LINK on VECTOR_LINK(AFTER_METHOD_ID)");
+		stmt.executeUpdate("create index BEFORE_VECTOR_ID_INDEX_VECTOR_LINK on VECTOR_LINK(BEFORE_VECTOR_ID)");
+		stmt.executeUpdate("create index AFTER_VECTOR_ID_INDEX_VECTOR_LINK on VECTOR_LINK(AFTER_VECTOR_ID)");
 	}
 
 }

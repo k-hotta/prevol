@@ -20,7 +20,6 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 	 * 入出力先データベースファイル
 	 */
 	private final String dbPath;
-
 	/**
 	 * スレッド数
 	 */
@@ -37,17 +36,31 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 	private final long endRevision;
 
 	/**
+	 * CRD類似度の下限値
+	 */
+	private final double similarityThreshold;
+
+	/**
+	 * 変化の無いメソッド対を無視するかどうか
+	 */
+	private final boolean ignoreUnchangedMethodPairs;
+
+	/**
 	 * メッセージ出力のレベル
 	 */
 	private final MessagePrinterMode printMode;
 
 	private VectorLinkerSettings(final String dbPath, final int threads,
 			final long startRevision, final long endRevision,
+			final double similarityThreshold,
+			final boolean ignoreUnchangedMethodPairs,
 			final MessagePrinterMode printMode) {
 		this.dbPath = dbPath;
 		this.threads = threads;
 		this.startRevision = startRevision;
 		this.endRevision = endRevision;
+		this.similarityThreshold = similarityThreshold;
+		this.ignoreUnchangedMethodPairs = ignoreUnchangedMethodPairs;
 		this.printMode = printMode;
 	}
 
@@ -65,6 +78,14 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 
 	final long getEndRevision() {
 		return endRevision;
+	}
+
+	final double getSimilarityThreshold() {
+		return similarityThreshold;
+	}
+
+	final boolean isIgnoreUnchangedMethodPairs() {
+		return ignoreUnchangedMethodPairs;
 	}
 
 	final MessagePrinterMode getPrintMode() {
@@ -94,6 +115,19 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 		final long endRevision = (cmd.hasOption("e")) ? Long.parseLong(cmd
 				.getOptionValue("e")) : DEFAULT_END_REVISION;
 
+		final double similarityThreshold = (cmd.hasOption("b")) ? Double
+				.parseDouble(cmd.getOptionValue("b"))
+				: DEFAULT_SIMILARITY_THRESHOLD;
+
+		boolean ignoreUnchangedMethodPairs = DEFAULT_IGNORE_UNCHANGED_METHOD_PAIRS;
+		if (cmd.hasOption("iu")) {
+			if (cmd.getOptionValue("iu").equalsIgnoreCase("no")) {
+				ignoreUnchangedMethodPairs = false;
+			} else {
+				ignoreUnchangedMethodPairs = true;
+			}
+		}
+
 		MessagePrinterMode mode = DEFAULT_PRINT_MODE;
 		if (cmd.hasOption("v")) {
 			final String value = cmd.getOptionValue("v");
@@ -107,7 +141,8 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 		}
 
 		return new VectorLinkerSettings(dbPath, threads, startRevision,
-				endRevision, mode);
+				endRevision, similarityThreshold, ignoreUnchangedMethodPairs,
+				mode);
 	}
 
 	/**
@@ -152,6 +187,21 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 			v.setArgs(1);
 			v.setRequired(false);
 			options.addOption(v);
+		}
+
+		{
+			final Option b = new Option("b", "bound", true, "lower limit");
+			b.setArgs(1);
+			b.setRequired(false);
+			options.addOption(b);
+		}
+
+		{
+			final Option iu = new Option("iu", "ignore", true,
+					"ignore unchanged methods");
+			iu.setArgs(1);
+			iu.setRequired(false);
+			options.addOption(iu);
 		}
 
 		return options;

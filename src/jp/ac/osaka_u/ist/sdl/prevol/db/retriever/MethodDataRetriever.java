@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
 import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
@@ -33,9 +34,10 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 		final int endLine = rs.getInt(++column);
 		final String crd = rs.getString(++column);
 		final long vectorId = rs.getLong(++column);
+		final int hash = rs.getInt(++column);
 
 		return new MethodData(id, startRevisionId, endRevisionId, fileId, name,
-				startLine, endLine, vectorId, crd);
+				startLine, endLine, vectorId, crd, hash);
 	}
 
 	@Override
@@ -73,6 +75,9 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 
 	public SortedSet<MethodData> retrieveInSpecifiedFiles(
 			final Collection<Long> fileIds) throws SQLException {
+		if (fileIds.isEmpty()) {
+			return new TreeSet<MethodData>();
+		}
 		final StringBuilder queryBuilder = new StringBuilder();
 		queryBuilder.append("select * from ");
 		queryBuilder.append(getTableName());
@@ -104,7 +109,7 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 
 		return retrieve(query);
 	}
-	
+
 	/**
 	 * 引数で指定されたリビジョンを終了リビジョンとするメソッドをすべて取得
 	 * 
