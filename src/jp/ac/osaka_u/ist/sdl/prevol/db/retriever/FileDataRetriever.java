@@ -60,4 +60,9 @@ public class FileDataRetriever extends AbstractElementRetriever<FileData> {
 		return retrieve(query);
 	}
 
+	@Override
+	protected String getIdColumnName() {
+		return "FILE_ID";
+	}
+
 }

@@ -33,4 +33,9 @@ public class RevisionDataRetriever extends
 		return "REVISION";
 	}
 
+	@Override
+	protected String getIdColumnName() {
+		return "REVISION_ID";
+	}
+
 }

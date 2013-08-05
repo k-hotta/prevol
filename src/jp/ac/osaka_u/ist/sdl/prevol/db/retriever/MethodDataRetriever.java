@@ -56,6 +56,12 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 	protected String getFileIdColumnName() {
 		return "OWNER_FILE_ID";
 	}
+	
+	@Override
+	protected String getIdColumnName() {
+		return "METHOD_ID";
+	}
+
 
 	/**
 	 * 指定されたリビジョンに存在するメソッドをすべて取得
@@ -123,5 +129,4 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 
 		return retrieve(query);
 	}
-
 }

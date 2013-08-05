@@ -286,4 +286,9 @@ public class VectorDataRetriever extends AbstractElementRetriever<VectorData> {
 		return "VECTOR";
 	}
 
+	@Override
+	protected String getIdColumnName() {
+		return "VECTOR_ID";
+	}
+
 }
