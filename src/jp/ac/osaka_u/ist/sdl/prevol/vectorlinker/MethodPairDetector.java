@@ -65,37 +65,28 @@ public class MethodPairDetector {
 			final boolean ignoreUnchangedMethodPairs) {
 		this.beforeMethods = beforeMethods;
 		this.afterMethods = afterMethods;
-		this.similarityTable = createSimilarityTable(beforeMethods,
-				afterMethods);
-		this.wishLists = detectWishLists(beforeMethods, afterMethods,
-				similarityTable);
+		this.similarityTable = new Table<Long, Long, Double>();
+		this.wishLists = new TreeMap<MethodData, Queue<MethodData>>();
 		this.threshold = threshold;
 		this.ignoreUnchangedMethodPairs = ignoreUnchangedMethodPairs;
 	}
 
 	/**
-	 * 類似度テーブルを作成する
+	 * 類似度テーブルを埋める
 	 * 
 	 * @param beforeMethods
 	 * @param afterMethods
-	 * @return
 	 */
-	private Table<Long, Long, Double> createSimilarityTable(
-			final Set<MethodData> beforeMethods,
+	private void fillSimilarityTable(final Set<MethodData> beforeMethods,
 			final Set<MethodData> afterMethods) {
-		final Table<Long, Long, Double> result = new Table<Long, Long, Double>();
-
 		for (final MethodData beforeMethod : beforeMethods) {
 			for (final MethodData afterMethod : afterMethods) {
-				result.changeValueAt(beforeMethod.getId(), afterMethod.getId(),
-						StringSimilarityCalculator
-								.calcLebenshteinDistanceBasedSimilarity(
-										beforeMethod.getCrd(),
-										afterMethod.getCrd()));
+				similarityTable.changeValueAt(beforeMethod.getId(), afterMethod
+						.getId(), StringSimilarityCalculator
+						.calcLebenshteinDistanceBasedSimilarity(
+								beforeMethod.getCrd(), afterMethod.getCrd()));
 			}
 		}
-
-		return result;
 	}
 
 	/**
@@ -105,12 +96,8 @@ public class MethodPairDetector {
 	 * @param afterMethods
 	 * @return
 	 */
-	private Map<MethodData, Queue<MethodData>> detectWishLists(
-			final Set<MethodData> beforeMethods,
-			final Set<MethodData> afterMethods,
-			final Table<Long, Long, Double> similarityTable) {
-		final Map<MethodData, Queue<MethodData>> result = new TreeMap<MethodData, Queue<MethodData>>();
-
+	private void fillWishLists(final Set<MethodData> beforeMethods,
+			final Set<MethodData> afterMethods) {
 		for (final MethodData beforeMethod : beforeMethods) {
 			final Map<MethodData, Double> similarities = new TreeMap<MethodData, Double>();
 
@@ -120,10 +107,8 @@ public class MethodPairDetector {
 			}
 
 			final Queue<MethodData> wishList = sortWithValues(similarities);
-			result.put(beforeMethod, wishList);
+			wishLists.put(beforeMethod, wishList);
 		}
-
-		return Collections.unmodifiableMap(result);
 	}
 
 	/**
@@ -172,14 +157,31 @@ public class MethodPairDetector {
 		// ただし，キーが後リビジョンのメソッド，値が前リビジョンのメソッドになる
 		final Map<MethodData, MethodData> reversedResult = new TreeMap<MethodData, MethodData>();
 
+		final Set<MethodData> beforeMethods = new HashSet<MethodData>();
+		beforeMethods.addAll(this.beforeMethods);
+
+		final Set<MethodData> afterMethods = new HashSet<MethodData>();
+		afterMethods.addAll(this.afterMethods);
+
+		// 同じCRDを持つものをとりあえず特定
+		reversedResult.putAll(detectSameCrdMethodPairs(beforeMethods,
+				afterMethods));
+
+		// ペアが見つかったものを候補から削除
+		beforeMethods.removeAll(reversedResult.values());
+		afterMethods.removeAll(reversedResult.keySet());
+
+		// 残ったもので類似度テーブルと希望リストを埋める
+		fillSimilarityTable(beforeMethods, afterMethods);
+		fillWishLists(beforeMethods, afterMethods);
+
 		// 相手が見つかっていない前リビジョンメソッドたち
-		// とりあえずは全員
 		final List<MethodData> unmarriedBeforeMethods = new ArrayList<MethodData>();
 		unmarriedBeforeMethods.addAll(beforeMethods);
 
 		// 見つかったペアの数が前リビジョンメソッド数と後リビジョンメソッド数のうち小さいほうに達するまで繰り返す
-		while (reversedResult.size() < Math.min(beforeMethods.size(),
-				afterMethods.size())) {
+		while (reversedResult.size() < Math.min(this.beforeMethods.size(),
+				this.afterMethods.size())) {
 
 			// 前リビジョンメソッドたちにアタックさせる
 			// 返り値は void だけど reversedResult と unmarriedBeforeMethods の中身は変化する
@@ -189,6 +191,35 @@ public class MethodPairDetector {
 
 		// 特定されたメソッド対のキーと値を入れ替えて返す
 		return Collections.unmodifiableMap(tailorReversedMap(reversedResult));
+	}
+
+	/**
+	 * CRDが完全に一致するものをペアリング
+	 * 
+	 * @param beforeMethods
+	 * @param afterMethods
+	 * @return
+	 */
+	private Map<MethodData, MethodData> detectSameCrdMethodPairs(
+			final Set<MethodData> beforeMethods,
+			final Set<MethodData> afterMethods) {
+		final Map<MethodData, MethodData> result = new TreeMap<MethodData, MethodData>();
+
+		final Set<MethodData> processedAfterMethods = new HashSet<MethodData>();
+
+		for (final MethodData beforeMethod : beforeMethods) {
+			for (final MethodData afterMethod : afterMethods) {
+				if (processedAfterMethods.contains(afterMethod)) {
+					continue;
+				}
+				if (beforeMethod.getCrd().equals(afterMethod.getCrd())) {
+					result.put(afterMethod, beforeMethod);
+					processedAfterMethods.add(afterMethod);
+				}
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -312,8 +343,10 @@ public class MethodPairDetector {
 	private boolean satisfyConditions(final MethodData beforeMethod,
 			final MethodData afterMethod) {
 		// 類似度が閾値以上か？
-		final double similarity = similarityTable.getValueAt(
-				beforeMethod.getId(), afterMethod.getId());
+		// similarityTable に値が無いのに対応付けされてるものは，CRDが一致している(ハズ)
+		final double similarity = (similarityTable.containsValueAt(
+				beforeMethod.getId(), afterMethod.getId())) ? similarityTable
+				.getValueAt(beforeMethod.getId(), afterMethod.getId()) : 1.0;
 		final boolean satisfySimilarityThreshold = (similarity >= threshold);
 
 		// ハッシュ値に変化はあるか?

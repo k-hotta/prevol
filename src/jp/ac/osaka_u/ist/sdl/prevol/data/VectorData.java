@@ -85,8 +85,10 @@ import static org.eclipse.jdt.core.dom.ASTNode.VARIABLE_DECLARATION_STATEMENT;
 import static org.eclipse.jdt.core.dom.ASTNode.WHILE_STATEMENT;
 import static org.eclipse.jdt.core.dom.ASTNode.WILDCARD_TYPE;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -1287,6 +1289,8 @@ public class VectorData extends AbstractElement {
 				+ this.getExpressionStatementCount() + LINE_SEPARATOR);
 		builder.append("FIELD_ACCESS\t:\t" + this.getFieldAccessCount()
 				+ LINE_SEPARATOR);
+		builder.append("FIELD_DECLARATION\t:\t"
+				+ this.getFieldDeclarationCount() + LINE_SEPARATOR);
 		builder.append("FOR_STATEMENT\t:\t" + this.getForStatementCount()
 				+ LINE_SEPARATOR);
 		builder.append("IF_STATEMENT\t:\t" + this.getIfStatementCount()
@@ -1396,6 +1400,359 @@ public class VectorData extends AbstractElement {
 				+ LINE_SEPARATOR);
 
 		return builder.toString();
+	}
+
+	/**
+	 * このベクトルをCSV形式で出力
+	 * 
+	 * @param ignoreColumns
+	 *            無視するノード (ノードタイプに対して定義された整数で指定)
+	 * @return
+	 */
+	public final String toCsvRecord(final Collection<Integer> ignoreColumns) {
+		final StringBuilder builder = new StringBuilder();
+
+		if (!ignoreColumns.contains(ANNOTATION_TYPE_DECLARATION)) {
+			builder.append(this.getAnnotationTypeDeclarationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(ANNOTATION_TYPE_MEMBER_DECLARATION)) {
+			builder.append(this.getAnnotationTypeMemberDeclarationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(ANONYMOUS_CLASS_DECLARATION)) {
+			builder.append(this.getAnonymousClassDeclarationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(ARRAY_ACCESS)) {
+			builder.append(this.getArrayAccessCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(ARRAY_CREATION)) {
+			builder.append(this.getArrayCreationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(ARRAY_INITIALIZER)) {
+			builder.append(this.getArrayInitializerCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(ARRAY_TYPE)) {
+			builder.append(this.getArrayTypeCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(ASSERT_STATEMENT)) {
+			builder.append(this.getAssertStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(ASSIGNMENT)) {
+			builder.append(this.getAssignmentCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(BLOCK)) {
+			builder.append(this.getBlockCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(BLOCK_COMMENT)) {
+			builder.append(this.getBlockCommentCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(BOOLEAN_LITERAL)) {
+			builder.append(this.getBooleanLiteralCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(BREAK_STATEMENT)) {
+			builder.append(this.getBreakStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(CAST_EXPRESSION)) {
+			builder.append(this.getCastExpressionCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(CATCH_CLAUSE)) {
+			builder.append(this.getCatchClauseCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(CHARACTER_LITERAL)) {
+			builder.append(this.getCharacterLiteralCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(CLASS_INSTANCE_CREATION)) {
+			builder.append(this.getClassInstanceCreationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(COMPILATION_UNIT)) {
+			builder.append(this.getCompilationUnitCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(CONDITIONAL_EXPRESSION)) {
+			builder.append(this.getConditionalExpressionCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(CONSTRUCTOR_INVOCATION)) {
+			builder.append(this.getConstructorInvocationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(CONTINUE_STATEMENT)) {
+			builder.append(this.getContinueStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(DO_STATEMENT)) {
+			builder.append(this.getDoStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(EMPTY_STATEMENT)) {
+			builder.append(this.getEmptyStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(ENHANCED_FOR_STATEMENT)) {
+			builder.append(this.getEnhancedForStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(ENUM_CONSTANT_DECLARATION)) {
+			builder.append(this.getEnumConstantDeclarationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(ENUM_DECLARATION)) {
+			builder.append(this.getEnumDeclarationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(EXPRESSION_STATEMENT)) {
+			builder.append(this.getExpressionStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(FIELD_ACCESS)) {
+			builder.append(this.getFieldAccessCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(FIELD_DECLARATION)) {
+			builder.append(this.getFieldDeclarationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(FOR_STATEMENT)) {
+			builder.append(this.getForStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(IF_STATEMENT)) {
+			builder.append(this.getIfStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(IMPORT_DECLARATION)) {
+			builder.append(this.getImportDeclarationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(INFIX_EXPRESSION)) {
+			builder.append(this.getInfixExpressionCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(INITIALIZER)) {
+			builder.append(this.getInitializerCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(INSTANCEOF_EXPRESSION)) {
+			builder.append(this.getInstanceofExpressionCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(JAVADOC)) {
+			builder.append(this.getJavadocCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(LABELED_STATEMENT)) {
+			builder.append(this.getLabeledStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(LINE_COMMENT)) {
+			builder.append(this.getLineCommentCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(MARKER_ANNOTATION)) {
+			builder.append(this.getMarkerAnnotationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(MEMBER_REF)) {
+			builder.append(this.getMemberRefCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(MEMBER_VALUE_PAIR)) {
+			builder.append(this.getMemberValuePairCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(METHOD_DECLARATION)) {
+			builder.append(this.getMethodDeclarationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(METHOD_INVOCATION)) {
+			builder.append(this.getMethodInvocationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(METHOD_REF)) {
+			builder.append(this.getMethodRefCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(METHOD_REF_PARAMETER)) {
+			builder.append(this.getMethodRefParameterCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(MODIFIER)) {
+			builder.append(this.getModifierCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(NORMAL_ANNOTATION)) {
+			builder.append(this.getNormalAnnotationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(NULL_LITERAL)) {
+			builder.append(this.getNullLiteralCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(NUMBER_LITERAL)) {
+			builder.append(this.getNumberLiteralCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(PACKAGE_DECLARATION)) {
+			builder.append(this.getPackageDeclarationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(PARAMETERIZED_TYPE)) {
+			builder.append(this.getParameterizedTypeCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(PARENTHESIZED_EXPRESSION)) {
+			builder.append(this.getParenthesizedExpressionCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(POSTFIX_EXPRESSION)) {
+			builder.append(this.getPostfixExpressionCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(PREFIX_EXPRESSION)) {
+			builder.append(this.getPrefixExpressionCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(PRIMITIVE_TYPE)) {
+			builder.append(this.getPrimitiveTypeCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(QUALIFIED_NAME)) {
+			builder.append(this.getQualifiedNameCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(QUALIFIED_TYPE)) {
+			builder.append(this.getQualifiedTypeCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(RETURN_STATEMENT)) {
+			builder.append(this.getReturnStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(SIMPLE_NAME)) {
+			builder.append(this.getSimpleNameCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(SIMPLE_TYPE)) {
+			builder.append(this.getSimpleTypeCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(SINGLE_MEMBER_ANNOTATION)) {
+			builder.append(this.getSingleMemberAnnotationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(SINGLE_VARIABLE_DECLARATION)) {
+			builder.append(this.getSingleVariableDeclarationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(STRING_LITERAL)) {
+			builder.append(this.getStringLiteralCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(SUPER_CONSTRUCTOR_INVOCATION)) {
+			builder.append(this.getSuperConstructorInvocationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(SUPER_FIELD_ACCESS)) {
+			builder.append(this.getSuperFieldAccessCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(SUPER_METHOD_INVOCATION)) {
+			builder.append(this.getSuperMethodInvocationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(SWITCH_CASE)) {
+			builder.append(this.getSwitchCaseCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(SWITCH_STATEMENT)) {
+			builder.append(this.getSwitchStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(SYNCHRONIZED_STATEMENT)) {
+			builder.append(this.getSynchronizedStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(TAG_ELEMENT)) {
+			builder.append(this.getTagElementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(TEXT_ELEMENT)) {
+			builder.append(this.getTextElementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(THIS_EXPRESSION)) {
+			builder.append(this.getThisExpressionCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(THROW_STATEMENT)) {
+			builder.append(this.getThrowStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(TRY_STATEMENT)) {
+			builder.append(this.getTryStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(TYPE_DECLARATION)) {
+			builder.append(this.getTypeDeclarationCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(TYPE_DECLARATION_STATEMENT)) {
+			builder.append(this.getTypeDeclarationStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(TYPE_LITERAL)) {
+			builder.append(this.getTypeLiteralCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(TYPE_PARAMETER)) {
+			builder.append(this.getTypeParameterCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(VARIABLE_DECLARATION_EXPRESSION)) {
+			builder.append(this.getVariableDeclarationExpressionCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(VARIABLE_DECLARATION_FRAGMENT)) {
+			builder.append(this.getVariableDeclarationFragmentCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(VARIABLE_DECLARATION_STATEMENT)) {
+			builder.append(this.getVariableDeclarationStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(WHILE_STATEMENT)) {
+			builder.append(this.getWhileStatementCount() + ",");
+		}
+
+		if (!ignoreColumns.contains(WILDCARD_TYPE)) {
+			builder.append(this.getWildcardTypeCount() + ",");
+		}
+
+		if (builder.length() > 0) {
+			builder.deleteCharAt(builder.length() - 1);
+		}
+
+		return builder.toString();
+	}
+
+	public String toCsvRecord() {
+		return this.toCsvRecord(new HashSet<Integer>());
 	}
 
 }

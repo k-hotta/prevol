@@ -55,4 +55,9 @@ public class VectorPairDataRetriever extends
 		
 		return retrieve(query);
 	}
+
+	@Override
+	protected String getIdColumnName() {
+		return "VECTOR_LINK_ID";
+	}
 }
