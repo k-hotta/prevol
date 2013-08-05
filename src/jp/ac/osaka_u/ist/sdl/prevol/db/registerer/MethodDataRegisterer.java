@@ -21,7 +21,7 @@ public class MethodDataRegisterer extends AbstractElementRegisterer<MethodData> 
 
 	@Override
 	protected String createPreparedStatementQueue() {
-		return "insert into METHOD values (?,?,?,?,?,?,?,?,?,?)";
+		return "insert into METHOD values (?,?,?,?,?,?,?,?,?,?,?)";
 	}
 
 	@Override
@@ -38,6 +38,7 @@ public class MethodDataRegisterer extends AbstractElementRegisterer<MethodData> 
 		pstmt.setString(++column, element.getCrd().toString());
 		pstmt.setLong(++column, element.getVectorId());
 		pstmt.setInt(++column, element.getHash());
+		pstmt.setString(++column, element.getParameters());
 	}
 
 	/**

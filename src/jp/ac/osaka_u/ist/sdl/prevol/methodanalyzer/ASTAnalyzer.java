@@ -35,6 +35,7 @@ import org.eclipse.jdt.core.dom.EnhancedForStatement;
 import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.SwitchStatement;
 import org.eclipse.jdt.core.dom.SynchronizedStatement;
@@ -196,6 +197,17 @@ public class ASTAnalyzer extends ASTVisitor {
 		final int endLine = root.getLineNumber(node.getStartPosition()
 				+ node.getLength());
 
+		// 引数を特定
+		final StringBuilder parametersBuilder = new StringBuilder();
+		for (Object obj : node.parameters()) {
+			SingleVariableDeclaration param = (SingleVariableDeclaration) obj;
+			parametersBuilder.append(param.toString() + ",");
+		}
+		if (parametersBuilder.length() > 0) {
+			parametersBuilder.deleteCharAt(parametersBuilder.length() - 1);
+		}
+		final String parametersStr = parametersBuilder.toString();
+
 		// ベクトルデータの算出
 		final NodeTypeCounter counter = new NodeTypeCounter();
 		node.accept(counter);
@@ -214,7 +226,8 @@ public class ASTAnalyzer extends ASTVisitor {
 		// 今解析しているメソッドの endRevisionId は暫定的に最終リビジョンのIDに設定
 		final MethodData methodData = new MethodData(revision.getId(),
 				latestRevision.getId(), ownerFileId, methodName, startLine,
-				endLine, vectorData.getId(), crd, node.toString().hashCode());
+				endLine, vectorData.getId(), crd, node.toString().hashCode(),
+				parametersStr);
 		this.methods.put(methodData.getId(), methodData);
 
 		// ベクトルデータを登録
