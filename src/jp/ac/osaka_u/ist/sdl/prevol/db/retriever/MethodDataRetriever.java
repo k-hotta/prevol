@@ -35,9 +35,10 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 		final String crd = rs.getString(++column);
 		final long vectorId = rs.getLong(++column);
 		final int hash = rs.getInt(++column);
+		final String parameter = rs.getString(++column);
 
 		return new MethodData(id, startRevisionId, endRevisionId, fileId, name,
-				startLine, endLine, vectorId, crd, hash);
+				startLine, endLine, vectorId, crd, hash, parameter);
 	}
 
 	@Override
@@ -56,12 +57,11 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 	protected String getFileIdColumnName() {
 		return "OWNER_FILE_ID";
 	}
-	
+
 	@Override
 	protected String getIdColumnName() {
 		return "METHOD_ID";
 	}
-
 
 	/**
 	 * 指定されたリビジョンに存在するメソッドをすべて取得

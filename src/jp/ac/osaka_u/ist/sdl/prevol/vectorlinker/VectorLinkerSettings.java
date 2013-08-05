@@ -46,6 +46,11 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 	private final boolean ignoreUnchangedMethodPairs;
 
 	/**
+	 * CRDのrefactor-lookup機能を使うかどうか
+	 */
+	private final boolean useRefactorLookup;
+
+	/**
 	 * メッセージ出力のレベル
 	 */
 	private final MessagePrinterMode printMode;
@@ -54,13 +59,14 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 			final long startRevision, final long endRevision,
 			final double similarityThreshold,
 			final boolean ignoreUnchangedMethodPairs,
-			final MessagePrinterMode printMode) {
+			final boolean useRefactorLookup, final MessagePrinterMode printMode) {
 		this.dbPath = dbPath;
 		this.threads = threads;
 		this.startRevision = startRevision;
 		this.endRevision = endRevision;
 		this.similarityThreshold = similarityThreshold;
 		this.ignoreUnchangedMethodPairs = ignoreUnchangedMethodPairs;
+		this.useRefactorLookup = useRefactorLookup;
 		this.printMode = printMode;
 	}
 
@@ -86,6 +92,10 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 
 	final boolean isIgnoreUnchangedMethodPairs() {
 		return ignoreUnchangedMethodPairs;
+	}
+
+	final boolean isUseRefactorLookup() {
+		return useRefactorLookup;
 	}
 
 	final MessagePrinterMode getPrintMode() {
@@ -128,6 +138,15 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 			}
 		}
 
+		boolean useRefactorLookup = DEFALUT_USE_REFACTOR_LOOKUP;
+		if (cmd.hasOption("rl")) {
+			if (cmd.getOptionValue("rl").equalsIgnoreCase("no")) {
+				useRefactorLookup = false;
+			} else {
+				useRefactorLookup = true;
+			}
+		}
+
 		MessagePrinterMode mode = DEFAULT_PRINT_MODE;
 		if (cmd.hasOption("v")) {
 			final String value = cmd.getOptionValue("v");
@@ -142,7 +161,7 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 
 		return new VectorLinkerSettings(dbPath, threads, startRevision,
 				endRevision, similarityThreshold, ignoreUnchangedMethodPairs,
-				mode);
+				useRefactorLookup, mode);
 	}
 
 	/**
@@ -202,6 +221,14 @@ class VectorLinkerSettings implements DefaultVectorLinkerSettingValues {
 			iu.setArgs(1);
 			iu.setRequired(false);
 			options.addOption(iu);
+		}
+
+		{
+			final Option rl = new Option("rl", "refactor lookup", true,
+					"use refactor lookup");
+			rl.setArgs(1);
+			rl.setRequired(false);
+			options.addOption(rl);
 		}
 
 		return options;

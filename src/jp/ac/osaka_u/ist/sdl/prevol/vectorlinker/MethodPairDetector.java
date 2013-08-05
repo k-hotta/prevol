@@ -2,6 +2,7 @@ package jp.ac.osaka_u.ist.sdl.prevol.vectorlinker;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,38 +73,27 @@ public class MethodPairDetector {
 	}
 
 	/**
-	 * 類似度テーブルを埋める
+	 * 類似度テーブルと希望リストを埋める <br>
+	 * 条件を満たすもののみを突っ込む
 	 * 
 	 * @param beforeMethods
 	 * @param afterMethods
 	 */
-	private void fillSimilarityTable(final Set<MethodData> beforeMethods,
-			final Set<MethodData> afterMethods) {
-		for (final MethodData beforeMethod : beforeMethods) {
-			for (final MethodData afterMethod : afterMethods) {
-				similarityTable.changeValueAt(beforeMethod.getId(), afterMethod
-						.getId(), StringSimilarityCalculator
-						.calcLebenshteinDistanceBasedSimilarity(
-								beforeMethod.getCrd(), afterMethod.getCrd()));
-			}
-		}
-	}
-
-	/**
-	 * 希望順リストを特定する
-	 * 
-	 * @param beforeMethods
-	 * @param afterMethods
-	 * @return
-	 */
-	private void fillWishLists(final Set<MethodData> beforeMethods,
+	private void fillSimilarityTableAndWishList(
+			final Set<MethodData> beforeMethods,
 			final Set<MethodData> afterMethods) {
 		for (final MethodData beforeMethod : beforeMethods) {
 			final Map<MethodData, Double> similarities = new TreeMap<MethodData, Double>();
 
 			for (final MethodData afterMethod : afterMethods) {
-				similarities.put(afterMethod, similarityTable.getValueAt(
-						beforeMethod.getId(), afterMethod.getId()));
+				final double similarity = StringSimilarityCalculator
+						.calcLebenshteinDistanceBasedSimilarity(
+								beforeMethod.getCrd(), afterMethod.getCrd());
+				if (satisfyAllConditions(beforeMethod, afterMethod, similarity)) {
+					similarityTable.changeValueAt(beforeMethod.getId(),
+							afterMethod.getId(), similarity);
+					similarities.put(afterMethod, similarity);
+				}
 			}
 
 			final Queue<MethodData> wishList = sortWithValues(similarities);
@@ -172,20 +162,20 @@ public class MethodPairDetector {
 		afterMethods.removeAll(reversedResult.keySet());
 
 		// 残ったもので類似度テーブルと希望リストを埋める
-		fillSimilarityTable(beforeMethods, afterMethods);
-		fillWishLists(beforeMethods, afterMethods);
+		fillSimilarityTableAndWishList(beforeMethods, afterMethods);
 
 		// 相手が見つかっていない前リビジョンメソッドたち
 		final List<MethodData> unmarriedBeforeMethods = new ArrayList<MethodData>();
 		unmarriedBeforeMethods.addAll(beforeMethods);
 
-		// 見つかったペアの数が前リビジョンメソッド数と後リビジョンメソッド数のうち小さいほうに達するまで繰り返す
-		while (reversedResult.size() < Math.min(this.beforeMethods.size(),
-				this.afterMethods.size())) {
+		// 全メソッドがアタックできる相手がいなくなるまでがんばる
+		while (true) {
 
 			// 前リビジョンメソッドたちにアタックさせる
-			// 返り値は void だけど reversedResult と unmarriedBeforeMethods の中身は変化する
-			processAllProposes(reversedResult, unmarriedBeforeMethods);
+			// reversedResult と unmarriedBeforeMethods の中身は変化する
+			if (processAllProposes(reversedResult, unmarriedBeforeMethods)) {
+				break;
+			}
 
 		}
 
@@ -225,14 +215,15 @@ public class MethodPairDetector {
 	/**
 	 * 相手がいない前リビジョンメソッド全員にアタックさせる <br>
 	 * 1回のメソッド呼び出しで，それぞれの前リビジョンメソッドがアタックする相手は1人だけ <br>
-	 * 引数のマップとリストはどちらもこのメソッド呼び出しで中身に変化が生じる
+	 * 引数のマップとリストはどちらもこのメソッド呼び出しで中身に変化が生じる <br>
 	 * 
 	 * @param reversedResult
 	 *            見つかったペアを入れるマップ
 	 * @param unmarriedBeforeMethods
 	 *            相手がいない前リビジョンメソッドのリスト
+	 * @return ループ終了条件が満たされたら true
 	 */
-	private void processAllProposes(
+	private boolean processAllProposes(
 			final Map<MethodData, MethodData> reversedResult,
 			final List<MethodData> unmarriedBeforeMethods) {
 		// このループで相手が見つかった変更前メソッドの集合
@@ -240,6 +231,10 @@ public class MethodPairDetector {
 
 		// このループでパートナーから振られた変更前メソッドの集合
 		final Set<MethodData> dumpedBeforeMethods = new HashSet<MethodData>();
+
+		// 誰か一人でもアタックを試みたメソッドがいるかどうか？
+		// このメソッドの最後まで到達してもこれがfalseなら，全員アタック可能な相手がいなくなったということ
+		boolean anyoneAttacked = false;
 
 		/*
 		 * 相手が見つかっていない前リビジョンメソッドが，後リビジョンメソッドにアタック
@@ -255,6 +250,8 @@ public class MethodPairDetector {
 			if (proposedMethod == null) {
 				continue;
 			}
+
+			anyoneAttacked = true;
 
 			/*
 			 * アタックする相手となる後リビジョンのメソッドにすでにパートナーがいるかどうかで分岐
@@ -311,6 +308,8 @@ public class MethodPairDetector {
 
 		// 相手がいないリストに，今回振られたメソッドたちを追加
 		unmarriedBeforeMethods.addAll(dumpedBeforeMethods);
+
+		return !anyoneAttacked;
 	}
 
 	/**
@@ -325,7 +324,8 @@ public class MethodPairDetector {
 		final Map<MethodData, MethodData> result = new TreeMap<MethodData, MethodData>();
 
 		for (final Map.Entry<MethodData, MethodData> entry : target.entrySet()) {
-			if (satisfyConditions(entry.getValue(), entry.getKey())) {
+			if (satisfyConditionsWithoutSimilarity(entry.getValue(),
+					entry.getKey())) {
 				result.put(entry.getValue(), entry.getKey());
 			}
 		}
@@ -334,27 +334,90 @@ public class MethodPairDetector {
 	}
 
 	/**
-	 * 引数で与えられたメソッド対が考慮対象か否かを判別する
+	 * 引数で与えられたメソッド対が考慮対象か否かを判別する <br>
+	 * 類似度と変化のあるなし両方を判別
 	 * 
 	 * @param beforeMethod
 	 * @param afterMethod
 	 * @return
 	 */
-	private boolean satisfyConditions(final MethodData beforeMethod,
-			final MethodData afterMethod) {
+	private boolean satisfyAllConditions(final MethodData beforeMethod,
+			final MethodData afterMethod, final double similarity) {
 		// 類似度が閾値以上か？
-		// similarityTable に値が無いのに対応付けされてるものは，CRDが一致している(ハズ)
-		final double similarity = (similarityTable.containsValueAt(
-				beforeMethod.getId(), afterMethod.getId())) ? similarityTable
-				.getValueAt(beforeMethod.getId(), afterMethod.getId()) : 1.0;
 		final boolean satisfySimilarityThreshold = (similarity >= threshold);
 
+		// ハッシュ値に変化はあるか?
+		// 変化のあるなしを無視する設定ならば恒真
+		final boolean satisfyOtherCondition = satisfyConditionsWithoutSimilarity(
+				beforeMethod, afterMethod);
+
+		// どちらも満たしている場合のみが対象となる
+		return satisfySimilarityThreshold && satisfyOtherCondition;
+	}
+
+	/**
+	 * 引数で与えられたメソッド対が考慮対象か否かを判別する <br>
+	 * 変化のあるなしのみ判別
+	 * 
+	 * @param beforeMethod
+	 * @param afterMethod
+	 * @return
+	 */
+	private boolean satisfyConditionsWithoutSimilarity(
+			final MethodData beforeMethod, final MethodData afterMethod) {
 		// ハッシュ値に変化はあるか?
 		// 変化のあるなしを無視する設定ならば恒真
 		final boolean satisfyChangedCondition = (ignoreUnchangedMethodPairs) ? (beforeMethod
 				.getHash() != afterMethod.getHash()) : true;
 
-		// どちらも満たしている場合のみが対象となる
-		return satisfySimilarityThreshold && satisfyChangedCondition;
+		final boolean sameName = (beforeMethod.getName().equals(afterMethod
+				.getName()));
+		final boolean sameParameter = isSameParameter(
+				beforeMethod.getParameters(), afterMethod.getParameters());
+
+		final boolean satisfyRefactorLookup = sameName || sameParameter;
+
+		return satisfyChangedCondition && satisfyRefactorLookup;
 	}
+
+	/**
+	 * 引数で与えられたパラメータ文字列が同じものかどうかを判別
+	 * 
+	 * @param parameter1
+	 * @param parameter2
+	 * @return
+	 */
+	private boolean isSameParameter(final String parameter1,
+			final String parameter2) {
+		final String[] splitedParameter1 = parameter1.split(",");
+		final String[] splitedParameter2 = parameter2.split(",");
+
+		if (splitedParameter1.length != splitedParameter2.length) {
+			return false;
+		}
+
+		final Map<String, Integer> typeCount1 = new HashMap<String, Integer>();
+		final Map<String, Integer> typeCount2 = new HashMap<String, Integer>();
+
+		for (final String type : splitedParameter1) {
+			int current = 1;
+			if (typeCount1.containsKey(type)) {
+				current += typeCount1.get(type);
+				typeCount1.remove(type);
+			}
+			typeCount1.put(type, current);
+		}
+
+		for (final String type : splitedParameter2) {
+			int current = 1;
+			if (typeCount2.containsKey(type)) {
+				current += typeCount2.get(type);
+				typeCount2.remove(type);
+			}
+			typeCount2.put(type, current);
+		}
+
+		return typeCount1.equals(typeCount2);
+	}
+
 }

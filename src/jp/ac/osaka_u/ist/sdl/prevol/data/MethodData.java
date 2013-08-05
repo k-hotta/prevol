@@ -63,6 +63,11 @@ public class MethodData extends AbstractElement {
 	private final int hash;
 
 	/**
+	 * このメソッドの引数の型をつなげた文字列
+	 */
+	private final String parameters;
+
+	/**
 	 * インスタンス復元用コンストラクタ
 	 * 
 	 * @param id
@@ -78,7 +83,7 @@ public class MethodData extends AbstractElement {
 	public MethodData(final long id, final long startRevisionId,
 			final long endRevisionId, final long fileId, final String name,
 			final int startLine, final int endLine, final long vectorId,
-			final String crdstr, final int hash) {
+			final String crdstr, final int hash, final String parameters) {
 		super(id);
 		this.startRevisionId = startRevisionId;
 		this.endRevisionId = endRevisionId;
@@ -89,6 +94,7 @@ public class MethodData extends AbstractElement {
 		this.vectorId = vectorId;
 		this.crd = crdstr;
 		this.hash = hash;
+		this.parameters = parameters;
 	}
 
 	/**
@@ -104,9 +110,10 @@ public class MethodData extends AbstractElement {
 	public MethodData(final long startRevisionId, final long endRevisionId,
 			final long fileId, final String name, final int startLine,
 			final int endLine, final long vectorId, final CRD crd,
-			final int hash) {
+			final int hash, final String parameters) {
 		this(count.getAndIncrement(), startRevisionId, endRevisionId, fileId,
-				name, startLine, endLine, vectorId, crd.toString(), hash);
+				name, startLine, endLine, vectorId, crd.toString(), hash,
+				parameters);
 	}
 
 	/*
@@ -149,12 +156,16 @@ public class MethodData extends AbstractElement {
 		return hash;
 	}
 
+	public String getParameters() {
+		return parameters;
+	}
+
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("rev." + startRevisionId + LINE_SEPARATOR);
-		builder.append(fileId + " " + name + " " + startLine + "-" + endLine
-				+ LINE_SEPARATOR);
+		builder.append(fileId + " " + name + " (" + parameters + ") "
+				+ startLine + "-" + endLine + LINE_SEPARATOR);
 		builder.append(LINE_SEPARATOR);
 		builder.append("CRD" + LINE_SEPARATOR);
 		builder.append(crd);

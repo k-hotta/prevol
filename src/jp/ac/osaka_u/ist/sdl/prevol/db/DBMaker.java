@@ -174,7 +174,8 @@ public class DBMaker {
 		builder.append("END_LINE INTEGER CHECK (END_LINE >= 0),");
 		builder.append("CRD TEXT NOT NULL,");
 		builder.append("VECTOR_ID LONG,");
-		builder.append("METHOD_HASH INTEGER");
+		builder.append("METHOD_HASH INTEGER,");
+		builder.append("METHOD_PARAMETER TEXT NOT NULL");
 		builder.append(")");
 
 		return builder.toString();
