@@ -1,5 +1,9 @@
 package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinterMode;
 
 import org.apache.commons.cli.CommandLine;
@@ -32,15 +36,22 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 	private final String query;
 
 	/**
+	 * 無視するノードの種類を保持するリスト (各ノードタイプに割り当てられた整数)
+	 */
+	private final List<Integer> ignoreList;
+
+	/**
 	 * 出力レベル
 	 */
 	private final MessagePrinterMode printMode;
 
 	private CSVWriterSettings(final String dbPath, final String csvPath,
-			final String query, MessagePrinterMode printMode) {
+			final String query, List<Integer> ignoreList,
+			MessagePrinterMode printMode) {
 		this.dbPath = dbPath;
 		this.csvPath = csvPath;
 		this.query = query;
+		this.ignoreList = ignoreList;
 		this.printMode = printMode;
 	}
 
@@ -54,6 +65,10 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 
 	final String getQuery() {
 		return query;
+	}
+
+	final List<Integer> getIgnoreList() {
+		return Collections.unmodifiableList(ignoreList);
 	}
 
 	final MessagePrinterMode getPrintMode() {
@@ -85,7 +100,19 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 			}
 		}
 
-		return new CSVWriterSettings(dbPath, csvPath, query, mode);
+		final List<Integer> ignoreList = new ArrayList<Integer>();
+		if (cmd.hasOption("ig")) {
+			final String[] ignoreTargets = cmd.getOptionValue("ig").split(",");
+			for (final String ignoreTarget : ignoreTargets) {
+				ignoreList.add(Integer.parseInt(ignoreTarget));
+			}
+		} else {
+			for (final int defaultIgnoreTarget : DEFAULT_IGNORE_LIST) {
+				ignoreList.add(defaultIgnoreTarget);
+			}
+		}
+
+		return new CSVWriterSettings(dbPath, csvPath, query, ignoreList, mode);
 	}
 
 	private static Options defineOptions() {
@@ -118,6 +145,14 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 			v.setArgs(1);
 			v.setRequired(false);
 			options.addOption(v);
+		}
+
+		{
+			final Option ig = new Option("ig", "ignore", true,
+					"ignored elements");
+			ig.setArgs(1);
+			ig.setRequired(false);
+			options.addOption(ig);
 		}
 
 		return options;

@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -115,14 +116,17 @@ public class CSVWriter {
 
 		// 出力
 		MessagePrinter.stronglyPrintln("printing the result ... ");
+		
+		final List<Integer> ignoreList = settings.getIgnoreList();
+		
 		for (final VectorPairData vectorPair : vectorPairs) {
 			final VectorData beforeVector = vectorsMap.get(vectorPair
 					.getBeforeVectorId());
 			final VectorData afterVector = vectorsMap.get(vectorPair
 					.getAfterVectorId());
 
-			pw.println(beforeVector.toCsvRecord() + ","
-					+ afterVector.toCsvRecord());
+			pw.println(beforeVector.toCsvRecord(ignoreList) + ","
+					+ afterVector.toCsvRecord(ignoreList));
 		}
 		MessagePrinter.stronglyPrintln("\tcomplete!!");
 	}

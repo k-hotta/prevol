@@ -1,5 +1,7 @@
 package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
 
+import static org.eclipse.jdt.core.dom.ASTNode.*;
+
 import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinterMode;
 
 /**
@@ -11,7 +13,10 @@ import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinterMode;
 interface DefaultCSVWritterSettingValues {
 
 	static String DEFAULT_QUERY = "select * from VECTOR_LINK";
-	
+
 	static final MessagePrinterMode DEFAULT_PRINT_MODE = MessagePrinterMode.VERBOSE;
+
+	static final int[] DEFAULT_IGNORE_LIST = new int[] { JAVADOC, LINE_COMMENT,
+			BLOCK_COMMENT };
 
 }
