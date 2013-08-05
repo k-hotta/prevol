@@ -2,6 +2,7 @@ package jp.ac.osaka_u.ist.sdl.prevol.vectorlinker;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -323,7 +324,8 @@ public class MethodPairDetector {
 		final Map<MethodData, MethodData> result = new TreeMap<MethodData, MethodData>();
 
 		for (final Map.Entry<MethodData, MethodData> entry : target.entrySet()) {
-			if (satisfyConditionsWithoutSimilarity(entry.getValue(), entry.getKey())) {
+			if (satisfyConditionsWithoutSimilarity(entry.getValue(),
+					entry.getKey())) {
 				result.put(entry.getValue(), entry.getKey());
 			}
 		}
@@ -346,11 +348,11 @@ public class MethodPairDetector {
 
 		// ハッシュ値に変化はあるか?
 		// 変化のあるなしを無視する設定ならば恒真
-		final boolean satisfyChangedCondition = satisfyConditionsWithoutSimilarity(
+		final boolean satisfyOtherCondition = satisfyConditionsWithoutSimilarity(
 				beforeMethod, afterMethod);
 
 		// どちらも満たしている場合のみが対象となる
-		return satisfySimilarityThreshold && satisfyChangedCondition;
+		return satisfySimilarityThreshold && satisfyOtherCondition;
 	}
 
 	/**
@@ -361,13 +363,61 @@ public class MethodPairDetector {
 	 * @param afterMethod
 	 * @return
 	 */
-	private boolean satisfyConditionsWithoutSimilarity(final MethodData beforeMethod,
-			final MethodData afterMethod) {
+	private boolean satisfyConditionsWithoutSimilarity(
+			final MethodData beforeMethod, final MethodData afterMethod) {
 		// ハッシュ値に変化はあるか?
 		// 変化のあるなしを無視する設定ならば恒真
 		final boolean satisfyChangedCondition = (ignoreUnchangedMethodPairs) ? (beforeMethod
 				.getHash() != afterMethod.getHash()) : true;
 
-		return satisfyChangedCondition;
+		final boolean sameName = (beforeMethod.getName().equals(afterMethod
+				.getName()));
+		final boolean sameParameter = isSameParameter(
+				beforeMethod.getParameters(), afterMethod.getParameters());
+
+		final boolean satisfyRefactorLookup = sameName || sameParameter;
+
+		return satisfyChangedCondition && satisfyRefactorLookup;
 	}
+
+	/**
+	 * 引数で与えられたパラメータ文字列が同じものかどうかを判別
+	 * 
+	 * @param parameter1
+	 * @param parameter2
+	 * @return
+	 */
+	private boolean isSameParameter(final String parameter1,
+			final String parameter2) {
+		final String[] splitedParameter1 = parameter1.split(",");
+		final String[] splitedParameter2 = parameter2.split(",");
+
+		if (splitedParameter1.length != splitedParameter2.length) {
+			return false;
+		}
+
+		final Map<String, Integer> typeCount1 = new HashMap<String, Integer>();
+		final Map<String, Integer> typeCount2 = new HashMap<String, Integer>();
+
+		for (final String type : splitedParameter1) {
+			int current = 1;
+			if (typeCount1.containsKey(type)) {
+				current += typeCount1.get(type);
+				typeCount1.remove(type);
+			}
+			typeCount1.put(type, current);
+		}
+
+		for (final String type : splitedParameter2) {
+			int current = 1;
+			if (typeCount2.containsKey(type)) {
+				current += typeCount2.get(type);
+				typeCount2.remove(type);
+			}
+			typeCount2.put(type, current);
+		}
+
+		return typeCount1.equals(typeCount2);
+	}
+
 }
