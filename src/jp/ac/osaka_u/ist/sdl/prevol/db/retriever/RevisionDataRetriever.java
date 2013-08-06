@@ -51,7 +51,7 @@ public class RevisionDataRetriever extends
 	 * @return
 	 * @throws SQLException
 	 */
-	public SortedSet<RevisionData> getRevisionsInSpecifiedRange(
+	public SortedSet<RevisionData> retrieveRevisionsInSpecifiedRange(
 			final long startRevisionNum, final long endRevisionNum)
 			throws SQLException {
 		final String query = "select * from " + getTableName() + " where "

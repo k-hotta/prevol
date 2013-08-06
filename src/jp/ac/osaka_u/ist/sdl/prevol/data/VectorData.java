@@ -1755,11 +1755,13 @@ public class VectorData extends AbstractElement {
 		return this.toCsvRecord(new HashSet<Integer>());
 	}
 
-	public static String getCsvHeader() {
-		return getCsvHeader(new HashSet<Integer>());
+	public static String getEvaluationCsvHeader(
+			final Collection<Integer> ignoreColumns) {
+		return getCsvHeader(ignoreColumns, "BEFORE_");
 	}
 
-	public static String getCsvHeader(final Collection<Integer> ignoreColumns) {
+	public static String getTrainingCsvHeader(
+			final Collection<Integer> ignoreColumns) {
 		return getCsvHeader(ignoreColumns, "BEFORE_") + ","
 				+ getCsvHeader(ignoreColumns, "AFTER_");
 	}

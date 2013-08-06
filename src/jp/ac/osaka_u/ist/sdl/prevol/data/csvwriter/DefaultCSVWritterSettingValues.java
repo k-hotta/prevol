@@ -12,7 +12,7 @@ import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinterMode;
  */
 interface DefaultCSVWritterSettingValues {
 
-	static String DEFAULT_QUERY = "select * from VECTOR_LINK";
+	static String DEFAULT_QUERY = null;
 
 	static long DEFAULT_START_REVISION = 1;
 

@@ -10,10 +10,12 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import jp.ac.osaka_u.ist.sdl.prevol.data.MethodData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorPairData;
 import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
+import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.MethodDataRetriever;
 import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinter;
 
 /**
@@ -41,7 +43,11 @@ public class CSVWriter {
 
 			initialize(settings);
 
-			mainProcess(settings);
+			if (settings.getMode() == CSVWriterMode.TRAINING) {
+				writeTrainingSet(settings);
+			} else if (settings.getMode() == CSVWriterMode.EVALUATION) {
+				writeEvaluationSet(settings);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -78,12 +84,12 @@ public class CSVWriter {
 	}
 
 	/**
-	 * メインの処理
+	 * メインの処理 (Training モード)
 	 * 
 	 * @param settings
 	 * @throws Exception
 	 */
-	private static void mainProcess(final CSVWriterSettings settings)
+	private static void writeTrainingSet(final CSVWriterSettings settings)
 			throws Exception {
 		// クエリがデフォルトの場合，指定された番号のリビジョンのIDを復元してクエリに反映
 		String query = settings.getQuery();
@@ -99,7 +105,7 @@ public class CSVWriter {
 					.getLatestRevisionBeforeSpecifiedRevision(
 							settings.getEndRevision());
 
-			query = query + " where BEFORE_REVISION_ID >= "
+			query = "select * from VECTOR_LINK where BEFORE_REVISION_ID >= "
 					+ startRevision.getId() + " and BEFORE_REVISION_ID <= "
 					+ endRevision.getId();
 		}
@@ -142,7 +148,7 @@ public class CSVWriter {
 		final List<Integer> ignoreList = settings.getIgnoreList();
 
 		// ヘッダを出力
-		pw.println(VectorData.getCsvHeader(ignoreList));
+		pw.println(VectorData.getTrainingCsvHeader(ignoreList));
 
 		// 各レコードを出力
 		for (final VectorPairData vectorPair : vectorPairs) {
@@ -155,6 +161,66 @@ public class CSVWriter {
 					+ afterVector.toCsvRecord(ignoreList));
 		}
 		MessagePrinter.stronglyPrintln("\tcomplete!!");
+	}
+
+	/**
+	 * メインの処理 (Evaluation モード)
+	 * 
+	 * @param settings
+	 * @throws Exception
+	 */
+	private static void writeEvaluationSet(final CSVWriterSettings settings)
+			throws Exception {
+		// メソッド情報を復元
+		MessagePrinter.stronglyPrintln("retrieving methods ... ");
+
+		final Set<MethodData> methods = new TreeSet<MethodData>();
+
+		if (settings.isDefaultQuery()) {
+			final Set<RevisionData> revisions = DBConnection
+					.getInstance()
+					.getRevisionRetriever()
+					.retrieveRevisionsInSpecifiedRange(
+							settings.getStartRevision(),
+							settings.getEndRevision());
+
+			final MethodDataRetriever methodRetriever = DBConnection
+					.getInstance().getMethodRetriever();
+			for (final RevisionData revision : revisions) {
+				methods.addAll(methodRetriever
+						.retrieveInSpecifiedRevision(revision.getId()));
+			}
+		} else {
+			methods.addAll(DBConnection.getInstance().getMethodRetriever()
+					.retrieve(settings.getQuery()));
+		}
+
+		MessagePrinter.stronglyPrintln("\t" + methods.size()
+				+ " methods were retrieved");
+
+		// 復元すべきベクトルのIDを取得
+		final Set<Long> vectorIds = new TreeSet<Long>();
+		for (final MethodData method : methods) {
+			vectorIds.add(method.getVectorId());
+		}
+		MessagePrinter.stronglyPrintln();
+
+		final List<Integer> ignoreList = settings.getIgnoreList();
+
+		// 出力
+		MessagePrinter.stronglyPrintln("printing the result ... ");
+
+		// ヘッダを出力
+		pw.println(VectorData.getEvaluationCsvHeader(ignoreList));
+
+		final Set<VectorData> vectors = DBConnection.getInstance()
+				.getVectorRetriever().retrieveWithIds(vectorIds);
+
+		for (final VectorData vector : vectors) {
+			pw.println(vector.toCsvRecord(ignoreList));
+		}
+
+		MessagePrinter.stronglyPrintln("\tcomplete!");
 	}
 
 	/**
