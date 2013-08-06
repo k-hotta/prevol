@@ -91,7 +91,7 @@ public class TrainingSetWriterSettings implements
 		return startRevision;
 	}
 
-	final long endRevision() {
+	final long getEndRevision() {
 		return endRevision;
 	}
 

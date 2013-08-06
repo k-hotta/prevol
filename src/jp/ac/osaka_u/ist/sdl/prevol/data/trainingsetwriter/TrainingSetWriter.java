@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorPairData;
 import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
@@ -84,12 +85,31 @@ public class TrainingSetWriter {
 	 */
 	private static void mainProcess(final TrainingSetWriterSettings settings)
 			throws Exception {
+		// クエリがデフォルトの場合，指定された番号のリビジョンのIDを復元してクエリに反映
+		String query = settings.getQuery();
+		if (settings.isDefaultQuery()) {
+			final RevisionData startRevision = DBConnection
+					.getInstance()
+					.getRevisionRetriever()
+					.getOldestRevisionAfterSpecifiedRevision(
+							settings.getStartRevision());
+			final RevisionData endRevision = DBConnection
+					.getInstance()
+					.getRevisionRetriever()
+					.getLatestRevisionBeforeSpecifiedRevision(
+							settings.getEndRevision());
+
+			query = query + " where BEFORE_REVISION_ID >= "
+					+ startRevision.getId() + " and BEFORE_REVISION_ID <= "
+					+ endRevision.getId();
+		}
+
 		// ベクトルペア情報を復元
 		MessagePrinter.stronglyPrint("retrieving vector pairs");
-		MessagePrinter.print(" with \"" + settings.getQuery() + "\"");
+		MessagePrinter.print(" with \"" + query + "\"");
 		MessagePrinter.stronglyPrintln(" ... ");
 		final Set<VectorPairData> vectorPairs = DBConnection.getInstance()
-				.getVectorPairRetriever().retrieve(settings.getQuery());
+				.getVectorPairRetriever().retrieve(query);
 		MessagePrinter.stronglyPrintln("\t" + vectorPairs.size()
 				+ " pairs were retrieved");
 		MessagePrinter.stronglyPrintln();
