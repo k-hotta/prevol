@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.data.trainingsetwriter;
 
 import static org.eclipse.jdt.core.dom.ASTNode.*;
 
@@ -10,9 +10,13 @@ import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinterMode;
  * @author k-hotta
  * 
  */
-interface DefaultCSVWritterSettingValues {
+interface DefaultTrainingSetWritterSettingValues {
 
 	static String DEFAULT_QUERY = "select * from VECTOR_LINK";
+
+	static long DEFAULT_START_REVISION = 1;
+
+	static long DEFAULT_END_REVISION = Long.MAX_VALUE;
 
 	static final MessagePrinterMode DEFAULT_PRINT_MODE = MessagePrinterMode.VERBOSE;
 

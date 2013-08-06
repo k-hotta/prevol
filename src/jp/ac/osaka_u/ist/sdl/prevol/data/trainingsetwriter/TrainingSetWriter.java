@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.data.trainingsetwriter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,7 +21,7 @@ import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinter;
  * @author k-hotta
  * 
  */
-public class CSVWriter {
+public class TrainingSetWriter {
 
 	/**
 	 * 出力器
@@ -35,7 +35,7 @@ public class CSVWriter {
 	 */
 	public static void main(String[] args) {
 		try {
-			final CSVWriterSettings settings = CSVWriterSettings
+			final TrainingSetWriterSettings settings = TrainingSetWriterSettings
 					.parseArgs(args);
 
 			initialize(settings);
@@ -55,7 +55,7 @@ public class CSVWriter {
 	 * @param settings
 	 * @throws Exception
 	 */
-	private static void initialize(final CSVWriterSettings settings)
+	private static void initialize(final TrainingSetWriterSettings settings)
 			throws Exception {
 		// 出力レベルを設定
 		MessagePrinter.setMode(settings.getPrintMode());
@@ -82,7 +82,7 @@ public class CSVWriter {
 	 * @param settings
 	 * @throws Exception
 	 */
-	private static void mainProcess(final CSVWriterSettings settings)
+	private static void mainProcess(final TrainingSetWriterSettings settings)
 			throws Exception {
 		// ベクトルペア情報を復元
 		MessagePrinter.stronglyPrint("retrieving vector pairs");

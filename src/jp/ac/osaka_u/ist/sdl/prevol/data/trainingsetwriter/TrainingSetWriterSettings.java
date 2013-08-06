@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.data.trainingsetwriter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +18,8 @@ import org.apache.commons.cli.PosixParser;
  * @author k-hotta
  * 
  */
-public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
+public class TrainingSetWriterSettings implements
+		DefaultTrainingSetWritterSettingValues {
 
 	/**
 	 * 入力データベースファイル
@@ -29,6 +30,16 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 	 * 出力先csvファイル
 	 */
 	private final String csvPath;
+
+	/**
+	 * 開始リビジョン
+	 */
+	private final long startRevision;
+
+	/**
+	 * 終了リビジョン
+	 */
+	private final long endRevision;
 
 	/**
 	 * VectorLink テーブルから要素を抽出するためのクエリ
@@ -45,12 +56,15 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 	 */
 	private final MessagePrinterMode printMode;
 
-	private CSVWriterSettings(final String dbPath, final String csvPath,
-			final String query, List<Integer> ignoreList,
+	private TrainingSetWriterSettings(final String dbPath,
+			final String csvPath, final String query, final long startRevision,
+			final long endRevision, List<Integer> ignoreList,
 			MessagePrinterMode printMode) {
 		this.dbPath = dbPath;
 		this.csvPath = csvPath;
 		this.query = query;
+		this.startRevision = startRevision;
+		this.endRevision = endRevision;
 		this.ignoreList = ignoreList;
 		this.printMode = printMode;
 	}
@@ -67,6 +81,14 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 		return query;
 	}
 
+	final long getStartRevision() {
+		return startRevision;
+	}
+
+	final long endRevision() {
+		return endRevision;
+	}
+
 	final List<Integer> getIgnoreList() {
 		return Collections.unmodifiableList(ignoreList);
 	}
@@ -75,7 +97,7 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 		return printMode;
 	}
 
-	public static CSVWriterSettings parseArgs(final String[] args)
+	public static TrainingSetWriterSettings parseArgs(final String[] args)
 			throws Exception {
 		final Options options = defineOptions();
 
@@ -87,6 +109,11 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 
 		final String query = (cmd.hasOption("q")) ? cmd.getOptionValue("q")
 				: DEFAULT_QUERY;
+
+		final long startRevision = (cmd.hasOption("s")) ? Long.parseLong(cmd
+				.getOptionValue("s")) : DEFAULT_START_REVISION;
+		final long endRevision = (cmd.hasOption("e")) ? Long.parseLong(cmd
+				.getOptionValue("e")) : DEFAULT_END_REVISION;
 
 		MessagePrinterMode mode = DEFAULT_PRINT_MODE;
 		if (cmd.hasOption("v")) {
@@ -112,7 +139,8 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 			}
 		}
 
-		return new CSVWriterSettings(dbPath, csvPath, query, ignoreList, mode);
+		return new TrainingSetWriterSettings(dbPath, csvPath, query,
+				startRevision, endRevision, ignoreList, mode);
 	}
 
 	private static Options defineOptions() {
@@ -138,6 +166,20 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 			q.setArgs(1);
 			q.setRequired(false);
 			options.addOption(q);
+		}
+
+		{
+			final Option s = new Option("s", "start", true, "start revision");
+			s.setArgs(1);
+			s.setRequired(false);
+			options.addOption(s);
+		}
+
+		{
+			final Option e = new Option("e", "end", true, "end revision");
+			e.setArgs(1);
+			e.setRequired(false);
+			options.addOption(e);
 		}
 
 		{
