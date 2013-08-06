@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.trainingsetwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,7 +22,7 @@ import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinter;
  * @author k-hotta
  * 
  */
-public class TrainingSetWriter {
+public class CSVWriter {
 
 	/**
 	 * 出力器
@@ -36,7 +36,7 @@ public class TrainingSetWriter {
 	 */
 	public static void main(String[] args) {
 		try {
-			final TrainingSetWriterSettings settings = TrainingSetWriterSettings
+			final CSVWriterSettings settings = CSVWriterSettings
 					.parseArgs(args);
 
 			initialize(settings);
@@ -56,7 +56,7 @@ public class TrainingSetWriter {
 	 * @param settings
 	 * @throws Exception
 	 */
-	private static void initialize(final TrainingSetWriterSettings settings)
+	private static void initialize(final CSVWriterSettings settings)
 			throws Exception {
 		// 出力レベルを設定
 		MessagePrinter.setMode(settings.getPrintMode());
@@ -83,7 +83,7 @@ public class TrainingSetWriter {
 	 * @param settings
 	 * @throws Exception
 	 */
-	private static void mainProcess(final TrainingSetWriterSettings settings)
+	private static void mainProcess(final CSVWriterSettings settings)
 			throws Exception {
 		// クエリがデフォルトの場合，指定された番号のリビジョンのIDを復元してクエリに反映
 		String query = settings.getQuery();

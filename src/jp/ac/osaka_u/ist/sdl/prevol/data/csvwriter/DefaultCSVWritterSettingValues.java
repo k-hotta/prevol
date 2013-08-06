@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.trainingsetwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
 
 import static org.eclipse.jdt.core.dom.ASTNode.*;
 
@@ -10,7 +10,7 @@ import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinterMode;
  * @author k-hotta
  * 
  */
-interface DefaultTrainingSetWritterSettingValues {
+interface DefaultCSVWritterSettingValues {
 
 	static String DEFAULT_QUERY = "select * from VECTOR_LINK";
 

@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.trainingsetwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,8 +18,8 @@ import org.apache.commons.cli.PosixParser;
  * @author k-hotta
  * 
  */
-public class TrainingSetWriterSettings implements
-		DefaultTrainingSetWritterSettingValues {
+public class CSVWriterSettings implements
+		DefaultCSVWritterSettingValues {
 
 	/**
 	 * 入力データベースファイル
@@ -61,7 +61,7 @@ public class TrainingSetWriterSettings implements
 	 */
 	private final boolean defaultQuery;
 
-	private TrainingSetWriterSettings(final String dbPath,
+	private CSVWriterSettings(final String dbPath,
 			final String csvPath, final String query, final long startRevision,
 			final long endRevision, List<Integer> ignoreList,
 			MessagePrinterMode printMode, final boolean defaultQuery) {
@@ -107,7 +107,7 @@ public class TrainingSetWriterSettings implements
 		return defaultQuery;
 	}
 
-	public static TrainingSetWriterSettings parseArgs(final String[] args)
+	public static CSVWriterSettings parseArgs(final String[] args)
 			throws Exception {
 		final Options options = defineOptions();
 
@@ -151,7 +151,7 @@ public class TrainingSetWriterSettings implements
 
 		final boolean defaultQuery = (!cmd.hasOption("q"));
 
-		return new TrainingSetWriterSettings(dbPath, csvPath, query,
+		return new CSVWriterSettings(dbPath, csvPath, query,
 				startRevision, endRevision, ignoreList, mode, defaultQuery);
 	}
 
