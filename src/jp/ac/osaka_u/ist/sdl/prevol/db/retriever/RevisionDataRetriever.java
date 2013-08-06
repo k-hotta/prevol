@@ -2,6 +2,7 @@ package jp.ac.osaka_u.ist.sdl.prevol.db.retriever;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.SortedSet;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
@@ -36,6 +37,64 @@ public class RevisionDataRetriever extends
 	@Override
 	protected String getIdColumnName() {
 		return "REVISION_ID";
+	}
+
+	protected String getRevisionNumColumnName() {
+		return "REVISION_NUM";
+	}
+
+	/**
+	 * 指定された番号のリビジョンよりも前に存在するリビジョンの中で，最も新しいものを取得
+	 * 
+	 * @param revisionNum
+	 * @return
+	 * @throws SQLException
+	 */
+	public RevisionData getLatestRevisionBeforeSpecifiedRevision(
+			final long revisionNum) throws SQLException {
+		final SortedSet<RevisionData> allBeforeRevisions = retrieve("select * from "
+				+ getTableName()
+				+ " where "
+				+ getRevisionNumColumnName()
+				+ " <= " + revisionNum);
+
+		long maxRevisionNum = -1;
+		RevisionData result = null;
+		for (final RevisionData revision : allBeforeRevisions) {
+			if (revision.getRevisionNum() > maxRevisionNum) {
+				maxRevisionNum = revision.getRevisionNum();
+				result = revision;
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * 指定された番号のリビジョンよりも後に存在するリビジョンの中で，最も古いものを取得
+	 * 
+	 * @param revisionNum
+	 * @return
+	 * @throws SQLException
+	 */
+	public RevisionData getOldestRevisionAfterSpecifiedRevision(
+			final long revisionNum) throws SQLException {
+		final SortedSet<RevisionData> allAfterRevisions = retrieve("select * from "
+				+ getTableName()
+				+ " where "
+				+ getRevisionNumColumnName()
+				+ " >= " + revisionNum);
+
+		long minRevisionNum = Long.MAX_VALUE;
+		RevisionData result = null;
+		for (final RevisionData revision : allAfterRevisions) {
+			if (revision.getRevisionNum() < minRevisionNum) {
+				minRevisionNum = revision.getRevisionNum();
+				result = revision;
+			}
+		}
+
+		return result;
 	}
 
 }

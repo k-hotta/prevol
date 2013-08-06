@@ -56,10 +56,15 @@ public class TrainingSetWriterSettings implements
 	 */
 	private final MessagePrinterMode printMode;
 
+	/**
+	 * デフォルトのクエリかどうか
+	 */
+	private final boolean defaultQuery;
+
 	private TrainingSetWriterSettings(final String dbPath,
 			final String csvPath, final String query, final long startRevision,
 			final long endRevision, List<Integer> ignoreList,
-			MessagePrinterMode printMode) {
+			MessagePrinterMode printMode, final boolean defaultQuery) {
 		this.dbPath = dbPath;
 		this.csvPath = csvPath;
 		this.query = query;
@@ -67,6 +72,7 @@ public class TrainingSetWriterSettings implements
 		this.endRevision = endRevision;
 		this.ignoreList = ignoreList;
 		this.printMode = printMode;
+		this.defaultQuery = defaultQuery;
 	}
 
 	final String getDbPath() {
@@ -97,6 +103,10 @@ public class TrainingSetWriterSettings implements
 		return printMode;
 	}
 
+	final boolean isDefaultQuery() {
+		return defaultQuery;
+	}
+
 	public static TrainingSetWriterSettings parseArgs(final String[] args)
 			throws Exception {
 		final Options options = defineOptions();
@@ -107,13 +117,13 @@ public class TrainingSetWriterSettings implements
 		final String dbPath = cmd.getOptionValue("d");
 		final String csvPath = cmd.getOptionValue("o");
 
-		final String query = (cmd.hasOption("q")) ? cmd.getOptionValue("q")
-				: DEFAULT_QUERY;
-
 		final long startRevision = (cmd.hasOption("s")) ? Long.parseLong(cmd
 				.getOptionValue("s")) : DEFAULT_START_REVISION;
 		final long endRevision = (cmd.hasOption("e")) ? Long.parseLong(cmd
 				.getOptionValue("e")) : DEFAULT_END_REVISION;
+
+		final String query = (cmd.hasOption("q")) ? cmd.getOptionValue("q")
+				: DEFAULT_QUERY;
 
 		MessagePrinterMode mode = DEFAULT_PRINT_MODE;
 		if (cmd.hasOption("v")) {
@@ -139,8 +149,10 @@ public class TrainingSetWriterSettings implements
 			}
 		}
 
+		final boolean defaultQuery = (!cmd.hasOption("q"));
+
 		return new TrainingSetWriterSettings(dbPath, csvPath, query,
-				startRevision, endRevision, ignoreList, mode);
+				startRevision, endRevision, ignoreList, mode, defaultQuery);
 	}
 
 	private static Options defineOptions() {
