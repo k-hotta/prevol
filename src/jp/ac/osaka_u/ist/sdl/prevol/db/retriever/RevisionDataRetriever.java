@@ -44,6 +44,24 @@ public class RevisionDataRetriever extends
 	}
 
 	/**
+	 * 引数で指定された範囲のリビジョンをすべて取得する
+	 * 
+	 * @param startRevisionNum
+	 * @param endRevisionNum
+	 * @return
+	 * @throws SQLException
+	 */
+	public SortedSet<RevisionData> getRevisionsInSpecifiedRange(
+			final long startRevisionNum, final long endRevisionNum)
+			throws SQLException {
+		final String query = "select * from " + getTableName() + " where "
+				+ getRevisionNumColumnName() + " >= " + startRevisionNum
+				+ " and " + getRevisionNumColumnName() + " <= "
+				+ endRevisionNum;
+		return retrieve(query);
+	}
+
+	/**
 	 * 指定された番号のリビジョンよりも前に存在するリビジョンの中で，最も新しいものを取得
 	 * 
 	 * @param revisionNum
