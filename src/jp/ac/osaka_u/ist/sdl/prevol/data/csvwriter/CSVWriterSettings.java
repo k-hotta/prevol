@@ -21,6 +21,11 @@ import org.apache.commons.cli.PosixParser;
 public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 
 	/**
+	 * CSVWriterのモード
+	 */
+	private final CSVWriterMode mode;
+
+	/**
 	 * 入力データベースファイル
 	 */
 	private final String dbPath;
@@ -29,6 +34,16 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 	 * 出力先csvファイル
 	 */
 	private final String csvPath;
+
+	/**
+	 * 開始リビジョン
+	 */
+	private final long startRevision;
+
+	/**
+	 * 終了リビジョン
+	 */
+	private final long endRevision;
 
 	/**
 	 * VectorLink テーブルから要素を抽出するためのクエリ
@@ -45,14 +60,28 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 	 */
 	private final MessagePrinterMode printMode;
 
-	private CSVWriterSettings(final String dbPath, final String csvPath,
-			final String query, List<Integer> ignoreList,
-			MessagePrinterMode printMode) {
+	/**
+	 * デフォルトのクエリかどうか
+	 */
+	private final boolean defaultQuery;
+
+	private CSVWriterSettings(final CSVWriterMode mode, final String dbPath,
+			final String csvPath, final String query, final long startRevision,
+			final long endRevision, List<Integer> ignoreList,
+			MessagePrinterMode printMode, final boolean defaultQuery) {
+		this.mode = mode;
 		this.dbPath = dbPath;
 		this.csvPath = csvPath;
 		this.query = query;
+		this.startRevision = startRevision;
+		this.endRevision = endRevision;
 		this.ignoreList = ignoreList;
 		this.printMode = printMode;
+		this.defaultQuery = defaultQuery;
+	}
+
+	final CSVWriterMode getMode() {
+		return mode;
 	}
 
 	final String getDbPath() {
@@ -67,12 +96,24 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 		return query;
 	}
 
+	final long getStartRevision() {
+		return startRevision;
+	}
+
+	final long getEndRevision() {
+		return endRevision;
+	}
+
 	final List<Integer> getIgnoreList() {
 		return Collections.unmodifiableList(ignoreList);
 	}
 
 	final MessagePrinterMode getPrintMode() {
 		return printMode;
+	}
+
+	final boolean isDefaultQuery() {
+		return defaultQuery;
 	}
 
 	public static CSVWriterSettings parseArgs(final String[] args)
@@ -82,21 +123,29 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 		final CommandLineParser parser = new PosixParser();
 		final CommandLine cmd = parser.parse(options, args);
 
+		final CSVWriterMode mode = (cmd.hasOption("E")) ? CSVWriterMode.EVALUATION
+				: CSVWriterMode.TRAINING;
+
 		final String dbPath = cmd.getOptionValue("d");
 		final String csvPath = cmd.getOptionValue("o");
+
+		final long startRevision = (cmd.hasOption("s")) ? Long.parseLong(cmd
+				.getOptionValue("s")) : DEFAULT_START_REVISION;
+		final long endRevision = (cmd.hasOption("e")) ? Long.parseLong(cmd
+				.getOptionValue("e")) : DEFAULT_END_REVISION;
 
 		final String query = (cmd.hasOption("q")) ? cmd.getOptionValue("q")
 				: DEFAULT_QUERY;
 
-		MessagePrinterMode mode = DEFAULT_PRINT_MODE;
+		MessagePrinterMode printMode = DEFAULT_PRINT_MODE;
 		if (cmd.hasOption("v")) {
 			final String value = cmd.getOptionValue("v");
 			if (value.equalsIgnoreCase("no")) {
-				mode = MessagePrinterMode.NONE;
+				printMode = MessagePrinterMode.NONE;
 			} else if (value.equals("yes")) {
-				mode = MessagePrinterMode.LITTLE;
+				printMode = MessagePrinterMode.LITTLE;
 			} else if (value.equals("strong")) {
-				mode = MessagePrinterMode.VERBOSE;
+				printMode = MessagePrinterMode.VERBOSE;
 			}
 		}
 
@@ -112,11 +161,21 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 			}
 		}
 
-		return new CSVWriterSettings(dbPath, csvPath, query, ignoreList, mode);
+		final boolean defaultQuery = (!cmd.hasOption("q"));
+
+		return new CSVWriterSettings(mode, dbPath, csvPath, query,
+				startRevision, endRevision, ignoreList, printMode, defaultQuery);
 	}
 
 	private static Options defineOptions() {
 		final Options options = new Options();
+
+		{
+			final Option E = new Option("E", "EVALUATION", false,
+					"EVALUATION MODE");
+			E.setRequired(false);
+			options.addOption(E);
+		}
 
 		{
 			final Option d = new Option("d", "db", true, "database");
@@ -138,6 +197,20 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 			q.setArgs(1);
 			q.setRequired(false);
 			options.addOption(q);
+		}
+
+		{
+			final Option s = new Option("s", "start", true, "start revision");
+			s.setArgs(1);
+			s.setRequired(false);
+			options.addOption(s);
+		}
+
+		{
+			final Option e = new Option("e", "end", true, "end revision");
+			e.setArgs(1);
+			e.setRequired(false);
+			options.addOption(e);
 		}
 
 		{
