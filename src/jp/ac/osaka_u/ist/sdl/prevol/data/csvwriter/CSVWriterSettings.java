@@ -18,8 +18,12 @@ import org.apache.commons.cli.PosixParser;
  * @author k-hotta
  * 
  */
-public class CSVWriterSettings implements
-		DefaultCSVWritterSettingValues {
+public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
+
+	/**
+	 * CSVWriterのモード
+	 */
+	private final CSVWriterMode mode;
 
 	/**
 	 * 入力データベースファイル
@@ -61,10 +65,11 @@ public class CSVWriterSettings implements
 	 */
 	private final boolean defaultQuery;
 
-	private CSVWriterSettings(final String dbPath,
+	private CSVWriterSettings(final CSVWriterMode mode, final String dbPath,
 			final String csvPath, final String query, final long startRevision,
 			final long endRevision, List<Integer> ignoreList,
 			MessagePrinterMode printMode, final boolean defaultQuery) {
+		this.mode = mode;
 		this.dbPath = dbPath;
 		this.csvPath = csvPath;
 		this.query = query;
@@ -73,6 +78,10 @@ public class CSVWriterSettings implements
 		this.ignoreList = ignoreList;
 		this.printMode = printMode;
 		this.defaultQuery = defaultQuery;
+	}
+
+	final CSVWriterMode getMode() {
+		return mode;
 	}
 
 	final String getDbPath() {
@@ -114,6 +123,9 @@ public class CSVWriterSettings implements
 		final CommandLineParser parser = new PosixParser();
 		final CommandLine cmd = parser.parse(options, args);
 
+		final CSVWriterMode mode = (cmd.hasOption("E")) ? CSVWriterMode.EVALUATION
+				: CSVWriterMode.TRAINING;
+
 		final String dbPath = cmd.getOptionValue("d");
 		final String csvPath = cmd.getOptionValue("o");
 
@@ -125,15 +137,15 @@ public class CSVWriterSettings implements
 		final String query = (cmd.hasOption("q")) ? cmd.getOptionValue("q")
 				: DEFAULT_QUERY;
 
-		MessagePrinterMode mode = DEFAULT_PRINT_MODE;
+		MessagePrinterMode printMode = DEFAULT_PRINT_MODE;
 		if (cmd.hasOption("v")) {
 			final String value = cmd.getOptionValue("v");
 			if (value.equalsIgnoreCase("no")) {
-				mode = MessagePrinterMode.NONE;
+				printMode = MessagePrinterMode.NONE;
 			} else if (value.equals("yes")) {
-				mode = MessagePrinterMode.LITTLE;
+				printMode = MessagePrinterMode.LITTLE;
 			} else if (value.equals("strong")) {
-				mode = MessagePrinterMode.VERBOSE;
+				printMode = MessagePrinterMode.VERBOSE;
 			}
 		}
 
@@ -151,12 +163,19 @@ public class CSVWriterSettings implements
 
 		final boolean defaultQuery = (!cmd.hasOption("q"));
 
-		return new CSVWriterSettings(dbPath, csvPath, query,
-				startRevision, endRevision, ignoreList, mode, defaultQuery);
+		return new CSVWriterSettings(mode, dbPath, csvPath, query,
+				startRevision, endRevision, ignoreList, printMode, defaultQuery);
 	}
 
 	private static Options defineOptions() {
 		final Options options = new Options();
+
+		{
+			final Option E = new Option("E", "EVALUATION", false,
+					"EVALUATION MODE");
+			E.setRequired(false);
+			options.addOption(E);
+		}
 
 		{
 			final Option d = new Option("d", "db", true, "database");
