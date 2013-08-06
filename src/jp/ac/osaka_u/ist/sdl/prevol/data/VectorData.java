@@ -1755,4 +1755,356 @@ public class VectorData extends AbstractElement {
 		return this.toCsvRecord(new HashSet<Integer>());
 	}
 
+	public static String getCsvHeader() {
+		return getCsvHeader(new HashSet<Integer>());
+	}
+
+	public static String getCsvHeader(final Collection<Integer> ignoreColumns) {
+		return getCsvHeader(ignoreColumns, "BEFORE_") + ","
+				+ getCsvHeader(ignoreColumns, "AFTER_");
+	}
+
+	private static String getCsvHeader(final Collection<Integer> ignoreColumns,
+			final String prefix) {
+		final StringBuilder builder = new StringBuilder();
+
+		if (!ignoreColumns.contains(ANNOTATION_TYPE_DECLARATION)) {
+			builder.append(prefix + "ANNOTATION_TYPE_DECLARATION,");
+		}
+
+		if (!ignoreColumns.contains(ANNOTATION_TYPE_MEMBER_DECLARATION)) {
+			builder.append(prefix + "ANNOTATION_TYPE_MEMBER_DECLARATION,");
+		}
+
+		if (!ignoreColumns.contains(ANONYMOUS_CLASS_DECLARATION)) {
+			builder.append(prefix + "ANONYMOUS_CLASS_DECLARATION,");
+		}
+
+		if (!ignoreColumns.contains(ARRAY_ACCESS)) {
+			builder.append(prefix + "ARRAY_ACCESS,");
+		}
+
+		if (!ignoreColumns.contains(ARRAY_CREATION)) {
+			builder.append(prefix + "ARRAY_CREATION,");
+		}
+
+		if (!ignoreColumns.contains(ARRAY_INITIALIZER)) {
+			builder.append(prefix + "ARRAY_INITIALIZER,");
+		}
+
+		if (!ignoreColumns.contains(ARRAY_TYPE)) {
+			builder.append(prefix + "ARRAY_TYPE,");
+		}
+
+		if (!ignoreColumns.contains(ASSERT_STATEMENT)) {
+			builder.append(prefix + "ASSERT_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(ASSIGNMENT)) {
+			builder.append(prefix + "ASSIGNMENT,");
+		}
+
+		if (!ignoreColumns.contains(BLOCK)) {
+			builder.append(prefix + "BLOCK,");
+		}
+
+		if (!ignoreColumns.contains(BLOCK_COMMENT)) {
+			builder.append(prefix + "BLOCK_COMMENT,");
+		}
+
+		if (!ignoreColumns.contains(BOOLEAN_LITERAL)) {
+			builder.append(prefix + "BOOLEAN_LITERAL,");
+		}
+
+		if (!ignoreColumns.contains(BREAK_STATEMENT)) {
+			builder.append(prefix + "BREAK_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(CAST_EXPRESSION)) {
+			builder.append(prefix + "CAST_EXPRESSION,");
+		}
+
+		if (!ignoreColumns.contains(CATCH_CLAUSE)) {
+			builder.append(prefix + "CATCH_CLAUSE,");
+		}
+
+		if (!ignoreColumns.contains(CHARACTER_LITERAL)) {
+			builder.append(prefix + "CHARACTER_LITERAL,");
+		}
+
+		if (!ignoreColumns.contains(CLASS_INSTANCE_CREATION)) {
+			builder.append(prefix + "CLASS_INSTANCE_CREATION,");
+		}
+
+		if (!ignoreColumns.contains(COMPILATION_UNIT)) {
+			builder.append(prefix + "COMPILATION_UNIT,");
+		}
+
+		if (!ignoreColumns.contains(CONDITIONAL_EXPRESSION)) {
+			builder.append(prefix + "CONDITIONAL_EXPRESSION,");
+		}
+
+		if (!ignoreColumns.contains(CONSTRUCTOR_INVOCATION)) {
+			builder.append(prefix + "CONSTRUCTOR_INVOCATION,");
+		}
+
+		if (!ignoreColumns.contains(CONTINUE_STATEMENT)) {
+			builder.append(prefix + "CONTINUE_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(DO_STATEMENT)) {
+			builder.append(prefix + "DO_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(EMPTY_STATEMENT)) {
+			builder.append(prefix + "EMPTY_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(ENHANCED_FOR_STATEMENT)) {
+			builder.append(prefix + "ENHANCED_FOR_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(ENUM_CONSTANT_DECLARATION)) {
+			builder.append(prefix + "ENUM_CONSTANT_DECLARATION,");
+		}
+
+		if (!ignoreColumns.contains(ENUM_DECLARATION)) {
+			builder.append(prefix + "ENUM_DECLARATION,");
+		}
+
+		if (!ignoreColumns.contains(EXPRESSION_STATEMENT)) {
+			builder.append(prefix + "EXPRESSION_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(FIELD_ACCESS)) {
+			builder.append(prefix + "FIELD_ACCESS,");
+		}
+
+		if (!ignoreColumns.contains(FIELD_DECLARATION)) {
+			builder.append(prefix + "FIELD_DECLARATION,");
+		}
+
+		if (!ignoreColumns.contains(FOR_STATEMENT)) {
+			builder.append(prefix + "FOR_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(IF_STATEMENT)) {
+			builder.append(prefix + "IF_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(IMPORT_DECLARATION)) {
+			builder.append(prefix + "IMPORT_DECLARATION,");
+		}
+
+		if (!ignoreColumns.contains(INFIX_EXPRESSION)) {
+			builder.append(prefix + "INFIX_EXPRESSION,");
+		}
+
+		if (!ignoreColumns.contains(INITIALIZER)) {
+			builder.append(prefix + "INITIALIZER,");
+		}
+
+		if (!ignoreColumns.contains(INSTANCEOF_EXPRESSION)) {
+			builder.append(prefix + "INSTANCEOF_EXPRESSION,");
+		}
+
+		if (!ignoreColumns.contains(JAVADOC)) {
+			builder.append(prefix + "JAVADOC,");
+		}
+
+		if (!ignoreColumns.contains(LABELED_STATEMENT)) {
+			builder.append(prefix + "LABELED_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(LINE_COMMENT)) {
+			builder.append(prefix + "LINE_COMMENT,");
+		}
+
+		if (!ignoreColumns.contains(MARKER_ANNOTATION)) {
+			builder.append(prefix + "MARKER_ANNOTATION,");
+		}
+
+		if (!ignoreColumns.contains(MEMBER_REF)) {
+			builder.append(prefix + "MEMBER_REF,");
+		}
+
+		if (!ignoreColumns.contains(MEMBER_VALUE_PAIR)) {
+			builder.append(prefix + "MEMBER_VALUE_PAIR,");
+		}
+
+		if (!ignoreColumns.contains(METHOD_DECLARATION)) {
+			builder.append(prefix + "METHOD_DECLARATION,");
+		}
+
+		if (!ignoreColumns.contains(METHOD_INVOCATION)) {
+			builder.append(prefix + "METHOD_INVOCATION,");
+		}
+
+		if (!ignoreColumns.contains(METHOD_REF)) {
+			builder.append(prefix + "METHOD_REF,");
+		}
+
+		if (!ignoreColumns.contains(METHOD_REF_PARAMETER)) {
+			builder.append(prefix + "METHOD_REF_PARAMETER,");
+		}
+
+		if (!ignoreColumns.contains(MODIFIER)) {
+			builder.append(prefix + "MODIFIER,");
+		}
+
+		if (!ignoreColumns.contains(NORMAL_ANNOTATION)) {
+			builder.append(prefix + "NORMAL_ANNOTATION,");
+		}
+
+		if (!ignoreColumns.contains(NULL_LITERAL)) {
+			builder.append(prefix + "NULL_LITERAL,");
+		}
+
+		if (!ignoreColumns.contains(NUMBER_LITERAL)) {
+			builder.append(prefix + "NUMBER_LITERAL,");
+		}
+
+		if (!ignoreColumns.contains(PACKAGE_DECLARATION)) {
+			builder.append(prefix + "PACKAGE_DECLARATION,");
+		}
+
+		if (!ignoreColumns.contains(PARAMETERIZED_TYPE)) {
+			builder.append(prefix + "PARAMETERIZED_TYPE,");
+		}
+
+		if (!ignoreColumns.contains(PARENTHESIZED_EXPRESSION)) {
+			builder.append(prefix + "PARENTHESIZED_EXPRESSION,");
+		}
+
+		if (!ignoreColumns.contains(POSTFIX_EXPRESSION)) {
+			builder.append(prefix + "POSTFIX_EXPRESSION,");
+		}
+
+		if (!ignoreColumns.contains(PREFIX_EXPRESSION)) {
+			builder.append(prefix + "PREFIX_EXPRESSION,");
+		}
+
+		if (!ignoreColumns.contains(PRIMITIVE_TYPE)) {
+			builder.append(prefix + "PRIMITIVE_TYPE,");
+		}
+
+		if (!ignoreColumns.contains(QUALIFIED_NAME)) {
+			builder.append(prefix + "QUALIFIED_NAME,");
+		}
+
+		if (!ignoreColumns.contains(QUALIFIED_TYPE)) {
+			builder.append(prefix + "QUALIFIED_TYPE,");
+		}
+
+		if (!ignoreColumns.contains(RETURN_STATEMENT)) {
+			builder.append(prefix + "RETURN_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(SIMPLE_NAME)) {
+			builder.append(prefix + "SIMPLE_NAME,");
+		}
+
+		if (!ignoreColumns.contains(SIMPLE_TYPE)) {
+			builder.append(prefix + "SIMPLE_TYPE,");
+		}
+
+		if (!ignoreColumns.contains(SINGLE_MEMBER_ANNOTATION)) {
+			builder.append(prefix + "SINGLE_MEMBER_ANNOTATION,");
+		}
+
+		if (!ignoreColumns.contains(SINGLE_VARIABLE_DECLARATION)) {
+			builder.append(prefix + "SINGLE_VARIABLE_DECLARATION,");
+		}
+
+		if (!ignoreColumns.contains(STRING_LITERAL)) {
+			builder.append(prefix + "STRING_LITERAL,");
+		}
+
+		if (!ignoreColumns.contains(SUPER_CONSTRUCTOR_INVOCATION)) {
+			builder.append(prefix + "SUPER_CONSTRUCTOR_INVOCATION,");
+		}
+
+		if (!ignoreColumns.contains(SUPER_FIELD_ACCESS)) {
+			builder.append(prefix + "SUPER_FIELD_ACCESS,");
+		}
+
+		if (!ignoreColumns.contains(SUPER_METHOD_INVOCATION)) {
+			builder.append(prefix + "SUPER_METHOD_INVOCATION,");
+		}
+
+		if (!ignoreColumns.contains(SWITCH_CASE)) {
+			builder.append(prefix + "SWITCH_CASE,");
+		}
+
+		if (!ignoreColumns.contains(SWITCH_STATEMENT)) {
+			builder.append(prefix + "SWITCH_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(SYNCHRONIZED_STATEMENT)) {
+			builder.append(prefix + "SYNCHRONIZED_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(TAG_ELEMENT)) {
+			builder.append(prefix + "TAG_ELEMENT,");
+		}
+
+		if (!ignoreColumns.contains(TEXT_ELEMENT)) {
+			builder.append(prefix + "TEXT_ELEMENT,");
+		}
+
+		if (!ignoreColumns.contains(THIS_EXPRESSION)) {
+			builder.append(prefix + "THIS_EXPRESSION,");
+		}
+
+		if (!ignoreColumns.contains(THROW_STATEMENT)) {
+			builder.append(prefix + "THROW_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(TRY_STATEMENT)) {
+			builder.append(prefix + "TRY_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(TYPE_DECLARATION)) {
+			builder.append(prefix + "TYPE_DECLARATION,");
+		}
+
+		if (!ignoreColumns.contains(TYPE_DECLARATION_STATEMENT)) {
+			builder.append(prefix + "TYPE_DECLARATION_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(TYPE_LITERAL)) {
+			builder.append(prefix + "TYPE_LITERAL,");
+		}
+
+		if (!ignoreColumns.contains(TYPE_PARAMETER)) {
+			builder.append(prefix + "TYPE_PARAMETER,");
+		}
+
+		if (!ignoreColumns.contains(VARIABLE_DECLARATION_EXPRESSION)) {
+			builder.append(prefix + "VARIABLE_DECLARATION_EXPRESSION,");
+		}
+
+		if (!ignoreColumns.contains(VARIABLE_DECLARATION_FRAGMENT)) {
+			builder.append(prefix + "VARIABLE_DECLARATION_FRAGMENT,");
+		}
+
+		if (!ignoreColumns.contains(VARIABLE_DECLARATION_STATEMENT)) {
+			builder.append(prefix + "VARIABLE_DECLARATION_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(WHILE_STATEMENT)) {
+			builder.append(prefix + "WHILE_STATEMENT,");
+		}
+
+		if (!ignoreColumns.contains(WILDCARD_TYPE)) {
+			builder.append(prefix + "WILDCARD_TYPE,");
+		}
+
+		if (builder.length() > 0) {
+			builder.deleteCharAt(builder.length() - 1);
+		}
+
+		return builder.toString();
+	}
+
 }

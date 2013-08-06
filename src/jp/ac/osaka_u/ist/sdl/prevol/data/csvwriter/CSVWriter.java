@@ -39,7 +39,7 @@ public class CSVWriter {
 					.parseArgs(args);
 
 			initialize(settings);
-			
+
 			mainProcess(settings);
 
 		} catch (Exception e) {
@@ -90,9 +90,10 @@ public class CSVWriter {
 		MessagePrinter.stronglyPrintln(" ... ");
 		final Set<VectorPairData> vectorPairs = DBConnection.getInstance()
 				.getVectorPairRetriever().retrieve(settings.getQuery());
-		MessagePrinter.stronglyPrintln("\t" + vectorPairs.size() + " pairs were retrieved");
+		MessagePrinter.stronglyPrintln("\t" + vectorPairs.size()
+				+ " pairs were retrieved");
 		MessagePrinter.stronglyPrintln();
-		
+
 		// 復元したベクトルペアに含まれるベクトル情報を復元
 		MessagePrinter.stronglyPrintln("retrieving vectors ... ");
 		final Set<Long> vectorIdsToBeRetrieved = new TreeSet<Long>();
@@ -110,15 +111,20 @@ public class CSVWriter {
 		for (final VectorData vector : vectors) {
 			vectorsMap.put(vector.getId(), vector);
 		}
-		
-		MessagePrinter.stronglyPrintln("\t" + vectorsMap.size() + " vectors were retrieved");
+
+		MessagePrinter.stronglyPrintln("\t" + vectorsMap.size()
+				+ " vectors were retrieved");
 		MessagePrinter.stronglyPrintln();
 
 		// 出力
 		MessagePrinter.stronglyPrintln("printing the result ... ");
-		
+
 		final List<Integer> ignoreList = settings.getIgnoreList();
-		
+
+		// ヘッダを出力
+		pw.println(VectorData.getCsvHeader(ignoreList));
+
+		// 各レコードを出力
 		for (final VectorPairData vectorPair : vectorPairs) {
 			final VectorData beforeVector = vectorsMap.get(vectorPair
 					.getBeforeVectorId());
