@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.text.Format;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -78,7 +79,7 @@ public class VectorWriter {
 
 		MessagePrinter.stronglyPrintln("preparing the output file ... ");
 		pw = new PrintWriter(new BufferedWriter(new FileWriter(new File(
-				settings.getCsvPath()))));
+				settings.getOutputFilePath()))));
 		MessagePrinter.stronglyPrintln("\tOK");
 		MessagePrinter.stronglyPrintln();
 	}
@@ -148,7 +149,12 @@ public class VectorWriter {
 		final List<Integer> ignoreList = settings.getIgnoreList();
 
 		// ヘッダを出力
-		pw.println(VectorData.getTrainingCsvHeader(ignoreList));
+		if (settings.getOutputFileFormat() == OutputFileFormat.CSV) {
+			pw.println(VectorData.getTrainingCsvHeader(ignoreList));
+		} else {
+			pw.println(VectorData.getTrainingArffHeader(ignoreList,
+					settings.getRelationName()));
+		}
 
 		// 各レコードを出力
 		for (final VectorPairData vectorPair : vectorPairs) {
@@ -211,7 +217,12 @@ public class VectorWriter {
 		MessagePrinter.stronglyPrintln("printing the result ... ");
 
 		// ヘッダを出力
-		pw.println(VectorData.getEvaluationCsvHeader(ignoreList));
+		if (settings.getOutputFileFormat() == OutputFileFormat.CSV) {
+			pw.println(VectorData.getEvaluationCsvHeader(ignoreList));
+		} else {
+			pw.println(VectorData.getEvaluationArffHeader(ignoreList,
+					settings.getRelationName()));
+		}
 
 		final Set<VectorData> vectors = DBConnection.getInstance()
 				.getVectorRetriever().retrieveWithIds(vectorIds);

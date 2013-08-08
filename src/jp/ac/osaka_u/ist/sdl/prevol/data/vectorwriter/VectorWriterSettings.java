@@ -13,7 +13,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 
 /**
- * CSVWriter の実行時設定を保持するクラス
+ * VectorWriter の実行時設定を保持するクラス
  * 
  * @author k-hotta
  * 
@@ -21,9 +21,14 @@ import org.apache.commons.cli.PosixParser;
 public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 
 	/**
-	 * CSVWriterのモード
+	 * VectorWriterのモード
 	 */
 	private final VectorWriterMode mode;
+
+	/**
+	 * 出力ファイル形式
+	 */
+	private final OutputFileFormat format;
 
 	/**
 	 * 入力データベースファイル
@@ -31,9 +36,9 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 	private final String dbPath;
 
 	/**
-	 * 出力先csvファイル
+	 * 出力先ファイル
 	 */
-	private final String csvPath;
+	private final String outputFilePath;
 
 	/**
 	 * 開始リビジョン
@@ -56,6 +61,13 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 	private final List<Integer> ignoreList;
 
 	/**
+	 * ARFFモード時 <br>
+	 * 
+	 * @RELATION の後ろに続く文字列
+	 */
+	private final String relationName;
+
+	/**
 	 * 出力レベル
 	 */
 	private final MessagePrinterMode printMode;
@@ -65,17 +77,21 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 	 */
 	private final boolean defaultQuery;
 
-	private VectorWriterSettings(final VectorWriterMode mode, final String dbPath,
-			final String csvPath, final String query, final long startRevision,
-			final long endRevision, List<Integer> ignoreList,
+	private VectorWriterSettings(final VectorWriterMode mode,
+			final OutputFileFormat format, final String dbPath,
+			final String outputFilePath, final String query,
+			final long startRevision, final long endRevision,
+			List<Integer> ignoreList, final String relationName,
 			MessagePrinterMode printMode, final boolean defaultQuery) {
 		this.mode = mode;
+		this.format = format;
 		this.dbPath = dbPath;
-		this.csvPath = csvPath;
+		this.outputFilePath = outputFilePath;
 		this.query = query;
 		this.startRevision = startRevision;
 		this.endRevision = endRevision;
 		this.ignoreList = ignoreList;
+		this.relationName = relationName;
 		this.printMode = printMode;
 		this.defaultQuery = defaultQuery;
 	}
@@ -84,12 +100,16 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 		return mode;
 	}
 
+	final OutputFileFormat getOutputFileFormat() {
+		return format;
+	}
+
 	final String getDbPath() {
 		return dbPath;
 	}
 
-	final String getCsvPath() {
-		return csvPath;
+	final String getOutputFilePath() {
+		return outputFilePath;
 	}
 
 	final String getQuery() {
@@ -106,6 +126,10 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 
 	final List<Integer> getIgnoreList() {
 		return Collections.unmodifiableList(ignoreList);
+	}
+
+	final String getRelationName() {
+		return relationName;
 	}
 
 	final MessagePrinterMode getPrintMode() {
@@ -127,7 +151,19 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 				: VectorWriterMode.TRAINING;
 
 		final String dbPath = cmd.getOptionValue("d");
-		final String csvPath = cmd.getOptionValue("o");
+		final String outputFilePath = cmd.getOptionValue("o");
+
+		OutputFileFormat format = null;
+		if (outputFilePath.endsWith(".csv")) {
+			format = OutputFileFormat.CSV;
+		} else if (outputFilePath.endsWith(".arff")) {
+			format = OutputFileFormat.ARFF;
+		}
+
+		if (format == null) {
+			throw new IllegalArgumentException(
+					"the output file path must end with \".csv\" or \".arff\"");
+		}
 
 		final long startRevision = (cmd.hasOption("s")) ? Long.parseLong(cmd
 				.getOptionValue("s")) : DEFAULT_START_REVISION;
@@ -161,10 +197,18 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 			}
 		}
 
+		final String relationName = (cmd.hasOption("rl")) ? cmd
+				.getOptionValue("rl") : null;
+		if (format == OutputFileFormat.ARFF && relationName == null) {
+			throw new IllegalArgumentException(
+					"the name of relation must be specified with \"-rl\"");
+		}
+
 		final boolean defaultQuery = (!cmd.hasOption("q"));
 
-		return new VectorWriterSettings(mode, dbPath, csvPath, query,
-				startRevision, endRevision, ignoreList, printMode, defaultQuery);
+		return new VectorWriterSettings(mode, format, dbPath, outputFilePath,
+				query, startRevision, endRevision, ignoreList, relationName,
+				printMode, defaultQuery);
 	}
 
 	private static Options defineOptions() {
@@ -226,6 +270,14 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 			ig.setArgs(1);
 			ig.setRequired(false);
 			options.addOption(ig);
+		}
+
+		{
+			final Option rl = new Option("rl", "relation", true,
+					"relation name");
+			rl.setArgs(1);
+			rl.setRequired(false);
+			options.addOption(rl);
 		}
 
 		return options;

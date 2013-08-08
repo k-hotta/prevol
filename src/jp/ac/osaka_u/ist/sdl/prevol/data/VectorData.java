@@ -2109,4 +2109,449 @@ public class VectorData extends AbstractElement {
 		return builder.toString();
 	}
 
+	public static String getEvaluationArffHeader(
+			final Collection<Integer> ignoreColumns, final String relationName) {
+		return "@RELATION " + relationName
+				+ System.getProperty("line.separator")
+				+ getArffHeader(ignoreColumns, "BEFORE_")
+				+ System.getProperty("line.separator") + "@DATA"
+				+ System.getProperty("line.separator");
+	}
+
+	public static String getTrainingArffHeader(
+			final Collection<Integer> ignoreColumns, final String relationName) {
+		return "@RELATION " + relationName
+				+ System.getProperty("line.separator")
+				+ getArffHeader(ignoreColumns, "BEFORE_")
+				+ System.getProperty("line.separator")
+				+ getArffHeader(ignoreColumns, "AFTER_")
+				+ System.getProperty("line.separator") + "@DATA"
+				+ System.getProperty("line.separator");
+	}
+
+	private static String getArffHeader(
+			final Collection<Integer> ignoreColumns, final String prefix) {
+		final StringBuilder builder = new StringBuilder();
+
+		final String lineSeparator = System.getProperty("line.separator");
+
+		if (!ignoreColumns.contains(ANNOTATION_TYPE_DECLARATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "ANNOTATION_TYPE_DECLARATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(ANNOTATION_TYPE_MEMBER_DECLARATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "ANNOTATION_TYPE_MEMBER_DECLARATION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(ANONYMOUS_CLASS_DECLARATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "ANONYMOUS_CLASS_DECLARATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(ARRAY_ACCESS)) {
+			builder.append("@ATTRIBUTE " + prefix + "ARRAY_ACCESS NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(ARRAY_CREATION)) {
+			builder.append("@ATTRIBUTE " + prefix + "ARRAY_CREATION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(ARRAY_INITIALIZER)) {
+			builder.append("@ATTRIBUTE " + prefix + "ARRAY_INITIALIZER NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(ARRAY_TYPE)) {
+			builder.append("@ATTRIBUTE " + prefix + "ARRAY_TYPE NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(ASSERT_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "ASSERT_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(ASSIGNMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "ASSIGNMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(BLOCK)) {
+			builder.append("@ATTRIBUTE " + prefix + "BLOCK NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(BLOCK_COMMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "BLOCK_COMMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(BOOLEAN_LITERAL)) {
+			builder.append("@ATTRIBUTE " + prefix + "BOOLEAN_LITERAL NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(BREAK_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "BREAK_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(CAST_EXPRESSION)) {
+			builder.append("@ATTRIBUTE " + prefix + "CAST_EXPRESSION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(CATCH_CLAUSE)) {
+			builder.append("@ATTRIBUTE " + prefix + "CATCH_CLAUSE NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(CHARACTER_LITERAL)) {
+			builder.append("@ATTRIBUTE " + prefix + "CHARACTER_LITERAL NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(CLASS_INSTANCE_CREATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "CLASS_INSTANCE_CREATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(COMPILATION_UNIT)) {
+			builder.append("@ATTRIBUTE " + prefix + "COMPILATION_UNIT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(CONDITIONAL_EXPRESSION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "CONDITIONAL_EXPRESSION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(CONSTRUCTOR_INVOCATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "CONSTRUCTOR_INVOCATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(CONTINUE_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "CONTINUE_STATEMENT NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(DO_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "DO_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(EMPTY_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "EMPTY_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(ENHANCED_FOR_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "ENHANCED_FOR_STATEMENT NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(ENUM_CONSTANT_DECLARATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "ENUM_CONSTANT_DECLARATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(ENUM_DECLARATION)) {
+			builder.append("@ATTRIBUTE " + prefix + "ENUM_DECLARATION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(EXPRESSION_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "EXPRESSION_STATEMENT NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(FIELD_ACCESS)) {
+			builder.append("@ATTRIBUTE " + prefix + "FIELD_ACCESS NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(FIELD_DECLARATION)) {
+			builder.append("@ATTRIBUTE " + prefix + "FIELD_DECLARATION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(FOR_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "FOR_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(IF_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "IF_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(IMPORT_DECLARATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "IMPORT_DECLARATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(INFIX_EXPRESSION)) {
+			builder.append("@ATTRIBUTE " + prefix + "INFIX_EXPRESSION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(INITIALIZER)) {
+			builder.append("@ATTRIBUTE " + prefix + "INITIALIZER NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(INSTANCEOF_EXPRESSION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "INSTANCEOF_EXPRESSION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(JAVADOC)) {
+			builder.append("@ATTRIBUTE " + prefix + "JAVADOC NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(LABELED_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "LABELED_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(LINE_COMMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "LINE_COMMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(MARKER_ANNOTATION)) {
+			builder.append("@ATTRIBUTE " + prefix + "MARKER_ANNOTATION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(MEMBER_REF)) {
+			builder.append("@ATTRIBUTE " + prefix + "MEMBER_REF NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(MEMBER_VALUE_PAIR)) {
+			builder.append("@ATTRIBUTE " + prefix + "MEMBER_VALUE_PAIR NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(METHOD_DECLARATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "METHOD_DECLARATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(METHOD_INVOCATION)) {
+			builder.append("@ATTRIBUTE " + prefix + "METHOD_INVOCATION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(METHOD_REF)) {
+			builder.append("@ATTRIBUTE " + prefix + "METHOD_REF NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(METHOD_REF_PARAMETER)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "METHOD_REF_PARAMETER NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(MODIFIER)) {
+			builder.append("@ATTRIBUTE " + prefix + "MODIFIER NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(NORMAL_ANNOTATION)) {
+			builder.append("@ATTRIBUTE " + prefix + "NORMAL_ANNOTATION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(NULL_LITERAL)) {
+			builder.append("@ATTRIBUTE " + prefix + "NULL_LITERAL NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(NUMBER_LITERAL)) {
+			builder.append("@ATTRIBUTE " + prefix + "NUMBER_LITERAL NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(PACKAGE_DECLARATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "PACKAGE_DECLARATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(PARAMETERIZED_TYPE)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "PARAMETERIZED_TYPE NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(PARENTHESIZED_EXPRESSION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "PARENTHESIZED_EXPRESSION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(POSTFIX_EXPRESSION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "POSTFIX_EXPRESSION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(PREFIX_EXPRESSION)) {
+			builder.append("@ATTRIBUTE " + prefix + "PREFIX_EXPRESSION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(PRIMITIVE_TYPE)) {
+			builder.append("@ATTRIBUTE " + prefix + "PRIMITIVE_TYPE NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(QUALIFIED_NAME)) {
+			builder.append("@ATTRIBUTE " + prefix + "QUALIFIED_NAME NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(QUALIFIED_TYPE)) {
+			builder.append("@ATTRIBUTE " + prefix + "QUALIFIED_TYPE NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(RETURN_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "RETURN_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(SIMPLE_NAME)) {
+			builder.append("@ATTRIBUTE " + prefix + "SIMPLE_NAME NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(SIMPLE_TYPE)) {
+			builder.append("@ATTRIBUTE " + prefix + "SIMPLE_TYPE NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(SINGLE_MEMBER_ANNOTATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "SINGLE_MEMBER_ANNOTATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(SINGLE_VARIABLE_DECLARATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "SINGLE_VARIABLE_DECLARATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(STRING_LITERAL)) {
+			builder.append("@ATTRIBUTE " + prefix + "STRING_LITERAL NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(SUPER_CONSTRUCTOR_INVOCATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "SUPER_CONSTRUCTOR_INVOCATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(SUPER_FIELD_ACCESS)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "SUPER_FIELD_ACCESS NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(SUPER_METHOD_INVOCATION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "SUPER_METHOD_INVOCATION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(SWITCH_CASE)) {
+			builder.append("@ATTRIBUTE " + prefix + "SWITCH_CASE NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(SWITCH_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "SWITCH_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(SYNCHRONIZED_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "SYNCHRONIZED_STATEMENT NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(TAG_ELEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "TAG_ELEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(TEXT_ELEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "TEXT_ELEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(THIS_EXPRESSION)) {
+			builder.append("@ATTRIBUTE " + prefix + "THIS_EXPRESSION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(THROW_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "THROW_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(TRY_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "TRY_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(TYPE_DECLARATION)) {
+			builder.append("@ATTRIBUTE " + prefix + "TYPE_DECLARATION NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(TYPE_DECLARATION_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "TYPE_DECLARATION_STATEMENT NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(TYPE_LITERAL)) {
+			builder.append("@ATTRIBUTE " + prefix + "TYPE_LITERAL NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(TYPE_PARAMETER)) {
+			builder.append("@ATTRIBUTE " + prefix + "TYPE_PARAMETER NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(VARIABLE_DECLARATION_EXPRESSION)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "VARIABLE_DECLARATION_EXPRESSION NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(VARIABLE_DECLARATION_FRAGMENT)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "VARIABLE_DECLARATION_FRAGMENT NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(VARIABLE_DECLARATION_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix
+					+ "VARIABLE_DECLARATION_STATEMENT NUMERIC" + lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(WHILE_STATEMENT)) {
+			builder.append("@ATTRIBUTE " + prefix + "WHILE_STATEMENT NUMERIC"
+					+ lineSeparator);
+		}
+
+		if (!ignoreColumns.contains(WILDCARD_TYPE)) {
+			builder.append("@ATTRIBUTE " + prefix + "WILDCARD_TYPE NUMERIC"
+					+ lineSeparator);
+		}
+
+		return builder.toString();
+	}
+
 }
