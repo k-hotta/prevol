@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.data.vectorwriter;
 
 import static org.eclipse.jdt.core.dom.ASTNode.*;
 
@@ -10,7 +10,7 @@ import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinterMode;
  * @author k-hotta
  * 
  */
-interface DefaultCSVWritterSettingValues {
+interface DefaultVectorWriterSettingValues {
 
 	static String DEFAULT_QUERY = null;
 

@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.data.vectorwriter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,12 +18,12 @@ import org.apache.commons.cli.PosixParser;
  * @author k-hotta
  * 
  */
-public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
+public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 
 	/**
 	 * CSVWriterのモード
 	 */
-	private final CSVWriterMode mode;
+	private final VectorWriterMode mode;
 
 	/**
 	 * 入力データベースファイル
@@ -65,7 +65,7 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 	 */
 	private final boolean defaultQuery;
 
-	private CSVWriterSettings(final CSVWriterMode mode, final String dbPath,
+	private VectorWriterSettings(final VectorWriterMode mode, final String dbPath,
 			final String csvPath, final String query, final long startRevision,
 			final long endRevision, List<Integer> ignoreList,
 			MessagePrinterMode printMode, final boolean defaultQuery) {
@@ -80,7 +80,7 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 		this.defaultQuery = defaultQuery;
 	}
 
-	final CSVWriterMode getMode() {
+	final VectorWriterMode getMode() {
 		return mode;
 	}
 
@@ -116,15 +116,15 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 		return defaultQuery;
 	}
 
-	public static CSVWriterSettings parseArgs(final String[] args)
+	public static VectorWriterSettings parseArgs(final String[] args)
 			throws Exception {
 		final Options options = defineOptions();
 
 		final CommandLineParser parser = new PosixParser();
 		final CommandLine cmd = parser.parse(options, args);
 
-		final CSVWriterMode mode = (cmd.hasOption("E")) ? CSVWriterMode.EVALUATION
-				: CSVWriterMode.TRAINING;
+		final VectorWriterMode mode = (cmd.hasOption("E")) ? VectorWriterMode.EVALUATION
+				: VectorWriterMode.TRAINING;
 
 		final String dbPath = cmd.getOptionValue("d");
 		final String csvPath = cmd.getOptionValue("o");
@@ -163,7 +163,7 @@ public class CSVWriterSettings implements DefaultCSVWritterSettingValues {
 
 		final boolean defaultQuery = (!cmd.hasOption("q"));
 
-		return new CSVWriterSettings(mode, dbPath, csvPath, query,
+		return new VectorWriterSettings(mode, dbPath, csvPath, query,
 				startRevision, endRevision, ignoreList, printMode, defaultQuery);
 	}
 

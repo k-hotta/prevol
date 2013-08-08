@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.data.vectorwriter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,7 +24,7 @@ import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinter;
  * @author k-hotta
  * 
  */
-public class CSVWriter {
+public class VectorWriter {
 
 	/**
 	 * 出力器
@@ -38,14 +38,14 @@ public class CSVWriter {
 	 */
 	public static void main(String[] args) {
 		try {
-			final CSVWriterSettings settings = CSVWriterSettings
+			final VectorWriterSettings settings = VectorWriterSettings
 					.parseArgs(args);
 
 			initialize(settings);
 
-			if (settings.getMode() == CSVWriterMode.TRAINING) {
+			if (settings.getMode() == VectorWriterMode.TRAINING) {
 				writeTrainingSet(settings);
-			} else if (settings.getMode() == CSVWriterMode.EVALUATION) {
+			} else if (settings.getMode() == VectorWriterMode.EVALUATION) {
 				writeEvaluationSet(settings);
 			}
 
@@ -62,7 +62,7 @@ public class CSVWriter {
 	 * @param settings
 	 * @throws Exception
 	 */
-	private static void initialize(final CSVWriterSettings settings)
+	private static void initialize(final VectorWriterSettings settings)
 			throws Exception {
 		// 出力レベルを設定
 		MessagePrinter.setMode(settings.getPrintMode());
@@ -89,7 +89,7 @@ public class CSVWriter {
 	 * @param settings
 	 * @throws Exception
 	 */
-	private static void writeTrainingSet(final CSVWriterSettings settings)
+	private static void writeTrainingSet(final VectorWriterSettings settings)
 			throws Exception {
 		// クエリがデフォルトの場合，指定された番号のリビジョンのIDを復元してクエリに反映
 		String query = settings.getQuery();
@@ -169,7 +169,7 @@ public class CSVWriter {
 	 * @param settings
 	 * @throws Exception
 	 */
-	private static void writeEvaluationSet(final CSVWriterSettings settings)
+	private static void writeEvaluationSet(final VectorWriterSettings settings)
 			throws Exception {
 		// メソッド情報を復元
 		MessagePrinter.stronglyPrintln("retrieving methods ... ");

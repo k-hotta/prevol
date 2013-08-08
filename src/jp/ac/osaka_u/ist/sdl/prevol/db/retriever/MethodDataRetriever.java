@@ -74,7 +74,7 @@ public class MethodDataRetriever extends AbstractElementRetriever<MethodData> {
 			throws SQLException {
 		final String query = "select * from " + getTableName() + " where "
 				+ getStartRevisionIdColumnName() + " <= " + revId + " AND "
-				+ getEndRevisionIdColumnName() + " >=" + revId;
+				+ getEndRevisionIdColumnName() + " >= " + revId;
 
 		return retrieve(query);
 	}

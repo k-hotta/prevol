@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.data.vectorwriter;
 
 /**
  * CSVWriter のモード
@@ -6,7 +6,7 @@ package jp.ac.osaka_u.ist.sdl.prevol.data.csvwriter;
  * @author k-hotta
  * 
  */
-public enum CSVWriterMode {
+public enum VectorWriterMode {
 
 	TRAINING, EVALUATION;
 
