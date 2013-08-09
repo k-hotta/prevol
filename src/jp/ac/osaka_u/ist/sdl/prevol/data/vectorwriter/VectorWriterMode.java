@@ -8,6 +8,6 @@ package jp.ac.osaka_u.ist.sdl.prevol.data.vectorwriter;
  */
 public enum VectorWriterMode {
 
-	TRAINING, EVALUATION;
+	TRAINING, EVALUATION, SINGLE_COLUMN_TRAINING;
 
 }

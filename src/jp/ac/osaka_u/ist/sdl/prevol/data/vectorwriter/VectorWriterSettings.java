@@ -147,8 +147,12 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 		final CommandLineParser parser = new PosixParser();
 		final CommandLine cmd = parser.parse(options, args);
 
-		final VectorWriterMode mode = (cmd.hasOption("E")) ? VectorWriterMode.EVALUATION
-				: VectorWriterMode.TRAINING;
+		VectorWriterMode mode = VectorWriterMode.TRAINING;
+		if (cmd.hasOption("E")) {
+			mode = VectorWriterMode.EVALUATION;
+		} else if (cmd.hasOption("S")) {
+			mode = VectorWriterMode.SINGLE_COLUMN_TRAINING;
+		}
 
 		final String dbPath = cmd.getOptionValue("d");
 		final String outputFilePath = cmd.getOptionValue("o");
@@ -219,6 +223,13 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 					"EVALUATION MODE");
 			E.setRequired(false);
 			options.addOption(E);
+		}
+
+		{
+			final Option S = new Option("S", "SINGLE", false,
+					"SINGLE COLUMN MODE");
+			S.setRequired(false);
+			options.addOption(S);
 		}
 
 		{

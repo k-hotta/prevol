@@ -1767,6 +1767,11 @@ public class VectorData extends AbstractElement {
 				+ getCsvHeader(ignoreColumns, "AFTER_");
 	}
 
+	public static String getSingleColumnTrainingCsvHeader(
+			final Collection<Integer> ignoreColumns, String afterValueName) {
+		return getCsvHeader(ignoreColumns, "BEFORE_") + "," + afterValueName;
+	}
+
 	private static String getCsvHeader(final Collection<Integer> ignoreColumns,
 			final String prefix) {
 		final StringBuilder builder = new StringBuilder();
@@ -2126,6 +2131,18 @@ public class VectorData extends AbstractElement {
 				+ getArffHeader(ignoreColumns, "BEFORE_")
 				+ System.getProperty("line.separator")
 				+ getArffHeader(ignoreColumns, "AFTER_")
+				+ System.getProperty("line.separator") + "@DATA"
+				+ System.getProperty("line.separator");
+	}
+
+	public static String getSingleColumnTrainingArffHeader(
+			final Collection<Integer> ignoreColumns, final String relationName,
+			final String afterValueName) {
+		return "@RELATION " + relationName
+				+ System.getProperty("line.separator")
+				+ getArffHeader(ignoreColumns, "BEFORE_")
+				+ System.getProperty("line.separator") + "@ATTRIBUTE "
+				+ afterValueName + " NUMERIC"
 				+ System.getProperty("line.separator") + "@DATA"
 				+ System.getProperty("line.separator");
 	}
