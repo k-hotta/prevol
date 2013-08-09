@@ -52,6 +52,8 @@ public class VectorWriter {
 				writeEvaluationSet(settings);
 			} else if (settings.getMode() == VectorWriterMode.SINGLE_COLUMN_TRAINING) {
 				writeAllSingleColumnTrainingSet(settings);
+			} else if (settings.getMode() == VectorWriterMode.SINGLE_COLUMN_EVALUATION) {
+				writeSingleColumnEvaluationSet(settings);
 			}
 
 		} catch (Exception e) {
@@ -88,6 +90,89 @@ public class VectorWriter {
 			MessagePrinter.stronglyPrintln("\tOK");
 			MessagePrinter.stronglyPrintln();
 		}
+	}
+
+	private static void writeSingleColumnEvaluationSet(
+			final VectorWriterSettings settings) throws Exception {
+		String query = settings.getQuery();
+		if (settings.isDefaultQuery()) {
+			final RevisionData startRevision = DBConnection
+					.getInstance()
+					.getRevisionRetriever()
+					.getOldestRevisionAfterSpecifiedRevision(
+							settings.getStartRevision());
+			final RevisionData endRevision = DBConnection
+					.getInstance()
+					.getRevisionRetriever()
+					.getLatestRevisionBeforeSpecifiedRevision(
+							settings.getEndRevision());
+
+			query = "select * from VECTOR_LINK where BEFORE_REVISION_ID >= "
+					+ startRevision.getId() + " and BEFORE_REVISION_ID <= "
+					+ endRevision.getId();
+		}
+
+		// ベクトルペア情報を復元
+		MessagePrinter.stronglyPrint("retrieving vector pairs");
+		MessagePrinter.print(" with \"" + query + "\"");
+		MessagePrinter.stronglyPrintln(" ... ");
+		final Set<VectorPairData> vectorPairs = DBConnection.getInstance()
+				.getVectorPairRetriever().retrieve(query);
+		MessagePrinter.stronglyPrintln("\t" + vectorPairs.size()
+				+ " pairs were retrieved");
+		MessagePrinter.stronglyPrintln();
+
+		// 復元したベクトルペアに含まれるベクトル情報を復元
+		MessagePrinter.stronglyPrintln("retrieving vectors ... ");
+		final Set<Long> vectorIdsToBeRetrieved = new TreeSet<Long>();
+
+		for (final VectorPairData vectorPair : vectorPairs) {
+			vectorIdsToBeRetrieved.add(vectorPair.getBeforeVectorId());
+			vectorIdsToBeRetrieved.add(vectorPair.getAfterVectorId());
+		}
+
+		final Set<VectorData> vectors = DBConnection.getInstance()
+				.getVectorRetriever().retrieveWithIds(vectorIdsToBeRetrieved);
+
+		// 復元したベクトル集合をマップに変換
+		final Map<Long, VectorData> vectorsMap = new TreeMap<Long, VectorData>();
+		final Set<Integer> zeroColumns = VectorData.getNodeTypeIntegers();
+
+		for (final VectorData vector : vectors) {
+			vectorsMap.put(vector.getId(), vector);
+			final Set<Integer> nonzeroColumns = vector
+					.getElementContainingColumns();
+			zeroColumns.removeAll(nonzeroColumns);
+		}
+
+		MessagePrinter.stronglyPrintln("\t" + vectorsMap.size()
+				+ " vectors were retrieved");
+		MessagePrinter.stronglyPrintln();
+
+		// 出力
+		MessagePrinter.stronglyPrintln("printing the result ... ");
+
+		final List<Integer> ignoreList = new ArrayList<Integer>();
+		ignoreList.addAll(settings.getIgnoreList());
+		ignoreList.addAll(zeroColumns);
+
+		// ヘッダを出力
+		if (settings.getOutputFileFormat() == OutputFileFormat.CSV) {
+			pw.println(VectorData.getSingleColumnTrainingCsvHeader(ignoreList,
+					"TO_BE_EVALUATED"));
+		} else {
+			pw.println(VectorData.getSingleColumnTrainingArffHeader(ignoreList,
+					settings.getRelationName(), "TO_BE_EVALUATED"));
+		}
+
+		// 各レコードを出力
+		for (final VectorPairData vectorPair : vectorPairs) {
+			final VectorData beforeVector = vectorsMap.get(vectorPair
+					.getBeforeVectorId());
+
+			pw.println(beforeVector.toCsvRecord(ignoreList) + ",?");
+		}
+		MessagePrinter.stronglyPrintln("\tcomplete!!");
 	}
 
 	/**

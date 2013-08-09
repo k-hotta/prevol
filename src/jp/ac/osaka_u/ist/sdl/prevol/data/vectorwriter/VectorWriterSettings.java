@@ -152,6 +152,8 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 			mode = VectorWriterMode.EVALUATION;
 		} else if (cmd.hasOption("S")) {
 			mode = VectorWriterMode.SINGLE_COLUMN_TRAINING;
+		} else if (cmd.hasOption("SE")) {
+			mode = VectorWriterMode.SINGLE_COLUMN_EVALUATION;
 		}
 
 		final String dbPath = cmd.getOptionValue("d");
@@ -230,6 +232,13 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 					"SINGLE COLUMN MODE");
 			S.setRequired(false);
 			options.addOption(S);
+		}
+		
+		{
+			final Option SE = new Option("SE", "SINGLE_EVALUATION", false,
+					"SINGLE COLUMN MODE FOR EVALUATION SET");
+			SE.setRequired(false);
+			options.addOption(SE);
 		}
 
 		{
