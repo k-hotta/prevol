@@ -90,6 +90,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -2552,6 +2553,516 @@ public class VectorData extends AbstractElement {
 		}
 
 		return builder.toString();
+	}
+
+	public Set<Integer> getElementContainingColumns() {
+		final Set<Integer> result = new HashSet<Integer>();
+
+		if (this.getAnnotationTypeDeclarationCount() != 0) {
+			result.add(ANNOTATION_TYPE_DECLARATION);
+		}
+
+		if (this.getAnnotationTypeMemberDeclarationCount() != 0) {
+			result.add(ANNOTATION_TYPE_MEMBER_DECLARATION);
+		}
+
+		if (this.getAnonymousClassDeclarationCount() != 0) {
+			result.add(ANONYMOUS_CLASS_DECLARATION);
+		}
+
+		if (this.getArrayAccessCount() != 0) {
+			result.add(ARRAY_ACCESS);
+		}
+
+		if (this.getArrayCreationCount() != 0) {
+			result.add(ARRAY_CREATION);
+		}
+
+		if (this.getArrayInitializerCount() != 0) {
+			result.add(ARRAY_INITIALIZER);
+		}
+
+		if (this.getArrayTypeCount() != 0) {
+			result.add(ARRAY_TYPE);
+		}
+
+		if (this.getAssertStatementCount() != 0) {
+			result.add(ASSERT_STATEMENT);
+		}
+
+		if (this.getAssignmentCount() != 0) {
+			result.add(ASSIGNMENT);
+		}
+
+		if (this.getBlockCount() != 0) {
+			result.add(BLOCK);
+		}
+
+		if (this.getBlockCommentCount() != 0) {
+			result.add(BLOCK_COMMENT);
+		}
+
+		if (this.getBooleanLiteralCount() != 0) {
+			result.add(BOOLEAN_LITERAL);
+		}
+
+		if (this.getBreakStatementCount() != 0) {
+			result.add(BREAK_STATEMENT);
+		}
+
+		if (this.getCastExpressionCount() != 0) {
+			result.add(CAST_EXPRESSION);
+		}
+
+		if (this.getCatchClauseCount() != 0) {
+			result.add(CATCH_CLAUSE);
+		}
+
+		if (this.getCharacterLiteralCount() != 0) {
+			result.add(CHARACTER_LITERAL);
+		}
+
+		if (this.getClassInstanceCreationCount() != 0) {
+			result.add(CLASS_INSTANCE_CREATION);
+		}
+
+		if (this.getCompilationUnitCount() != 0) {
+			result.add(COMPILATION_UNIT);
+		}
+
+		if (this.getConditionalExpressionCount() != 0) {
+			result.add(CONDITIONAL_EXPRESSION);
+		}
+
+		if (this.getConstructorInvocationCount() != 0) {
+			result.add(CONSTRUCTOR_INVOCATION);
+		}
+
+		if (this.getContinueStatementCount() != 0) {
+			result.add(CONTINUE_STATEMENT);
+		}
+
+		if (this.getDoStatementCount() != 0) {
+			result.add(DO_STATEMENT);
+		}
+
+		if (this.getEmptyStatementCount() != 0) {
+			result.add(EMPTY_STATEMENT);
+		}
+
+		if (this.getEnhancedForStatementCount() != 0) {
+			result.add(ENHANCED_FOR_STATEMENT);
+		}
+
+		if (this.getEnumConstantDeclarationCount() != 0) {
+			result.add(ENUM_CONSTANT_DECLARATION);
+		}
+
+		if (this.getEnumDeclarationCount() != 0) {
+			result.add(ENUM_DECLARATION);
+		}
+
+		if (this.getExpressionStatementCount() != 0) {
+			result.add(EXPRESSION_STATEMENT);
+		}
+
+		if (this.getFieldAccessCount() != 0) {
+			result.add(FIELD_ACCESS);
+		}
+
+		if (this.getFieldDeclarationCount() != 0) {
+			result.add(FIELD_DECLARATION);
+		}
+
+		if (this.getForStatementCount() != 0) {
+			result.add(FOR_STATEMENT);
+		}
+
+		if (this.getIfStatementCount() != 0) {
+			result.add(IF_STATEMENT);
+		}
+
+		if (this.getImportDeclarationCount() != 0) {
+			result.add(IMPORT_DECLARATION);
+		}
+
+		if (this.getInfixExpressionCount() != 0) {
+			result.add(INFIX_EXPRESSION);
+		}
+
+		if (this.getInitializerCount() != 0) {
+			result.add(INITIALIZER);
+		}
+
+		if (this.getInstanceofExpressionCount() != 0) {
+			result.add(INSTANCEOF_EXPRESSION);
+		}
+
+		if (this.getJavadocCount() != 0) {
+			result.add(JAVADOC);
+		}
+
+		if (this.getLabeledStatementCount() != 0) {
+			result.add(LABELED_STATEMENT);
+		}
+
+		if (this.getLineCommentCount() != 0) {
+			result.add(LINE_COMMENT);
+		}
+
+		if (this.getMarkerAnnotationCount() != 0) {
+			result.add(MARKER_ANNOTATION);
+		}
+
+		if (this.getMemberRefCount() != 0) {
+			result.add(MEMBER_REF);
+		}
+
+		if (this.getMemberValuePairCount() != 0) {
+			result.add(MEMBER_VALUE_PAIR);
+		}
+
+		if (this.getMethodDeclarationCount() != 0) {
+			result.add(METHOD_DECLARATION);
+		}
+
+		if (this.getMethodInvocationCount() != 0) {
+			result.add(METHOD_INVOCATION);
+		}
+
+		if (this.getMethodRefCount() != 0) {
+			result.add(METHOD_REF);
+		}
+
+		if (this.getMethodRefParameterCount() != 0) {
+			result.add(METHOD_REF_PARAMETER);
+		}
+
+		if (this.getModifierCount() != 0) {
+			result.add(MODIFIER);
+		}
+
+		if (this.getNormalAnnotationCount() != 0) {
+			result.add(NORMAL_ANNOTATION);
+		}
+
+		if (this.getNullLiteralCount() != 0) {
+			result.add(NULL_LITERAL);
+		}
+
+		if (this.getNumberLiteralCount() != 0) {
+			result.add(NUMBER_LITERAL);
+		}
+
+		if (this.getPackageDeclarationCount() != 0) {
+			result.add(PACKAGE_DECLARATION);
+		}
+
+		if (this.getParameterizedTypeCount() != 0) {
+			result.add(PARAMETERIZED_TYPE);
+		}
+
+		if (this.getParenthesizedExpressionCount() != 0) {
+			result.add(PARENTHESIZED_EXPRESSION);
+		}
+
+		if (this.getPostfixExpressionCount() != 0) {
+			result.add(POSTFIX_EXPRESSION);
+		}
+
+		if (this.getPrefixExpressionCount() != 0) {
+			result.add(PREFIX_EXPRESSION);
+		}
+
+		if (this.getPrimitiveTypeCount() != 0) {
+			result.add(PRIMITIVE_TYPE);
+		}
+
+		if (this.getQualifiedNameCount() != 0) {
+			result.add(QUALIFIED_NAME);
+		}
+
+		if (this.getQualifiedTypeCount() != 0) {
+			result.add(QUALIFIED_TYPE);
+		}
+
+		if (this.getReturnStatementCount() != 0) {
+			result.add(RETURN_STATEMENT);
+		}
+
+		if (this.getSimpleNameCount() != 0) {
+			result.add(SIMPLE_NAME);
+		}
+
+		if (this.getSimpleTypeCount() != 0) {
+			result.add(SIMPLE_TYPE);
+		}
+
+		if (this.getSingleMemberAnnotationCount() != 0) {
+			result.add(SINGLE_MEMBER_ANNOTATION);
+		}
+
+		if (this.getSingleVariableDeclarationCount() != 0) {
+			result.add(SINGLE_VARIABLE_DECLARATION);
+		}
+
+		if (this.getStringLiteralCount() != 0) {
+			result.add(STRING_LITERAL);
+		}
+
+		if (this.getSuperConstructorInvocationCount() != 0) {
+			result.add(SUPER_CONSTRUCTOR_INVOCATION);
+		}
+
+		if (this.getSuperFieldAccessCount() != 0) {
+			result.add(SUPER_FIELD_ACCESS);
+		}
+
+		if (this.getSuperMethodInvocationCount() != 0) {
+			result.add(SUPER_METHOD_INVOCATION);
+		}
+
+		if (this.getSwitchCaseCount() != 0) {
+			result.add(SWITCH_CASE);
+		}
+
+		if (this.getSwitchStatementCount() != 0) {
+			result.add(SWITCH_STATEMENT);
+		}
+
+		if (this.getSynchronizedStatementCount() != 0) {
+			result.add(SYNCHRONIZED_STATEMENT);
+		}
+
+		if (this.getTagElementCount() != 0) {
+			result.add(TAG_ELEMENT);
+		}
+
+		if (this.getTextElementCount() != 0) {
+			result.add(TEXT_ELEMENT);
+		}
+
+		if (this.getThisExpressionCount() != 0) {
+			result.add(THIS_EXPRESSION);
+		}
+
+		if (this.getThrowStatementCount() != 0) {
+			result.add(THROW_STATEMENT);
+		}
+
+		if (this.getTryStatementCount() != 0) {
+			result.add(TRY_STATEMENT);
+		}
+
+		if (this.getTypeDeclarationCount() != 0) {
+			result.add(TYPE_DECLARATION);
+		}
+
+		if (this.getTypeDeclarationStatementCount() != 0) {
+			result.add(TYPE_DECLARATION_STATEMENT);
+		}
+
+		if (this.getTypeLiteralCount() != 0) {
+			result.add(TYPE_LITERAL);
+		}
+
+		if (this.getTypeParameterCount() != 0) {
+			result.add(TYPE_PARAMETER);
+		}
+
+		if (this.getVariableDeclarationExpressionCount() != 0) {
+			result.add(VARIABLE_DECLARATION_EXPRESSION);
+		}
+
+		if (this.getVariableDeclarationFragmentCount() != 0) {
+			result.add(VARIABLE_DECLARATION_FRAGMENT);
+		}
+
+		if (this.getVariableDeclarationStatementCount() != 0) {
+			result.add(VARIABLE_DECLARATION_STATEMENT);
+		}
+
+		if (this.getWhileStatementCount() != 0) {
+			result.add(WHILE_STATEMENT);
+		}
+
+		if (this.getWildcardTypeCount() != 0) {
+			result.add(WILDCARD_TYPE);
+		}
+
+		return result;
+	}
+
+	public static Set<Integer> getNodeTypeIntegers() {
+		final Set<Integer> result = new HashSet<Integer>();
+
+		result.add(ANNOTATION_TYPE_DECLARATION);
+
+		result.add(ANNOTATION_TYPE_MEMBER_DECLARATION);
+
+		result.add(ANONYMOUS_CLASS_DECLARATION);
+
+		result.add(ARRAY_ACCESS);
+
+		result.add(ARRAY_CREATION);
+
+		result.add(ARRAY_INITIALIZER);
+
+		result.add(ARRAY_TYPE);
+
+		result.add(ASSERT_STATEMENT);
+
+		result.add(ASSIGNMENT);
+
+		result.add(BLOCK);
+
+		result.add(BLOCK_COMMENT);
+
+		result.add(BOOLEAN_LITERAL);
+
+		result.add(BREAK_STATEMENT);
+
+		result.add(CAST_EXPRESSION);
+
+		result.add(CATCH_CLAUSE);
+
+		result.add(CHARACTER_LITERAL);
+
+		result.add(CLASS_INSTANCE_CREATION);
+
+		result.add(COMPILATION_UNIT);
+
+		result.add(CONDITIONAL_EXPRESSION);
+
+		result.add(CONSTRUCTOR_INVOCATION);
+
+		result.add(CONTINUE_STATEMENT);
+
+		result.add(DO_STATEMENT);
+
+		result.add(EMPTY_STATEMENT);
+
+		result.add(ENHANCED_FOR_STATEMENT);
+
+		result.add(ENUM_CONSTANT_DECLARATION);
+
+		result.add(ENUM_DECLARATION);
+
+		result.add(EXPRESSION_STATEMENT);
+
+		result.add(FIELD_ACCESS);
+
+		result.add(FIELD_DECLARATION);
+
+		result.add(FOR_STATEMENT);
+
+		result.add(IF_STATEMENT);
+
+		result.add(IMPORT_DECLARATION);
+
+		result.add(INFIX_EXPRESSION);
+
+		result.add(INITIALIZER);
+
+		result.add(INSTANCEOF_EXPRESSION);
+
+		result.add(JAVADOC);
+
+		result.add(LABELED_STATEMENT);
+
+		result.add(LINE_COMMENT);
+
+		result.add(MARKER_ANNOTATION);
+
+		result.add(MEMBER_REF);
+
+		result.add(MEMBER_VALUE_PAIR);
+
+		result.add(METHOD_DECLARATION);
+
+		result.add(METHOD_INVOCATION);
+
+		result.add(METHOD_REF);
+
+		result.add(METHOD_REF_PARAMETER);
+
+		result.add(MODIFIER);
+
+		result.add(NORMAL_ANNOTATION);
+
+		result.add(NULL_LITERAL);
+
+		result.add(NUMBER_LITERAL);
+
+		result.add(PACKAGE_DECLARATION);
+
+		result.add(PARAMETERIZED_TYPE);
+
+		result.add(PARENTHESIZED_EXPRESSION);
+
+		result.add(POSTFIX_EXPRESSION);
+
+		result.add(PREFIX_EXPRESSION);
+
+		result.add(PRIMITIVE_TYPE);
+
+		result.add(QUALIFIED_NAME);
+
+		result.add(QUALIFIED_TYPE);
+
+		result.add(RETURN_STATEMENT);
+
+		result.add(SIMPLE_NAME);
+
+		result.add(SIMPLE_TYPE);
+
+		result.add(SINGLE_MEMBER_ANNOTATION);
+
+		result.add(SINGLE_VARIABLE_DECLARATION);
+
+		result.add(STRING_LITERAL);
+
+		result.add(SUPER_CONSTRUCTOR_INVOCATION);
+
+		result.add(SUPER_FIELD_ACCESS);
+
+		result.add(SUPER_METHOD_INVOCATION);
+
+		result.add(SWITCH_CASE);
+
+		result.add(SWITCH_STATEMENT);
+
+		result.add(SYNCHRONIZED_STATEMENT);
+
+		result.add(TAG_ELEMENT);
+
+		result.add(TEXT_ELEMENT);
+
+		result.add(THIS_EXPRESSION);
+
+		result.add(THROW_STATEMENT);
+
+		result.add(TRY_STATEMENT);
+
+		result.add(TYPE_DECLARATION);
+
+		result.add(TYPE_DECLARATION_STATEMENT);
+
+		result.add(TYPE_LITERAL);
+
+		result.add(TYPE_PARAMETER);
+
+		result.add(VARIABLE_DECLARATION_EXPRESSION);
+
+		result.add(VARIABLE_DECLARATION_FRAGMENT);
+
+		result.add(VARIABLE_DECLARATION_STATEMENT);
+
+		result.add(WHILE_STATEMENT);
+
+		result.add(WILDCARD_TYPE);
+
+		return result;
 	}
 
 }

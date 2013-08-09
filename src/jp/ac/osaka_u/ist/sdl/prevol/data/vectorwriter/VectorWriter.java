@@ -4,7 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.text.Format;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -135,8 +135,12 @@ public class VectorWriter {
 
 		// 復元したベクトル集合をマップに変換
 		final Map<Long, VectorData> vectorsMap = new TreeMap<Long, VectorData>();
+		final Set<Integer> zeroColumns = VectorData.getNodeTypeIntegers();
+		
 		for (final VectorData vector : vectors) {
 			vectorsMap.put(vector.getId(), vector);
+			final Set<Integer> nonzeroColumns = vector.getElementContainingColumns();
+			zeroColumns.removeAll(nonzeroColumns);
 		}
 
 		MessagePrinter.stronglyPrintln("\t" + vectorsMap.size()
@@ -146,7 +150,9 @@ public class VectorWriter {
 		// 出力
 		MessagePrinter.stronglyPrintln("printing the result ... ");
 
-		final List<Integer> ignoreList = settings.getIgnoreList();
+		final List<Integer> ignoreList = new ArrayList<Integer>();
+		ignoreList.addAll(settings.getIgnoreList());
+		ignoreList.addAll(zeroColumns);
 
 		// ヘッダを出力
 		if (settings.getOutputFileFormat() == OutputFileFormat.CSV) {
@@ -193,6 +199,8 @@ public class VectorWriter {
 			final MethodDataRetriever methodRetriever = DBConnection
 					.getInstance().getMethodRetriever();
 			for (final RevisionData revision : revisions) {
+				MessagePrinter.println("\tprocessing "
+						+ revision.getRevisionNum());
 				methods.addAll(methodRetriever
 						.retrieveInSpecifiedRevision(revision.getId()));
 			}
@@ -211,7 +219,21 @@ public class VectorWriter {
 		}
 		MessagePrinter.stronglyPrintln();
 
-		final List<Integer> ignoreList = settings.getIgnoreList();
+		// ベクトルを復元
+		final Set<Integer> zeroColumns = VectorData.getNodeTypeIntegers();
+		final Set<VectorData> vectors = DBConnection.getInstance()
+				.getVectorRetriever().retrieveWithIds(vectorIds);
+		for (final VectorData vector : vectors) {
+			final Set<Integer> nonzeroColumns = vector.getElementContainingColumns();
+			zeroColumns.removeAll(nonzeroColumns);
+			if (zeroColumns.isEmpty()) {
+				break;
+			}
+		}
+
+		final List<Integer> ignoreList = new ArrayList<Integer>();
+		ignoreList.addAll(settings.getIgnoreList());
+		ignoreList.addAll(zeroColumns);
 
 		// 出力
 		MessagePrinter.stronglyPrintln("printing the result ... ");
@@ -223,9 +245,6 @@ public class VectorWriter {
 			pw.println(VectorData.getEvaluationArffHeader(ignoreList,
 					settings.getRelationName()));
 		}
-
-		final Set<VectorData> vectors = DBConnection.getInstance()
-				.getVectorRetriever().retrieveWithIds(vectorIds);
 
 		for (final VectorData vector : vectors) {
 			pw.println(vector.toCsvRecord(ignoreList));
