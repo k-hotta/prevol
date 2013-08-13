@@ -2,7 +2,7 @@ package jp.ac.osaka_u.ist.sdl.prevol.evaluator;
 
 import java.util.Map;
 
-import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
+import jp.ac.osaka_u.ist.sdl.prevol.data.NodeType;
 
 /**
  * ベクトルを比較し，ベクトル間の差分を算出するクラス
@@ -12,35 +12,18 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
  */
 public class VectorsComparator {
 
-	public static int calcNotMatchingNodeTypeCount(final VectorData v1,
-			final VectorData v2) {
+	public static int calcVectorDistance(final Map<NodeType, Integer> v1,
+			final Map<NodeType, Integer> v2) {
+		assert v1.size() == v2.size();
+
 		int result = 0;
-		int comparedNodeTypes = 0;
 
-		final Map<Integer, Integer> nodeMapInV2 = v2.getVector();
-
-		// v1のマップに含まれる(=v1におけるノード数が0ではない)ノードタイプについて
-		// v2にそれが含まれているか，含まれてれば数があっているかを比較
-		// いずれも満たさなければ，数が違うので result をインクリメント
-		for (final Map.Entry<Integer, Integer> entryInV1 : v1.getVector()
-				.entrySet()) {
-			final int nodeTypeContainedInV1 = entryInV1.getKey();
-			final int nodeCountInV1 = entryInV1.getValue();
-
-			if (nodeMapInV2.containsKey(nodeTypeContainedInV1)) {
-				final int nodeCountInV2 = nodeMapInV2
-						.get(nodeTypeContainedInV1);
-				comparedNodeTypes++;
-				if (nodeCountInV1 != nodeCountInV2) {
-					result++;
-				}
+		for (final Map.Entry<NodeType, Integer> entryV1 : v1.entrySet()) {
+			if (!(v2.containsKey(entryV1.getKey()) && (v2.get(entryV1.getKey()) == entryV1
+					.getValue()))) {
+				result++;
 			}
 		}
-
-		// v2のマップに含まれるノードタイプについて，v1との比較がされていないものについては
-		// v1にそれがない，つまりそのノードタイプのノード数がv1とv2で違うので，
-		// その分を result に追加
-		result += nodeMapInV2.size() - comparedNodeTypes;
 
 		return result;
 	}

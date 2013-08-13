@@ -448,19 +448,56 @@ public enum NodeType {
 
 		return null;
 	}
-	
+
 	public static final NodeType getNodeType(final int ordinal) {
 		if (values == null) {
 			// NodeTypes.values() の呼び出しを一度だけに抑えるための処置
 			values = NodeType.values();
 		}
-		
+
 		for (final NodeType currentType : values) {
 			if (ordinal == currentType.getJdtOrdinal()) {
 				return currentType;
 			}
 		}
-		
+
+		return null;
+	}
+
+	public static final NodeType getNodeTypeWithFileName(final String fileName) {
+		if (values == null) {
+			// NodeTypes.values() の呼び出しを一度だけに抑えるための処置
+			values = NodeType.values();
+		}
+
+		final String prefix = "-";
+		final String suffix = ".arff";
+
+		for (final NodeType currentType : values) {
+			if (fileName.contains(prefix + currentType.name() + suffix)) {
+				return currentType;
+			}
+			if (fileName.contains(prefix + currentType.getClassName() + suffix)) {
+				return currentType;
+			}
+			if (fileName.contains(prefix + currentType.name().toLowerCase()
+					+ suffix)) {
+				return currentType;
+			}
+			if (fileName.contains(prefix
+					+ currentType.getClassName().toLowerCase() + suffix)) {
+				return currentType;
+			}
+			if (fileName.contains(prefix + currentType.name().toUpperCase()
+					+ suffix)) {
+				return currentType;
+			}
+			if (fileName.contains(prefix
+					+ currentType.getClassName().toUpperCase() + suffix)) {
+				return currentType;
+			}
+		}
+
 		return null;
 	}
 
