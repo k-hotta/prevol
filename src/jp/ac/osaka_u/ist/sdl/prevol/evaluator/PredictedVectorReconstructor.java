@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.NodeType;
@@ -25,8 +26,9 @@ public class PredictedVectorReconstructor {
 		this.resultDirPath = resultDirPath;
 	}
 
-	public Map<Integer, Map<NodeType, Integer>> reconstruct() throws Exception {
-		final Map<Integer, Map<NodeType, Integer>> result = new TreeMap<Integer, Map<NodeType, Integer>>();
+	public Map<Integer, SortedMap<NodeType, Integer>> reconstruct()
+			throws Exception {
+		final Map<Integer, SortedMap<NodeType, Integer>> result = new TreeMap<Integer, SortedMap<NodeType, Integer>>();
 
 		final File resultDir = new File(resultDirPath);
 		if (!resultDir.isDirectory()) {
@@ -52,7 +54,7 @@ public class PredictedVectorReconstructor {
 				if (result.containsKey(row)) {
 					result.get(row).put(type, numberOfNodes);
 				} else {
-					final Map<NodeType, Integer> newRowMap = new HashMap<NodeType, Integer>();
+					final SortedMap<NodeType, Integer> newRowMap = new TreeMap<NodeType, Integer>();
 					newRowMap.put(type, numberOfNodes);
 					result.put(row, newRowMap);
 				}

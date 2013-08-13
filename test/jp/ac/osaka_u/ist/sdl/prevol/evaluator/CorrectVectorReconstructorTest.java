@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.Map;
+import java.util.SortedMap;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.NodeType;
 
@@ -12,7 +13,7 @@ import org.junit.Test;
 
 public class CorrectVectorReconstructorTest {
 
-	private static Map<Integer, Map<NodeType, Integer>> reconstructedVectors;
+	private static Map<Integer, SortedMap<NodeType, Integer>> reconstructedVectors;
 
 	@BeforeClass
 	public static void setup() throws Exception {

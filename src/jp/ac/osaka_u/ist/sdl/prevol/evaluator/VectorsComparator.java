@@ -1,6 +1,8 @@
 package jp.ac.osaka_u.ist.sdl.prevol.evaluator;
 
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.NodeType;
 
@@ -12,17 +14,20 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.NodeType;
  */
 public class VectorsComparator {
 
-	public static int calcVectorDistance(final Map<NodeType, Integer> v1,
-			final Map<NodeType, Integer> v2) {
+	public static SortedMap<NodeType, Integer> calcVectorDistance(final SortedMap<NodeType, Integer> v1,
+			final SortedMap<NodeType, Integer> v2) {
 		assert v1.size() == v2.size();
 
-		int result = 0;
+		SortedMap<NodeType, Integer> result = new TreeMap<NodeType, Integer>();
 
 		for (final Map.Entry<NodeType, Integer> entryV1 : v1.entrySet()) {
-			if (!(v2.containsKey(entryV1.getKey()) && (v2.get(entryV1.getKey()) == entryV1
-					.getValue()))) {
-				result++;
-			}
+			assert v2.containsKey(entryV1.getKey());
+			
+			final NodeType type = entryV1.getKey();
+			final int valueV1 = entryV1.getValue();
+			final int valueV2 = v2.get(entryV1.getKey());
+			
+			result.put(type, valueV1 - valueV2);
 		}
 
 		return result;

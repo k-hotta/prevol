@@ -1,8 +1,8 @@
 package jp.ac.osaka_u.ist.sdl.prevol.evaluator;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.NodeType;
@@ -21,8 +21,9 @@ public class CorrectVectorReconstructor {
 		this.correctFilePath = correctFilePath;
 	}
 
-	public Map<Integer, Map<NodeType, Integer>> reconstruct() throws Exception {
-		final Map<Integer, Map<NodeType, Integer>> result = new TreeMap<Integer, Map<NodeType, Integer>>();
+	public Map<Integer, SortedMap<NodeType, Integer>> reconstruct()
+			throws Exception {
+		final Map<Integer, SortedMap<NodeType, Integer>> result = new TreeMap<Integer, SortedMap<NodeType, Integer>>();
 
 		final ArffReader reader = new ArffReader(correctFilePath);
 		reader.load();
@@ -37,7 +38,7 @@ public class CorrectVectorReconstructor {
 			final int startIndex = rowValues.size() / 2;
 			final int endIndex = rowValues.size() - 1;
 
-			final Map<NodeType, Integer> reconstructedVector = new HashMap<NodeType, Integer>();
+			final SortedMap<NodeType, Integer> reconstructedVector = new TreeMap<NodeType, Integer>();
 			for (int i = startIndex; i <= endIndex; i++) {
 				final String attributeStr = attributes.get(i).substring(
 						"AFTER_".length());
