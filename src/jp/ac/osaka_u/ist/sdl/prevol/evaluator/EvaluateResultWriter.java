@@ -72,6 +72,7 @@ public class EvaluateResultWriter {
 			for (final NodeType nodeType : nodeTypes) {
 				headerBuilder.append(nodeType.name() + ",");
 			}
+			break;
 		}
 
 		headerBuilder.append("#_not_match_attributes,#_not_match_absolute");
