@@ -46,15 +46,19 @@ public class VectorWriter {
 
 			initialize(settings);
 
+			AbstractWriter writer = null;
+			
 			if (settings.getMode() == VectorWriterMode.TRAINING) {
-				writeTrainingSet(settings);
+				writer = new AllColumnsTrainingSetWriter(settings);
 			} else if (settings.getMode() == VectorWriterMode.EVALUATION) {
-				writeEvaluationSet(settings);
+				//
 			} else if (settings.getMode() == VectorWriterMode.SINGLE_COLUMN_TRAINING) {
-				writeAllSingleColumnTrainingSet(settings);
+				writer = new SingleColumnTrainingSetWriter(settings);
 			} else if (settings.getMode() == VectorWriterMode.SINGLE_COLUMN_EVALUATION) {
-				writeSingleColumnEvaluationSet(settings);
+				writer = new SingleColumnEvaluationSetWriter(settings);
 			}
+			
+			writer.write();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,7 +96,14 @@ public class VectorWriter {
 		}
 	}
 
-	private static void writeSingleColumnEvaluationSet(
+	/**
+	 * ベクトルペアを復元
+	 * 
+	 * @param settings
+	 * @return
+	 * @throws Exception
+	 */
+	private static Set<VectorPairData> retrieveVectorPairs(
 			final VectorWriterSettings settings) throws Exception {
 		String query = settings.getQuery();
 		if (settings.isDefaultQuery()) {
@@ -121,6 +132,14 @@ public class VectorWriter {
 		MessagePrinter.stronglyPrintln("\t" + vectorPairs.size()
 				+ " pairs were retrieved");
 		MessagePrinter.stronglyPrintln();
+
+		return vectorPairs;
+	}
+
+	private static void writeSingleColumnEvaluationSet(
+			final VectorWriterSettings settings) throws Exception {
+		// ベクトルペアを復元
+		final Set<VectorPairData> vectorPairs = retrieveVectorPairs(settings);
 
 		// 復元したベクトルペアに含まれるベクトル情報を復元
 		MessagePrinter.stronglyPrintln("retrieving vectors ... ");
@@ -183,34 +202,8 @@ public class VectorWriter {
 	 */
 	private static void writeAllSingleColumnTrainingSet(
 			final VectorWriterSettings settings) throws Exception {
-		// クエリがデフォルトの場合，指定された番号のリビジョンのIDを復元してクエリに反映
-		String query = settings.getQuery();
-		if (settings.isDefaultQuery()) {
-			final RevisionData startRevision = DBConnection
-					.getInstance()
-					.getRevisionRetriever()
-					.getOldestRevisionAfterSpecifiedRevision(
-							settings.getStartRevision());
-			final RevisionData endRevision = DBConnection
-					.getInstance()
-					.getRevisionRetriever()
-					.getLatestRevisionBeforeSpecifiedRevision(
-							settings.getEndRevision());
-
-			query = "select * from VECTOR_LINK where BEFORE_REVISION_ID >= "
-					+ startRevision.getId() + " and BEFORE_REVISION_ID <= "
-					+ endRevision.getId();
-		}
-
-		// ベクトルペア情報を復元
-		MessagePrinter.stronglyPrint("retrieving vector pairs");
-		MessagePrinter.print(" with \"" + query + "\"");
-		MessagePrinter.stronglyPrintln(" ... ");
-		final Set<VectorPairData> vectorPairs = DBConnection.getInstance()
-				.getVectorPairRetriever().retrieve(query);
-		MessagePrinter.stronglyPrintln("\t" + vectorPairs.size()
-				+ " pairs were retrieved");
-		MessagePrinter.stronglyPrintln();
+		// ベクトルペアを復元
+		final Set<VectorPairData> vectorPairs = retrieveVectorPairs(settings);
 
 		// 復元したベクトルペアに含まれるベクトル情報を復元
 		MessagePrinter.stronglyPrintln("retrieving vectors ... ");
@@ -313,34 +306,8 @@ public class VectorWriter {
 	 */
 	private static void writeTrainingSet(final VectorWriterSettings settings)
 			throws Exception {
-		// クエリがデフォルトの場合，指定された番号のリビジョンのIDを復元してクエリに反映
-		String query = settings.getQuery();
-		if (settings.isDefaultQuery()) {
-			final RevisionData startRevision = DBConnection
-					.getInstance()
-					.getRevisionRetriever()
-					.getOldestRevisionAfterSpecifiedRevision(
-							settings.getStartRevision());
-			final RevisionData endRevision = DBConnection
-					.getInstance()
-					.getRevisionRetriever()
-					.getLatestRevisionBeforeSpecifiedRevision(
-							settings.getEndRevision());
-
-			query = "select * from VECTOR_LINK where BEFORE_REVISION_ID >= "
-					+ startRevision.getId() + " and BEFORE_REVISION_ID <= "
-					+ endRevision.getId();
-		}
-
-		// ベクトルペア情報を復元
-		MessagePrinter.stronglyPrint("retrieving vector pairs");
-		MessagePrinter.print(" with \"" + query + "\"");
-		MessagePrinter.stronglyPrintln(" ... ");
-		final Set<VectorPairData> vectorPairs = DBConnection.getInstance()
-				.getVectorPairRetriever().retrieve(query);
-		MessagePrinter.stronglyPrintln("\t" + vectorPairs.size()
-				+ " pairs were retrieved");
-		MessagePrinter.stronglyPrintln();
+		// ベクトルペアを復元
+		final Set<VectorPairData> vectorPairs = retrieveVectorPairs(settings);
 
 		// 復元したベクトルペアに含まれるベクトル情報を復元
 		MessagePrinter.stronglyPrintln("retrieving vectors ... ");
