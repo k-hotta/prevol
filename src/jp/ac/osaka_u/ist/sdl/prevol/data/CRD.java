@@ -17,6 +17,7 @@ public class CRD {
 	 */
 	private final List<CRDElement> elements;
 
+	
 	/**
 	 * このCRDの文字列表記
 	 */
