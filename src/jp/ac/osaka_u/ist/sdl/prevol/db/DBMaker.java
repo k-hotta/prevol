@@ -119,6 +119,20 @@ public class DBMaker {
 				stmt.close();
 			}
 
+			// ベクトルの系譜を表すテーブルを作成
+			{
+				final Statement stmt = connection.createStatement();
+				stmt.executeUpdate(getVectorGenealogyTableQuery());
+				stmt.close();
+			}
+
+			// ベクトルの系譜を表すテーブルにインデックスを作成
+			{
+				final Statement stmt = connection.createStatement();
+				createIndexesOnVectorGenealogyTable(stmt);
+				stmt.close();
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -317,6 +331,29 @@ public class DBMaker {
 		stmt.executeUpdate("create index AFTER_METHOD_ID_INDEX_VECTOR_LINK on VECTOR_LINK(AFTER_METHOD_ID)");
 		stmt.executeUpdate("create index BEFORE_VECTOR_ID_INDEX_VECTOR_LINK on VECTOR_LINK(BEFORE_VECTOR_ID)");
 		stmt.executeUpdate("create index AFTER_VECTOR_ID_INDEX_VECTOR_LINK on VECTOR_LINK(AFTER_VECTOR_ID)");
+	}
+
+	private static String getVectorGenealogyTableQuery() {
+		final StringBuilder builder = new StringBuilder();
+
+		builder.append("create table VECTOR_GENEALOGY(");
+		builder.append("VECTOR_GENEALOGY_ID LONG PRIMARY KEY,");
+		builder.append("START_REVISION_ID LONG,");
+		builder.append("END_REVISION_ID LONG,");
+		builder.append("NUMBER_CHANGED INTEGER,");
+		builder.append("VECTORS TEXT,");
+		builder.append("CHANGED_REVISIONS TEXT");
+		builder.append(")");
+
+		return builder.toString();
+	}
+
+	private static void createIndexesOnVectorGenealogyTable(final Statement stmt)
+			throws Exception {
+		stmt.executeUpdate("create index VECTOR_GENEALOGY_ID_INDEX_VECTOR_GENEALOGY on VECTOR_GENEALOGY(VECTOR_GENEALOGY_ID)");
+		stmt.executeUpdate("create index START_REVISION_ID_INDEX_VECTOR_GENEALOGY on VECTOR_GENEALOGY(START_REVISION_ID)");
+		stmt.executeUpdate("create index END_REVISION_ID_INDEX_VECTOR_GENEALOGY on VECTOR_GENEALOGY(END_REVISION_ID)");
+		stmt.executeUpdate("create index NUMBER_CHANGED_INDEX_VECTOR_GENEALOGY on VECTOR_GENEALOGY(NUMBER_CHANGED)");
 	}
 
 }
