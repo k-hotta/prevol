@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.vectorwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.vectorwriter;
 
 import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinter;

@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.vectorwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.vectorwriter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,14 +13,14 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.VectorPairData;
 import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinter;
 
 /**
- * SingleColumn 用の EvaluationSet (最後の一列だけ?になっているファイル)を出力するクラス
+ * TrainingSet を出力するクラス (すべてのカラムを単一ファイルに出力する)
  * 
  * @author k-hotta
  * 
  */
-public class SingleColumnEvaluationSetWriter extends AbstractWriter {
+public class AllColumnsTrainingSetWriter extends AbstractWriter {
 
-	public SingleColumnEvaluationSetWriter(VectorWriterSettings settings) {
+	public AllColumnsTrainingSetWriter(final VectorWriterSettings settings) {
 		super(settings);
 	}
 
@@ -43,19 +43,21 @@ public class SingleColumnEvaluationSetWriter extends AbstractWriter {
 
 		// ヘッダを出力
 		if (settings.getOutputFileFormat() == OutputFileFormat.CSV) {
-			pw.println(VectorData.getSingleColumnTrainingCsvHeader(ignoreList,
-					"TO_BE_EVALUATED"));
+			pw.println(VectorData.getTrainingCsvHeader(ignoreList));
 		} else {
-			pw.println(VectorData.getSingleColumnTrainingArffHeader(ignoreList,
-					settings.getRelationName(), "TO_BE_EVALUATED"));
+			pw.println(VectorData.getTrainingArffHeader(ignoreList,
+					settings.getRelationName()));
 		}
 
 		// 各レコードを出力
 		for (final VectorPairData vectorPair : vectorPairs) {
 			final VectorData beforeVector = vectorsMap.get(vectorPair
 					.getBeforeVectorId());
+			final VectorData afterVector = vectorsMap.get(vectorPair
+					.getAfterVectorId());
 
-			pw.println(beforeVector.toCsvRecord(ignoreList) + ",?");
+			pw.println(beforeVector.toCsvRecord(ignoreList) + ","
+					+ afterVector.toCsvRecord(ignoreList));
 		}
 
 		MessagePrinter.stronglyPrintln("\tcomplete!!");

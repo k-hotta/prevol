@@ -1,4 +1,4 @@
-package jp.ac.osaka_u.ist.sdl.prevol.data.vectorwriter;
+package jp.ac.osaka_u.ist.sdl.prevol.vectorwriter;
 
 /**
  * 出力ファイル形式
