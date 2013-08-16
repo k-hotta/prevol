@@ -22,5 +22,7 @@ interface DefaultVectorWriterSettingValues {
 
 	static final int[] DEFAULT_IGNORE_LIST = new int[] { JAVADOC, LINE_COMMENT,
 			BLOCK_COMMENT };
+	
+	static final int DEFAULT_MINIMUM_CHANGE_COUNT = 3;
 
 }

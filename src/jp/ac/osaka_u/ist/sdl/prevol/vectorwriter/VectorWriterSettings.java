@@ -77,12 +77,23 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 	 */
 	private final boolean defaultQuery;
 
+	/**
+	 * トラッキングモードかどうか
+	 */
+	private final boolean isTracking;
+
+	/**
+	 * 最低修正回数(Trackingするモードのときだけ使用)
+	 */
+	private final int minimumChangeCount;
+
 	private VectorWriterSettings(final VectorWriterMode mode,
 			final OutputFileFormat format, final String dbPath,
 			final String outputFilePath, final String query,
 			final long startRevision, final long endRevision,
 			List<Integer> ignoreList, final String relationName,
-			MessagePrinterMode printMode, final boolean defaultQuery) {
+			MessagePrinterMode printMode, final boolean defaultQuery,
+			final boolean isTracking, final int minimumChangeCount) {
 		this.mode = mode;
 		this.format = format;
 		this.dbPath = dbPath;
@@ -94,6 +105,8 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 		this.relationName = relationName;
 		this.printMode = printMode;
 		this.defaultQuery = defaultQuery;
+		this.isTracking = isTracking;
+		this.minimumChangeCount = minimumChangeCount;
 	}
 
 	final VectorWriterMode getMode() {
@@ -138,6 +151,14 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 
 	final boolean isDefaultQuery() {
 		return defaultQuery;
+	}
+
+	final boolean isTracking() {
+		return isTracking;
+	}
+
+	final int getMinimumChangeCount() {
+		return minimumChangeCount;
 	}
 
 	public static VectorWriterSettings parseArgs(final String[] args)
@@ -212,9 +233,15 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 
 		final boolean defaultQuery = (!cmd.hasOption("q"));
 
+		final boolean isTracking = cmd.hasOption("G");
+
+		final int minimumChangeCounnt = (cmd.hasOption("cc")) ? Integer
+				.parseInt(cmd.getOptionValue("cc"))
+				: DEFAULT_MINIMUM_CHANGE_COUNT;
+
 		return new VectorWriterSettings(mode, format, dbPath, outputFilePath,
 				query, startRevision, endRevision, ignoreList, relationName,
-				printMode, defaultQuery);
+				printMode, defaultQuery, isTracking, minimumChangeCounnt);
 	}
 
 	private static Options defineOptions() {
@@ -233,12 +260,19 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 			S.setRequired(false);
 			options.addOption(S);
 		}
-		
+
 		{
 			final Option SE = new Option("SE", "SINGLE_EVALUATION", false,
 					"SINGLE COLUMN MODE FOR EVALUATION SET");
 			SE.setRequired(false);
 			options.addOption(SE);
+		}
+
+		{
+			final Option G = new Option("G", "GENEALOGY", false,
+					"USING GENEALOGIES");
+			G.setRequired(false);
+			options.addOption(G);
 		}
 
 		{
@@ -298,6 +332,14 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 			rl.setArgs(1);
 			rl.setRequired(false);
 			options.addOption(rl);
+		}
+
+		{
+			final Option cc = new Option("cc", "changecount", true,
+					"the minimum number of change count");
+			cc.setArgs(1);
+			cc.setRequired(false);
+			options.addOption(cc);
 		}
 
 		return options;

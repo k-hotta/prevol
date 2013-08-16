@@ -24,17 +24,30 @@ public class VectorWriter {
 			initialize(settings);
 
 			AbstractWriter writer = null;
-			
+
 			if (settings.getMode() == VectorWriterMode.TRAINING) {
-				writer = new AllColumnsTrainingSetWriter(settings);
+				if (settings.isTracking()) {
+					writer = new TrackingAllColumnsTrainingSetWriter(settings);
+				} else {
+					writer = new AllColumnsTrainingSetWriter(settings);
+				}
 			} else if (settings.getMode() == VectorWriterMode.EVALUATION) {
 				//
 			} else if (settings.getMode() == VectorWriterMode.SINGLE_COLUMN_TRAINING) {
-				writer = new SingleColumnTrainingSetWriter(settings);
+				if (settings.isTracking()) {
+					writer = new TrackingSingleColumnTrainingSetWriter(settings);
+				} else {
+					writer = new SingleColumnTrainingSetWriter(settings);
+				}
 			} else if (settings.getMode() == VectorWriterMode.SINGLE_COLUMN_EVALUATION) {
-				writer = new SingleColumnEvaluationSetWriter(settings);
+				if (settings.isTracking()) {
+					writer = new TrackingSingleColumnEvaluationSetWriter(
+							settings);
+				} else {
+					writer = new SingleColumnEvaluationSetWriter(settings);
+				}
 			}
-			
+
 			writer.write();
 
 		} catch (Exception e) {

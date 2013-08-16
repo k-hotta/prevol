@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
+import jp.ac.osaka_u.ist.sdl.prevol.data.VectorGenealogy;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorPairData;
 import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinter;
@@ -128,6 +130,78 @@ public abstract class AbstractWriter {
 		ignoreList.addAll(zeroColumns);
 
 		return ignoreList;
+	}
+
+	/**
+	 * ベクトルの系譜を復元する
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	protected final Set<VectorGenealogy> retrieveGenealogies() throws Exception {
+		final RevisionData startRevision = DBConnection
+				.getInstance()
+				.getRevisionRetriever()
+				.getOldestRevisionAfterSpecifiedRevision(
+						settings.getStartRevision());
+		final RevisionData endRevision = DBConnection
+				.getInstance()
+				.getRevisionRetriever()
+				.getLatestRevisionBeforeSpecifiedRevision(
+						settings.getEndRevision());
+
+		final long startRevisionId = startRevision.getId();
+		final long endRevisionId = endRevision.getId();
+
+		MessagePrinter.stronglyPrintln("retrieving vector pairs ... ");
+
+		final Set<VectorGenealogy> allGenealogies = DBConnection.getInstance()
+				.getVectorGenealogyRetriever().retrieveAll();
+
+		MessagePrinter.stronglyPrintln("\t" + allGenealogies.size()
+				+ " genealogies have been retrieved");
+		MessagePrinter.stronglyPrintln();
+
+		final int minimumChangeCount = settings.getMinimumChangeCount();
+
+		final Set<VectorGenealogy> result = new TreeSet<VectorGenealogy>();
+
+		MessagePrinter.stronglyPrintln("refining retrieved genealogies ... ");
+		for (final VectorGenealogy genealogy : allGenealogies) {
+			if (genealogy.getNumberOfChanged(startRevisionId, endRevisionId) >= minimumChangeCount) {
+				result.add(genealogy);
+			}
+		}
+		MessagePrinter.stronglyPrintln("\t" + result.size()
+				+ " genealogies have remained");
+		MessagePrinter.stronglyPrintln();
+
+		return result;
+	}
+
+	protected final Map<Long, VectorData> retrieveStartAndEndVectors(
+			final Collection<VectorGenealogy> genealogies) throws Exception {
+		MessagePrinter
+				.stronglyPrintln("retrieving start/end vectors for each genealogy ... ");
+		final Set<Long> vectorIdsToBeRetrieved = new TreeSet<Long>();
+
+		for (final VectorGenealogy genealogy : genealogies) {
+			vectorIdsToBeRetrieved.add(genealogy.getStartVectorId());
+			vectorIdsToBeRetrieved.add(genealogy.getEndVectorId());
+		}
+
+		final Set<VectorData> vectors = DBConnection.getInstance()
+				.getVectorRetriever().retrieveWithIds(vectorIdsToBeRetrieved);
+		final Map<Long, VectorData> result = new TreeMap<Long, VectorData>();
+		for (final VectorData vector : vectors) {
+			result.put(vector.getId(), vector);
+		}
+
+		MessagePrinter.stronglyPrintln("\t" + result.size()
+				+ " vectors were retrieved");
+		MessagePrinter.stronglyPrintln();
+
+		return result;
 	}
 
 }

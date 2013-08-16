@@ -1,8 +1,8 @@
 package jp.ac.osaka_u.ist.sdl.prevol.data;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -31,16 +31,16 @@ public class VectorGenealogy extends AbstractElement {
 	/**
 	 * 系譜を構成するベクトルのIDのリスト
 	 */
-	private final List<Long> vectors;
+	private final SortedSet<Long> vectors;
 
 	/**
 	 * 変更されたリビジョンのID (変更後)
 	 */
-	private final List<Long> changedRevisions;
+	private final SortedSet<Long> changedRevisions;
 
 	public VectorGenealogy(final long id, final long startRevisionId,
-			final long endRevisionId, final List<Long> vectors,
-			final List<Long> changedRevisions) {
+			final long endRevisionId, final SortedSet<Long> vectors,
+			final SortedSet<Long> changedRevisions) {
 		super(id);
 		this.startRevisionId = startRevisionId;
 		this.endRevisionId = endRevisionId;
@@ -54,10 +54,10 @@ public class VectorGenealogy extends AbstractElement {
 		super(count.getAndIncrement());
 		this.startRevisionId = startRevisionId;
 		this.endRevisionId = endRevisionId;
-		this.vectors = new ArrayList<Long>();
+		this.vectors = new TreeSet<Long>();
 		vectors.add(beforeVectorId);
 		vectors.add(afterVectorId);
-		this.changedRevisions = new ArrayList<Long>();
+		this.changedRevisions = new TreeSet<Long>();
 		this.changedRevisions.add(endRevisionId);
 	}
 
@@ -69,12 +69,12 @@ public class VectorGenealogy extends AbstractElement {
 		return endRevisionId;
 	}
 
-	public final List<Long> getVectors() {
-		return Collections.unmodifiableList(vectors);
+	public final SortedSet<Long> getVectors() {
+		return Collections.unmodifiableSortedSet(vectors);
 	}
 
-	public final List<Long> getChangedRevisions() {
-		return Collections.unmodifiableList(changedRevisions);
+	public final SortedSet<Long> getChangedRevisions() {
+		return Collections.unmodifiableSortedSet(changedRevisions);
 	}
 
 	public void addVector(final long revisionId, final long vectorId) {
@@ -84,11 +84,31 @@ public class VectorGenealogy extends AbstractElement {
 	}
 
 	public boolean containsAtLast(final long vectorId) {
-		return this.vectors.get(vectors.size() - 1) == vectorId;
+		return this.vectors.last() == vectorId;
 	}
 
 	public final int getNumberOfChanged() {
 		return this.changedRevisions.size();
+	}
+
+	public final int getNumberOfChanged(final long startRevisionId,
+			final long endRevisionId) {
+		int count = 0;
+		for (final long changedRevision : this.changedRevisions) {
+			if (startRevisionId < changedRevision
+					&& changedRevision <= endRevisionId) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public final long getStartVectorId() {
+		return this.vectors.first();
+	}
+
+	public final long getEndVectorId() {
+		return this.vectors.last();
 	}
 
 }

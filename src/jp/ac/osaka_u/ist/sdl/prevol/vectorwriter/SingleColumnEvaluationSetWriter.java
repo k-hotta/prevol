@@ -3,6 +3,7 @@ package jp.ac.osaka_u.ist.sdl.prevol.vectorwriter;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,12 @@ public class SingleColumnEvaluationSetWriter extends AbstractWriter {
 		final List<Integer> ignoreList = getIgnoreColumnsListIncludingZeroColumns(vectorsMap
 				.values());
 
+		writeElements(vectorPairs, vectorsMap, ignoreList);
+	}
+
+	protected void writeElements(final Set<VectorPairData> vectorPairs,
+			final Map<Long, VectorData> vectorsMap,
+			final List<Integer> ignoreList) throws IOException {
 		// 出力
 		MessagePrinter.stronglyPrintln("printing the result ... ");
 

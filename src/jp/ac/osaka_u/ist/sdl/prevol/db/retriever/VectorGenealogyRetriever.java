@@ -2,8 +2,8 @@ package jp.ac.osaka_u.ist.sdl.prevol.db.retriever;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorGenealogy;
 import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
@@ -41,8 +41,8 @@ public class VectorGenealogyRetriever extends
 		return "VECTOR_GENEALOGY_ID";
 	}
 
-	private List<Long> divideIntoList(final String str) {
-		final List<Long> result = new ArrayList<Long>();
+	private SortedSet<Long> divideIntoList(final String str) {
+		final SortedSet<Long> result = new TreeSet<Long>();
 		final String[] splitStrs = str.split(",");
 		for (final String splitStr : splitStrs) {
 			result.add(Long.parseLong(splitStr));

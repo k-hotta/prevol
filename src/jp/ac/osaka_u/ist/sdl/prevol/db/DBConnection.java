@@ -10,11 +10,13 @@ import jp.ac.osaka_u.ist.sdl.prevol.db.registerer.FileDataRegisterer;
 import jp.ac.osaka_u.ist.sdl.prevol.db.registerer.MethodDataRegisterer;
 import jp.ac.osaka_u.ist.sdl.prevol.db.registerer.RevisionDataRegisterer;
 import jp.ac.osaka_u.ist.sdl.prevol.db.registerer.VectorDataRegisterer;
+import jp.ac.osaka_u.ist.sdl.prevol.db.registerer.VectorGenealogyRegisterer;
 import jp.ac.osaka_u.ist.sdl.prevol.db.registerer.VectorPairDataRegisterer;
 import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.FileDataRetriever;
 import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.MethodDataRetriever;
 import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.RevisionDataRetriever;
 import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.VectorDataRetriever;
+import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.VectorGenealogyRetriever;
 import jp.ac.osaka_u.ist.sdl.prevol.db.retriever.VectorPairDataRetriever;
 
 /**
@@ -39,6 +41,8 @@ public class DBConnection {
 
 	private VectorPairDataRegisterer vectorPairRegisterer;
 
+	private VectorGenealogyRegisterer vectorGenealogyRegisterer;
+
 	private RevisionDataRetriever revisionRetriever;
 
 	private FileDataRetriever fileRetriever;
@@ -48,6 +52,8 @@ public class DBConnection {
 	private VectorDataRetriever vectorRetriever;
 
 	private VectorPairDataRetriever vectorPairRetriever;
+
+	private VectorGenealogyRetriever vectorGenealogyRetriever;
 
 	private DBConnection(final String dbPath) {
 		try {
@@ -65,6 +71,8 @@ public class DBConnection {
 			this.vectorRetriever = new VectorDataRetriever(this);
 			this.vectorPairRegisterer = new VectorPairDataRegisterer(this);
 			this.vectorPairRetriever = new VectorPairDataRetriever(this);
+			this.vectorGenealogyRegisterer = new VectorGenealogyRegisterer(this);
+			this.vectorGenealogyRetriever = new VectorGenealogyRetriever(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -110,6 +118,10 @@ public class DBConnection {
 		return vectorPairRegisterer;
 	}
 
+	public VectorGenealogyRegisterer getVectorGenealogyRegisterer() {
+		return vectorGenealogyRegisterer;
+	}
+
 	public RevisionDataRetriever getRevisionRetriever() {
 		return revisionRetriever;
 	}
@@ -128,6 +140,10 @@ public class DBConnection {
 
 	public VectorPairDataRetriever getVectorPairRetriever() {
 		return vectorPairRetriever;
+	}
+
+	public VectorGenealogyRetriever getVectorGenealogyRetriever() {
+		return vectorGenealogyRetriever;
 	}
 
 	public void close() {
