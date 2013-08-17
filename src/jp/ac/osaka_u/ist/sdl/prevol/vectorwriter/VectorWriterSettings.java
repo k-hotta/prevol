@@ -87,13 +87,19 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 	 */
 	private final int minimumChangeCount;
 
+	/**
+	 * 予測結果ファイル (50個くらい)が置かれているディレクトリ
+	 */
+	private final String predictedResultDir;
+
 	private VectorWriterSettings(final VectorWriterMode mode,
 			final OutputFileFormat format, final String dbPath,
 			final String outputFilePath, final String query,
 			final long startRevision, final long endRevision,
 			List<Integer> ignoreList, final String relationName,
 			MessagePrinterMode printMode, final boolean defaultQuery,
-			final boolean isTracking, final int minimumChangeCount) {
+			final boolean isTracking, final int minimumChangeCount,
+			final String predictedResultDir) {
 		this.mode = mode;
 		this.format = format;
 		this.dbPath = dbPath;
@@ -107,6 +113,7 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 		this.defaultQuery = defaultQuery;
 		this.isTracking = isTracking;
 		this.minimumChangeCount = minimumChangeCount;
+		this.predictedResultDir = predictedResultDir;
 	}
 
 	final VectorWriterMode getMode() {
@@ -161,6 +168,10 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 		return minimumChangeCount;
 	}
 
+	final String getPredictedResultDir() {
+		return predictedResultDir;
+	}
+
 	public static VectorWriterSettings parseArgs(final String[] args)
 			throws Exception {
 		final Options options = defineOptions();
@@ -175,6 +186,8 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 			mode = VectorWriterMode.SINGLE_COLUMN_TRAINING;
 		} else if (cmd.hasOption("SE")) {
 			mode = VectorWriterMode.SINGLE_COLUMN_EVALUATION;
+		} else if (cmd.hasOption("R")) {
+			mode = VectorWriterMode.RECURSIVE_EVALUATION;
 		}
 
 		final String dbPath = cmd.getOptionValue("d");
@@ -239,9 +252,13 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 				.parseInt(cmd.getOptionValue("cc"))
 				: DEFAULT_MINIMUM_CHANGE_COUNT;
 
+		final String predictedResultDir = (cmd.hasOption("p")) ? cmd
+				.getOptionValue("p") : null;
+
 		return new VectorWriterSettings(mode, format, dbPath, outputFilePath,
 				query, startRevision, endRevision, ignoreList, relationName,
-				printMode, defaultQuery, isTracking, minimumChangeCounnt);
+				printMode, defaultQuery, isTracking, minimumChangeCounnt,
+				predictedResultDir);
 	}
 
 	private static Options defineOptions() {
@@ -273,6 +290,13 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 					"USING GENEALOGIES");
 			G.setRequired(false);
 			options.addOption(G);
+		}
+
+		{
+			final Option R = new Option("R", "RECURSIVE", false,
+					"RECURSIVE EVALUATION");
+			R.setRequired(false);
+			options.addOption(R);
 		}
 
 		{
@@ -340,6 +364,14 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 			cc.setArgs(1);
 			cc.setRequired(false);
 			options.addOption(cc);
+		}
+
+		{
+			final Option p = new Option("p", "predicted", true,
+					"predicted files");
+			p.setArgs(1);
+			p.setRequired(false);
+			options.addOption(p);
 		}
 
 		return options;

@@ -46,6 +46,8 @@ public class VectorWriter {
 				} else {
 					writer = new SingleColumnEvaluationSetWriter(settings);
 				}
+			} else if (settings.getMode() == VectorWriterMode.RECURSIVE_EVALUATION) {
+				writer = new RecursiveEvaluationSetWriter(settings);
 			}
 
 			writer.write();
