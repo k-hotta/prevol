@@ -1,6 +1,7 @@
 package jp.ac.osaka_u.ist.sdl.prevol.evaluator;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 
 import jp.ac.osaka_u.ist.sdl.prevol.data.NodeType;
@@ -47,8 +48,9 @@ public class Evaluator {
 			MessagePrinter.println("\tdirectory path: "
 					+ settings.getCorrectDataFilePath());
 
+			final Set<NodeType> nodeTypesInCorrectVector = correctVectors.get(0).keySet();
 			final PredictedVectorReconstructor predictedReconstructor = new PredictedVectorReconstructor(
-					settings.getPredictedResultDir());
+					settings.getPredictedResultDir(), nodeTypesInCorrectVector);
 			Map<Integer, SortedMap<NodeType, Integer>> predictedVectors = predictedReconstructor
 					.reconstruct();
 

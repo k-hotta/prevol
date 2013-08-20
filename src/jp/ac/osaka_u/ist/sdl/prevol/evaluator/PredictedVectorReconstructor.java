@@ -3,7 +3,9 @@ package jp.ac.osaka_u.ist.sdl.prevol.evaluator;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -22,8 +24,17 @@ public class PredictedVectorReconstructor {
 	 */
 	private final String resultDirPath;
 
+	private final Set<NodeType> nodeTypesInCorrectVector;
+
+	public PredictedVectorReconstructor(final String resultDirPath,
+			final Set<NodeType> nodeTypesInCorrectVector) {
+		this.resultDirPath = resultDirPath;
+		this.nodeTypesInCorrectVector = nodeTypesInCorrectVector;
+	}
+	
 	public PredictedVectorReconstructor(final String resultDirPath) {
 		this.resultDirPath = resultDirPath;
+		this.nodeTypesInCorrectVector = new HashSet<NodeType>();
 	}
 
 	public Map<Integer, SortedMap<NodeType, Integer>> reconstruct()
@@ -39,6 +50,18 @@ public class PredictedVectorReconstructor {
 		final Map<NodeType, Map<Integer, Integer>> loadedNodeTypes = loadFiles(resultDir);
 		if (loadedNodeTypes.isEmpty()) {
 			return null; // 何も読み込めなかった場合もなにかおかしい
+		}
+		
+		// 正解ベクトルにはあるけど，予測ベクトルにはないカラムについて，予測値が0であるとみなす
+		final int rowNumber = loadedNodeTypes.get(0).size();
+		for (final NodeType nodeType : nodeTypesInCorrectVector) {
+			if (!loadedNodeTypes.containsKey(nodeType)) {
+				final Map<Integer, Integer> placeboMap = new TreeMap<Integer, Integer>();
+				for (int i = 0; i < rowNumber; i++) {
+					placeboMap.put(i++, 0);
+				}
+				loadedNodeTypes.put(nodeType, placeboMap);
+			}
 		}
 
 		// 読み込んだ結果を所定のフォーマットに変換
@@ -95,7 +118,7 @@ public class PredictedVectorReconstructor {
 
 		}
 
-		return Collections.unmodifiableMap(loadedNodeTypes);
+		return loadedNodeTypes;
 	}
 
 	/**

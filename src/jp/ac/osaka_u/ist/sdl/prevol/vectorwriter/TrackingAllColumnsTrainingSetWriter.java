@@ -11,10 +11,12 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.VectorPairData;
 
 /**
  * メソッドのトレースをして，期間内に指定回数以上修正されたものについての AllColumnsTrainingSet を出力するクラス
+ * 
  * @author k-hotta
- *
+ * 
  */
-public class TrackingAllColumnsTrainingSetWriter extends AllColumnsTrainingSetWriter {
+public class TrackingAllColumnsTrainingSetWriter extends
+		AllColumnsTrainingSetWriter {
 
 	public TrackingAllColumnsTrainingSetWriter(VectorWriterSettings settings) {
 		super(settings);
@@ -25,7 +27,7 @@ public class TrackingAllColumnsTrainingSetWriter extends AllColumnsTrainingSetWr
 		final Set<VectorGenealogy> genealogies = retrieveGenealogies();
 		final Map<Long, VectorData> vectorsMap = retrieveStartAndEndVectors(genealogies);
 
-		final List<Integer> ignoreList = getIgnoreColumnsListIncludingZeroColumns(vectorsMap
+		final List<Integer> ignoreList = getIgnoreColumnsList(vectorsMap
 				.values());
 
 		final Set<VectorPairData> placeboVectorPairs = new TreeSet<VectorPairData>();
@@ -35,7 +37,7 @@ public class TrackingAllColumnsTrainingSetWriter extends AllColumnsTrainingSetWr
 					-1, genealogy.getStartVectorId(), genealogy
 							.getEndVectorId()));
 		}
-		
+
 		writeElements(placeboVectorPairs, vectorsMap, ignoreList);
 	}
 

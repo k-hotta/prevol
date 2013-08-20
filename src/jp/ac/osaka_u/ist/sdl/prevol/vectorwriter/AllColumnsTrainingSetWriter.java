@@ -33,8 +33,8 @@ public class AllColumnsTrainingSetWriter extends AbstractWriter {
 		// ベクトルを復元
 		final Map<Long, VectorData> vectorsMap = retrieveVectorsInSpecifiedVectorPairs(vectorPairs);
 
-		final List<Integer> ignoreList = getIgnoreColumnsListIncludingZeroColumns(vectorsMap
-				.values());
+		final List<Integer> ignoreList = getIgnoreColumnsList(false,
+				vectorsMap.values());
 
 		writeElements(vectorPairs, vectorsMap, ignoreList);
 	}

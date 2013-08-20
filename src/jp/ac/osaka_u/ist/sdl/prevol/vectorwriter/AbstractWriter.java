@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -114,22 +113,30 @@ public abstract class AbstractWriter {
 	 * @param vectors
 	 * @return
 	 */
-	protected final List<Integer> getIgnoreColumnsListIncludingZeroColumns(
+	protected final List<Integer> getIgnoreColumnsList(
+			final boolean ignoreZeroColumns,
 			final Collection<VectorData> vectors) {
 		final List<Integer> ignoreList = new ArrayList<Integer>();
 		ignoreList.addAll(settings.getIgnoreList());
 
-		final Set<Integer> zeroColumns = VectorData.getNodeTypeIntegers();
+		if (ignoreZeroColumns) {
+			final Set<Integer> zeroColumns = VectorData.getNodeTypeIntegers();
 
-		for (final VectorData vector : vectors) {
-			final Set<Integer> nonzeroColumns = vector
-					.getElementContainingColumns();
-			zeroColumns.removeAll(nonzeroColumns);
+			for (final VectorData vector : vectors) {
+				final Set<Integer> nonzeroColumns = vector
+						.getElementContainingColumns();
+				zeroColumns.removeAll(nonzeroColumns);
+			}
+
+			ignoreList.addAll(zeroColumns);
 		}
 
-		ignoreList.addAll(zeroColumns);
-
 		return ignoreList;
+	}
+
+	protected final List<Integer> getIgnoreColumnsList(
+			final Collection<VectorData> vectors) {
+		return this.getIgnoreColumnsList(true, vectors);
 	}
 
 	/**

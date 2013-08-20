@@ -35,7 +35,7 @@ public class SingleColumnTrainingSetWriter extends AbstractWriter {
 		// ベクトルを復元
 		final Map<Long, VectorData> vectorsMap = retrieveVectorsInSpecifiedVectorPairs(vectorPairs);
 
-		final List<Integer> ignoreList = getIgnoreColumnsListIncludingZeroColumns(vectorsMap
+		final List<Integer> ignoreList = getIgnoreColumnsList(vectorsMap
 				.values());
 
 		writeElements(vectorPairs, vectorsMap, ignoreList);

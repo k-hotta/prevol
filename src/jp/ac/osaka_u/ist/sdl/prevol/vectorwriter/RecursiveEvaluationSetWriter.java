@@ -41,7 +41,7 @@ public class RecursiveEvaluationSetWriter extends
 			vectorsMap.put(id, vectorData);
 		}
 
-		final List<Integer> ignoreList = getIgnoreColumnsListIncludingZeroColumns(vectorsMap
+		final List<Integer> ignoreList = getIgnoreColumnsList(vectorsMap
 				.values());
 
 		final Set<VectorPairData> placeboVectorPairs = new TreeSet<VectorPairData>();

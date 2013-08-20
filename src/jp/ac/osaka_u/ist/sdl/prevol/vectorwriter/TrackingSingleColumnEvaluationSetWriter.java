@@ -21,7 +21,7 @@ public class TrackingSingleColumnEvaluationSetWriter extends
 		final Set<VectorGenealogy> genealogies = retrieveGenealogies();
 		final Map<Long, VectorData> vectorsMap = retrieveStartAndEndVectors(genealogies);
 
-		final List<Integer> ignoreList = getIgnoreColumnsListIncludingZeroColumns(vectorsMap
+		final List<Integer> ignoreList = getIgnoreColumnsList(vectorsMap
 				.values());
 
 		final Set<VectorPairData> placeboVectorPairs = new TreeSet<VectorPairData>();
@@ -34,5 +34,5 @@ public class TrackingSingleColumnEvaluationSetWriter extends
 
 		writeElements(placeboVectorPairs, vectorsMap, ignoreList);
 	}
-	
+
 }
