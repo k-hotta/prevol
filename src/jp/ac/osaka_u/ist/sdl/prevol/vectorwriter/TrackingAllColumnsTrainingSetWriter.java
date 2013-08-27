@@ -27,7 +27,7 @@ public class TrackingAllColumnsTrainingSetWriter extends
 		final Set<VectorGenealogy> genealogies = retrieveGenealogies();
 		final Map<Long, VectorData> vectorsMap = retrieveStartAndEndVectors(genealogies);
 
-		final List<Integer> ignoreList = getIgnoreColumnsList(vectorsMap
+		final List<Integer> ignoreList = getIgnoreColumnsList(false, vectorsMap
 				.values());
 
 		final Set<VectorPairData> placeboVectorPairs = new TreeSet<VectorPairData>();
