@@ -5,9 +5,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorGenealogy;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorPairData;
+import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 
 public class TrackingSingleColumnEvaluationSetWriter extends
 		SingleColumnEvaluationSetWriter {
@@ -18,7 +20,22 @@ public class TrackingSingleColumnEvaluationSetWriter extends
 
 	@Override
 	public void write() throws Exception {
-		final Set<VectorGenealogy> genealogies = retrieveGenealogies();
+		final RevisionData startRevision = DBConnection
+				.getInstance()
+				.getRevisionRetriever()
+				.getOldestRevisionAfterSpecifiedRevision(
+						settings.getStartRevision());
+		final RevisionData endRevision = DBConnection
+				.getInstance()
+				.getRevisionRetriever()
+				.getLatestRevisionBeforeSpecifiedRevision(
+						settings.getEndRevision());
+
+		final long startRevisionId = startRevision.getId();
+		final long endRevisionId = endRevision.getId();
+
+		final Set<VectorGenealogy> genealogies = retrieveGenealogies(
+				startRevisionId, endRevisionId);
 		final Map<Long, VectorData> vectorsMap = retrieveStartAndEndVectors(genealogies);
 
 		final List<Integer> ignoreList = getIgnoreColumnsList(vectorsMap

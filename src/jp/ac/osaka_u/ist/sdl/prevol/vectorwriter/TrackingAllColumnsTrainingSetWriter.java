@@ -5,9 +5,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import jp.ac.osaka_u.ist.sdl.prevol.data.RevisionData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorGenealogy;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorPairData;
+import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
 
 /**
  * メソッドのトレースをして，期間内に指定回数以上修正されたものについての AllColumnsTrainingSet を出力するクラス
@@ -24,21 +26,76 @@ public class TrackingAllColumnsTrainingSetWriter extends
 
 	@Override
 	public void write() throws Exception {
-		final Set<VectorGenealogy> genealogies = retrieveGenealogies();
-		final Map<Long, VectorData> vectorsMap = retrieveStartAndEndVectors(genealogies);
+		final RevisionData startRevision = DBConnection
+				.getInstance()
+				.getRevisionRetriever()
+				.getOldestRevisionAfterSpecifiedRevision(
+						settings.getStartRevision());
+		final RevisionData endRevision = DBConnection
+				.getInstance()
+				.getRevisionRetriever()
+				.getLatestRevisionBeforeSpecifiedRevision(
+						settings.getEndRevision());
 
-		final List<Integer> ignoreList = getIgnoreColumnsList(false, vectorsMap
-				.values());
+		final long startRevisionId = startRevision.getId();
+		final long endRevisionId = endRevision.getId();
+
+		final Set<VectorGenealogy> genealogies = retrieveGenealogies(
+				startRevisionId, endRevisionId);
+
+		int maxChanged = 0;
+		for (final VectorGenealogy genealogy : genealogies) {
+			final int changed = genealogy.getNumberOfChanged(startRevisionId,
+					endRevisionId);
+			if (changed > maxChanged) {
+				maxChanged = changed;
+			}
+		}
+
+		final Map<Long, VectorData> vectorsMap = retrieveStartAndEndVectors(
+				genealogies, maxChanged, startRevisionId, endRevisionId);
+
+		final List<Integer> ignoreList = getIgnoreColumnsList(false,
+				vectorsMap.values());
+
+		for (int i = 1; i <= maxChanged; i++) {
+			process(genealogies, i, vectorsMap, ignoreList, startRevisionId);
+		}
+	}
+
+	private void process(final Set<VectorGenealogy> genealogies,
+			final int changeCount, final Map<Long, VectorData> vectorsMap,
+			final List<Integer> ignoreList, final long startRevisionId)
+			throws Exception {
+		final String outputFilePath = getOutputFileName(
+				settings.getOutputFilePath(), changeCount);
 
 		final Set<VectorPairData> placeboVectorPairs = new TreeSet<VectorPairData>();
 		for (final VectorGenealogy genealogy : genealogies) {
-			placeboVectorPairs.add(new VectorPairData(genealogy
-					.getStartRevisionId(), genealogy.getEndRevisionId(), -1,
-					-1, genealogy.getStartVectorId(), genealogy
-							.getEndVectorId()));
+			final long beforeVectorId = genealogy
+					.getStartVectorAfterSpecifiedRevision(startRevisionId);
+			final long afterVectorId = genealogy
+					.getVectorAfterSpecifiedRevision(startRevisionId,
+							changeCount);
+			if (beforeVectorId != -1 && afterVectorId != -1) {
+				placeboVectorPairs.add(new VectorPairData(genealogy
+						.getStartRevisionId(), genealogy.getEndRevisionId(),
+						-1, -1, beforeVectorId, afterVectorId));
+			}
 		}
 
-		writeElements(placeboVectorPairs, vectorsMap, ignoreList);
+		writeElements(placeboVectorPairs, vectorsMap, ignoreList,
+				outputFilePath);
 	}
 
+	private final String getOutputFileName(final String originalPath,
+			final int changeCount) {
+		final int suffixLength = settings.getOutputFileFormat()
+				.getSuffixLength() + 1;
+		return originalPath.substring(0, originalPath.length() - suffixLength
+				- 1)
+				+ "-"
+				+ changeCount
+				+ settings.getOutputFileFormat().getSuffix();
+	}
 }

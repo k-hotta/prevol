@@ -5,8 +5,8 @@ import java.io.PrintWriter;
 public class LMScriptWriter extends RScriptWriter {
 
 	@Override
-	protected void writeMain(PrintWriter pw, RScriptWriterSettings settings,
-			int attributesCount, final CSVData csvData) {
+	protected void writeCreateModel(PrintWriter pw, int attributesCount,
+			final CSVData csvData) {
 		for (int i = 1; i <= attributesCount; i++) {
 			pw.println("seq_a" + i + " <- lm(A" + i + "~1)");
 		}

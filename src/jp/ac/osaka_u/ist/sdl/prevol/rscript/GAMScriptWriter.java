@@ -5,8 +5,8 @@ import java.io.PrintWriter;
 public class GAMScriptWriter extends RScriptWriter {
 
 	@Override
-	protected void writeMain(PrintWriter pw, RScriptWriterSettings settings,
-			int attributesCount, final CSVData csvData) {
+	protected void writeCreateModel(PrintWriter pw, int attributesCount,
+			final CSVData csvData) {
 		pw.println("library(gam)");
 		for (int i = 1; i <= attributesCount; i++) {
 			pw.println("seq_a" + i + " <- gam(A" + i + "~1, data=training_set)");

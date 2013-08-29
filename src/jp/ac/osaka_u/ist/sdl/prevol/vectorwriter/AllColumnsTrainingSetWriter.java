@@ -36,17 +36,19 @@ public class AllColumnsTrainingSetWriter extends AbstractWriter {
 		final List<Integer> ignoreList = getIgnoreColumnsList(false,
 				vectorsMap.values());
 
-		writeElements(vectorPairs, vectorsMap, ignoreList);
+		writeElements(vectorPairs, vectorsMap, ignoreList,
+				settings.getOutputFilePath());
 	}
 
 	protected void writeElements(final Set<VectorPairData> vectorPairs,
 			final Map<Long, VectorData> vectorsMap,
-			final List<Integer> ignoreList) throws IOException {
+			final List<Integer> ignoreList, final String outputFilePath)
+			throws IOException {
 		// 出力
 		MessagePrinter.stronglyPrintln("printing the result ... ");
 
 		final PrintWriter pw = new PrintWriter(new BufferedWriter(
-				new FileWriter(new File(settings.getOutputFilePath()))));
+				new FileWriter(new File(outputFilePath))));
 
 		// ヘッダを出力
 		if (settings.getOutputFileFormat() == OutputFileFormat.CSV) {

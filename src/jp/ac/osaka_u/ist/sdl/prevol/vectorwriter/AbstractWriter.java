@@ -145,21 +145,9 @@ public abstract class AbstractWriter {
 	 * @return
 	 * @throws Exception
 	 */
-	protected final Set<VectorGenealogy> retrieveGenealogies() throws Exception {
-		final RevisionData startRevision = DBConnection
-				.getInstance()
-				.getRevisionRetriever()
-				.getOldestRevisionAfterSpecifiedRevision(
-						settings.getStartRevision());
-		final RevisionData endRevision = DBConnection
-				.getInstance()
-				.getRevisionRetriever()
-				.getLatestRevisionBeforeSpecifiedRevision(
-						settings.getEndRevision());
-
-		final long startRevisionId = startRevision.getId();
-		final long endRevisionId = endRevision.getId();
-
+	protected final Set<VectorGenealogy> retrieveGenealogies(
+			final long startRevisionId, final long endRevisionId)
+			throws Exception {
 		MessagePrinter.stronglyPrintln("retrieving vector pairs ... ");
 
 		final Set<VectorGenealogy> allGenealogies = DBConnection.getInstance()
@@ -195,6 +183,47 @@ public abstract class AbstractWriter {
 		for (final VectorGenealogy genealogy : genealogies) {
 			vectorIdsToBeRetrieved.add(genealogy.getStartVectorId());
 			vectorIdsToBeRetrieved.add(genealogy.getEndVectorId());
+		}
+
+		final Set<VectorData> vectors = DBConnection.getInstance()
+				.getVectorRetriever().retrieveWithIds(vectorIdsToBeRetrieved);
+		final Map<Long, VectorData> result = new TreeMap<Long, VectorData>();
+		for (final VectorData vector : vectors) {
+			result.put(vector.getId(), vector);
+		}
+
+		MessagePrinter.stronglyPrintln("\t" + result.size()
+				+ " vectors were retrieved");
+		MessagePrinter.stronglyPrintln();
+
+		return result;
+	}
+
+	protected final Map<Long, VectorData> retrieveStartAndEndVectors(
+			final Collection<VectorGenealogy> genealogies,
+			final int changeCount, final long startRevisionId,
+			final long endRevisoinId) throws Exception {
+		MessagePrinter
+				.stronglyPrintln("retrieving start/end vectors for each genealogy ... ");
+		final Set<Long> vectorIdsToBeRetrieved = new TreeSet<Long>();
+
+		for (int i = 1; i <= changeCount; i++) {
+			for (final VectorGenealogy genealogy : genealogies) {
+				final long startVectorId = genealogy
+						.getStartVectorAfterSpecifiedRevision(startRevisionId);
+				if (startVectorId < 0) {
+					continue;
+				}
+
+				final long afterVectorId = genealogy
+						.getVectorAfterSpecifiedRevision(startRevisionId, i);
+				if (afterVectorId < 0) {
+					continue;
+				}
+				
+				vectorIdsToBeRetrieved.add(startVectorId);
+				vectorIdsToBeRetrieved.add(afterVectorId);
+			}
 		}
 
 		final Set<VectorData> vectors = DBConnection.getInstance()

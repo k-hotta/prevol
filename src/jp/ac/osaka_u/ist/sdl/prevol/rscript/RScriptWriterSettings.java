@@ -22,10 +22,15 @@ public class RScriptWriterSettings {
 
 	private final RScriptWriterMode mode;
 
+	private final int maxChange;
+
+	private final int minChange;
+
 	private RScriptWriterSettings(final String trainingFile,
 			final String evaluationFile, final String correctFile,
 			final String predictedFile, final String diffFile,
-			final String outputFile, final RScriptWriterMode mode) {
+			final String outputFile, final RScriptWriterMode mode,
+			final int maxChange, final int minChange) {
 		this.trainingFile = trainingFile;
 		this.evaluationFile = evaluationFile;
 		this.correctFile = correctFile;
@@ -33,6 +38,8 @@ public class RScriptWriterSettings {
 		this.diffFile = diffFile;
 		this.outputFile = outputFile;
 		this.mode = mode;
+		this.maxChange = maxChange;
+		this.minChange = minChange;
 	}
 
 	public String getTrainingFile() {
@@ -63,6 +70,14 @@ public class RScriptWriterSettings {
 		return mode;
 	}
 
+	public int getMaxChange() {
+		return maxChange;
+	}
+
+	public int getMinChange() {
+		return minChange;
+	}
+
 	public static RScriptWriterSettings parseArgs(final String[] args)
 			throws Exception {
 		final Options options = defineOptions();
@@ -82,8 +97,19 @@ public class RScriptWriterSettings {
 			mode = RScriptWriterMode.GAM;
 		}
 
+		final int maxChange = (cmd.hasOption("max")) ? Integer.parseInt(cmd
+				.getOptionValue("max")) : 1;
+		final int minChange = (cmd.hasOption("min")) ? Integer.parseInt(cmd
+				.getOptionValue("min")) : 1;
+
+		if (minChange > maxChange) {
+			throw new IllegalArgumentException(
+					"min shouldn't be greater than max");
+		}
+
 		return new RScriptWriterSettings(trainingFile, evaluationFile,
-				correctFile, predictedFile, diffFile, outputFile, mode);
+				correctFile, predictedFile, diffFile, outputFile, mode,
+				maxChange, minChange);
 	}
 
 	private static Options defineOptions() {
@@ -131,6 +157,20 @@ public class RScriptWriterSettings {
 			o.setArgs(1);
 			o.setRequired(true);
 			options.addOption(o);
+		}
+
+		{
+			final Option max = new Option("max", "max", true, "max change");
+			max.setArgs(1);
+			max.setRequired(false);
+			options.addOption(max);
+		}
+
+		{
+			final Option min = new Option("min", "min", true, "min change");
+			min.setArgs(1);
+			min.setRequired(false);
+			options.addOption(min);
 		}
 
 		{

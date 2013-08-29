@@ -8,6 +8,20 @@ package jp.ac.osaka_u.ist.sdl.prevol.vectorwriter;
  */
 public enum OutputFileFormat {
 
-	ARFF, CSV;
+	ARFF(".arff"), CSV(".csvF");
+
+	private final String suffix;
+
+	private OutputFileFormat(final String suffix) {
+		this.suffix = suffix;
+	}
+
+	public String getSuffix() {
+		return suffix;
+	}
+
+	public int getSuffixLength() {
+		return suffix.length();
+	}
 
 }
