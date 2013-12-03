@@ -1766,6 +1766,12 @@ public class VectorData extends AbstractElement {
 		return getCsvHeader(ignoreColumns, "BEFORE_") + ","
 				+ getCsvHeader(ignoreColumns, "AFTER_");
 	}
+	
+	public static String getTrainingCsvHeaderWithSmallChange(
+			final Collection<Integer> ignoreColumns) {
+		return getCsvHeader(ignoreColumns, "BEFORE_") + ","
+				+ getCsvHeader(ignoreColumns, "AFTER_") + ",SMALL_CHANGE";
+	}
 
 	public static String getSingleColumnTrainingCsvHeader(
 			final Collection<Integer> ignoreColumns, String afterValueName) {

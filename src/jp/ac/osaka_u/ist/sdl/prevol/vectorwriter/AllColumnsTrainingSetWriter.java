@@ -52,7 +52,7 @@ public class AllColumnsTrainingSetWriter extends AbstractWriter {
 
 		// ヘッダを出力
 		if (settings.getOutputFileFormat() == OutputFileFormat.CSV) {
-			pw.println(VectorData.getTrainingCsvHeader(ignoreList));
+			pw.println(VectorData.getTrainingCsvHeaderWithSmallChange(ignoreList));
 		} else {
 			pw.println(VectorData.getTrainingArffHeader(ignoreList,
 					settings.getRelationName()));
@@ -64,9 +64,11 @@ public class AllColumnsTrainingSetWriter extends AbstractWriter {
 					.getBeforeVectorId());
 			final VectorData afterVector = vectorsMap.get(vectorPair
 					.getAfterVectorId());
-
+			final int unmatch = beforeVector.getUnmatchColumns(afterVector);
+			final int smallChange = (unmatch <= 5) ? 1 : 0;
+			
 			pw.println(beforeVector.toCsvRecord(ignoreList) + ","
-					+ afterVector.toCsvRecord(ignoreList));
+					+ afterVector.toCsvRecord(ignoreList) + "," + smallChange);
 		}
 
 		MessagePrinter.stronglyPrintln("\tcomplete!!");

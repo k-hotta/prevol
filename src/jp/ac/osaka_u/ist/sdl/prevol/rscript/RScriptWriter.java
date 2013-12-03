@@ -27,7 +27,7 @@ public abstract class RScriptWriter {
 		final PrintWriter pw = new PrintWriter(new BufferedWriter(
 				new FileWriter(new File(settings.getOutputFile()))));
 
-		final int attributesCount = csvData.getNumberOfColumns() / 2;
+		final int attributesCount = (csvData.getNumberOfColumns() - 1) / 2;
 
 		writeHead(pw, settings.getTrainingFile(), settings.getEvaluationFile(),
 				attributesCount);
@@ -44,6 +44,8 @@ public abstract class RScriptWriter {
 			final String evaluationFile, final int attributesCount) {
 		pw.println("training_set <- read.csv(\""
 				+ convertFileName(trainingFile) + "\")");
+		pw.println("training_set <- training_set[,-"
+				+ (attributesCount * 2 + 1) + "]");
 		pw.println();
 		pw.println("after_original_names <- names(training_set)");
 		pw.println("for (i in 1:" + attributesCount + ") {");
@@ -105,10 +107,12 @@ public abstract class RScriptWriter {
 		}
 	}
 
-	private void loadEvaluationSet(final PrintWriter pw,
+	protected void loadEvaluationSet(final PrintWriter pw,
 			final String evaluationFile, final int attributesCount) {
 		pw.println("evaluation_set <- read.csv(\""
 				+ convertFileName(evaluationFile) + "\")");
+		pw.println("evaluation_set <- evaluation_set[,-"
+				+ (attributesCount * 2 + 1) + "]");
 		pw.println("names(evaluation_set) <- instant_names");
 		pw.println("correct_vectors <- evaluation_set");
 		pw.println("for (i in 1:" + attributesCount + ") {");
@@ -122,7 +126,7 @@ public abstract class RScriptWriter {
 		pw.println();
 	}
 
-	private void writePredict(final PrintWriter pw, final int attributesCount) {
+	protected void writePredict(final PrintWriter pw, final int attributesCount) {
 		pw.println("pred_matrix <- matrix(predict(eq_a1, evaluation_vectors), ncol=1)");
 		for (int i = 2; i <= attributesCount; i++) {
 			pw.println("pred_matrix <- cbind(pred_matrix, predict(eq_a" + i
@@ -132,7 +136,7 @@ public abstract class RScriptWriter {
 		pw.println();
 	}
 
-	private void writeOutput(final PrintWriter pw, final String correctFile,
+	protected void writeOutput(final PrintWriter pw, final String correctFile,
 			final String predictedFile, final String diffFile) {
 		pw.println("names(correct_vectors) <- after_original_names");
 		pw.println("write.csv(correct_vectors, \""

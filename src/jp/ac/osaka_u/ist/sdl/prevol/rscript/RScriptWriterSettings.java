@@ -95,6 +95,8 @@ public class RScriptWriterSettings {
 		RScriptWriterMode mode = RScriptWriterMode.LM;
 		if (cmd.hasOption("G")) {
 			mode = RScriptWriterMode.GAM;
+		} else if (cmd.hasOption("S")) {
+			mode = RScriptWriterMode.SVM;
 		}
 
 		final int maxChange = (cmd.hasOption("max")) ? Integer.parseInt(cmd
@@ -177,6 +179,12 @@ public class RScriptWriterSettings {
 			final Option G = new Option("G", "GAM", false, "USE GAM");
 			G.setRequired(false);
 			options.addOption(G);
+		}
+		
+		{
+			final Option S = new Option("S", "SVM", false, "USE SVM");
+			S.setRequired(false);
+			options.addOption(S);
 		}
 
 		return options;
