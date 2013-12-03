@@ -95,6 +95,7 @@ public abstract class RScriptWriter {
 				for (int j = 1; j <= i; j++) {
 					writePredict(pw, attributesCount);
 					pw.println("evaluation_vectors <- predicted_vectors");
+					pw.println("names(evaluation_vectors) <- before_instant_names");
 					pw.println();
 				}
 
@@ -153,9 +154,10 @@ public abstract class RScriptWriter {
 	private final String getOutputFileName(final String originalPath,
 			final int changeCount) {
 		final int suffixLength = 4;
-		return originalPath.substring(0, originalPath.length() - suffixLength
-				- 1)
-				+ "-" + changeCount + ".csv";
+		final String exceptSuffix = originalPath.substring(0,
+				originalPath.length() - suffixLength);
+		return exceptSuffix + "-" + changeCount + ".csv";
+
 	}
 
 }

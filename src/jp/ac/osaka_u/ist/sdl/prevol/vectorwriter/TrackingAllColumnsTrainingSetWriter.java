@@ -10,6 +10,7 @@ import jp.ac.osaka_u.ist.sdl.prevol.data.VectorData;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorGenealogy;
 import jp.ac.osaka_u.ist.sdl.prevol.data.VectorPairData;
 import jp.ac.osaka_u.ist.sdl.prevol.db.DBConnection;
+import jp.ac.osaka_u.ist.sdl.prevol.utils.MessagePrinter;
 
 /**
  * メソッドのトレースをして，期間内に指定回数以上修正されたものについての AllColumnsTrainingSet を出力するクラス
@@ -84,6 +85,8 @@ public class TrackingAllColumnsTrainingSetWriter extends
 			}
 		}
 
+		MessagePrinter.stronglyPrintln("processing " + changeCount
+				+ " changed vector genealogies ...");
 		writeElements(placeboVectorPairs, vectorsMap, ignoreList,
 				outputFilePath);
 	}
@@ -91,11 +94,10 @@ public class TrackingAllColumnsTrainingSetWriter extends
 	private final String getOutputFileName(final String originalPath,
 			final int changeCount) {
 		final int suffixLength = settings.getOutputFileFormat()
-				.getSuffixLength() + 1;
-		return originalPath.substring(0, originalPath.length() - suffixLength
-				- 1)
-				+ "-"
-				+ changeCount
+				.getSuffixLength();
+		final String exceptSuffix = originalPath.substring(0,
+				originalPath.length() - suffixLength);
+		return exceptSuffix + "-" + changeCount
 				+ settings.getOutputFileFormat().getSuffix();
 	}
 }

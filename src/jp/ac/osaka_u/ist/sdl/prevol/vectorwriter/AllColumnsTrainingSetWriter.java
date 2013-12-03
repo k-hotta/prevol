@@ -70,6 +70,7 @@ public class AllColumnsTrainingSetWriter extends AbstractWriter {
 		}
 
 		MessagePrinter.stronglyPrintln("\tcomplete!!");
+		MessagePrinter.stronglyPrintln();
 
 		pw.close();
 	}

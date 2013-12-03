@@ -8,7 +8,7 @@ package jp.ac.osaka_u.ist.sdl.prevol.vectorwriter;
  */
 public enum OutputFileFormat {
 
-	ARFF(".arff"), CSV(".csvF");
+	ARFF(".arff"), CSV(".csv");
 
 	private final String suffix;
 

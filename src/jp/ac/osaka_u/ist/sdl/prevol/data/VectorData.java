@@ -87,10 +87,10 @@ import static org.eclipse.jdt.core.dom.ASTNode.WILDCARD_TYPE;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -121,7 +121,7 @@ public class VectorData extends AbstractElement {
 	 */
 	public VectorData(final long id, final Map<Integer, Integer> vector) {
 		super(id);
-		this.vector = new HashMap<Integer, Integer>();
+		this.vector = new TreeMap<Integer, Integer>();
 		this.vector.putAll(vector);
 	}
 
@@ -3082,4 +3082,22 @@ public class VectorData extends AbstractElement {
 		return result;
 	}
 
+	public int getUnmatchColumns(final VectorData another) {
+		int result = 0;
+
+		final Set<Integer> nodeTypes = getNodeTypeIntegers();
+
+		for (final int nodeType : nodeTypes) {
+			final int thisValue = (this.vector.containsKey(nodeType)) ? this.vector
+					.get(nodeType) : -1;
+			final int anotherValue = (another.getVector().containsKey(nodeType)) ? another
+					.getVector().get(nodeType) : -1;
+
+			if (thisValue != anotherValue) {
+				result++;
+			}
+		}
+
+		return result;
+	}
 }

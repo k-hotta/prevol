@@ -8,7 +8,7 @@ public class LMScriptWriter extends RScriptWriter {
 	protected void writeCreateModel(PrintWriter pw, int attributesCount,
 			final CSVData csvData) {
 		for (int i = 1; i <= attributesCount; i++) {
-			pw.println("seq_a" + i + " <- lm(A" + i + "~1)");
+			pw.println("seq_a" + i + " <- lm(A" + i + "~1, data=training_set)");
 		}
 		pw.println();
 
