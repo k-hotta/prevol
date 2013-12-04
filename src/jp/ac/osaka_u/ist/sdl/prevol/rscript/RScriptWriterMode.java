@@ -2,7 +2,7 @@ package jp.ac.osaka_u.ist.sdl.prevol.rscript;
 
 public enum RScriptWriterMode {
 
-	LM, GAM, SVM;
+	LM, GAM, SVM, LMP;
 	
 	public RScriptWriter getWriterInstance() {
 		if (this == LM) {
@@ -11,7 +11,10 @@ public enum RScriptWriterMode {
 			return new GAMScriptWriter();
 		} else if (this == SVM) {
 			return new SVMScriptWriter();
-		} else {
+		} else if (this == LMP){
+			return new LMPoisonScriptWriter();
+		}
+		else {
 			return null;
 		}
 	}
