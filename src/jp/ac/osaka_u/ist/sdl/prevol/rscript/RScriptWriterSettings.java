@@ -26,11 +26,13 @@ public class RScriptWriterSettings {
 
 	private final int minChange;
 
+	private final int k;
+
 	private RScriptWriterSettings(final String trainingFile,
 			final String evaluationFile, final String correctFile,
 			final String predictedFile, final String diffFile,
 			final String outputFile, final RScriptWriterMode mode,
-			final int maxChange, final int minChange) {
+			final int maxChange, final int minChange, final int k) {
 		this.trainingFile = trainingFile;
 		this.evaluationFile = evaluationFile;
 		this.correctFile = correctFile;
@@ -40,6 +42,7 @@ public class RScriptWriterSettings {
 		this.mode = mode;
 		this.maxChange = maxChange;
 		this.minChange = minChange;
+		this.k = k;
 	}
 
 	public String getTrainingFile() {
@@ -78,6 +81,10 @@ public class RScriptWriterSettings {
 		return minChange;
 	}
 
+	public int getK() {
+		return k;
+	}
+
 	public static RScriptWriterSettings parseArgs(final String[] args)
 			throws Exception {
 		final Options options = defineOptions();
@@ -99,12 +106,17 @@ public class RScriptWriterSettings {
 			mode = RScriptWriterMode.SVM;
 		} else if (cmd.hasOption("R")) {
 			mode = RScriptWriterMode.LMP;
+		} else if (cmd.hasOption("N")) {
+			mode = RScriptWriterMode.KNN;
 		}
 
 		final int maxChange = (cmd.hasOption("max")) ? Integer.parseInt(cmd
 				.getOptionValue("max")) : 1;
 		final int minChange = (cmd.hasOption("min")) ? Integer.parseInt(cmd
 				.getOptionValue("min")) : 1;
+
+		final int k = (cmd.hasOption("k")) ? Integer.parseInt(cmd
+				.getOptionValue("k")) : 1;
 
 		if (minChange > maxChange) {
 			throw new IllegalArgumentException(
@@ -113,7 +125,7 @@ public class RScriptWriterSettings {
 
 		return new RScriptWriterSettings(trainingFile, evaluationFile,
 				correctFile, predictedFile, diffFile, outputFile, mode,
-				maxChange, minChange);
+				maxChange, minChange, k);
 	}
 
 	private static Options defineOptions() {
@@ -178,23 +190,36 @@ public class RScriptWriterSettings {
 		}
 
 		{
+			final Option k = new Option("k", "k", true, "k of K-NN");
+			k.setArgs(1);
+			k.setRequired(false);
+			options.addOption(k);
+		}
+
+		{
 			final Option G = new Option("G", "GAM", false, "USE GAM");
 			G.setRequired(false);
 			options.addOption(G);
 		}
-		
+
 		{
 			final Option S = new Option("S", "SVM", false, "USE SVM");
 			S.setRequired(false);
 			options.addOption(S);
 		}
-		
+
 		{
 			final Option R = new Option("R", "LMR", false, "USE LM POISON");
 			R.setRequired(false);
 			options.addOption(R);
 		}
 
+		{
+			final Option N = new Option("N", "KNN", false, "USE K-NEIGHBOR");
+			N.setRequired(false);
+			options.addOption(N);
+		}
+		
 		return options;
 	}
 
