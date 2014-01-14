@@ -65,7 +65,7 @@ public class AllColumnsTrainingSetWriter extends AbstractWriter {
 			final VectorData afterVector = vectorsMap.get(vectorPair
 					.getAfterVectorId());
 			final int unmatch = beforeVector.getUnmatchColumns(afterVector);
-			final int smallChange = (unmatch <= 5) ? 1 : 0;
+			final int smallChange = (unmatch <= settings.getSmallChange()) ? 1 : 0;
 			
 			pw.println(beforeVector.toCsvRecord(ignoreList) + ","
 					+ afterVector.toCsvRecord(ignoreList) + "," + smallChange);

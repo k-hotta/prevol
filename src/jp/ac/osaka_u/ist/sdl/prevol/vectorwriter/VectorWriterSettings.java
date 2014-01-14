@@ -92,6 +92,11 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 	 */
 	private final String predictedResultDir;
 
+	/**
+	 * small change とみなす修正要素数
+	 */
+	private final int smallChange;
+
 	private VectorWriterSettings(final VectorWriterMode mode,
 			final OutputFileFormat format, final String dbPath,
 			final String outputFilePath, final String query,
@@ -99,7 +104,7 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 			List<Integer> ignoreList, final String relationName,
 			MessagePrinterMode printMode, final boolean defaultQuery,
 			final boolean isTracking, final int minimumChangeCount,
-			final String predictedResultDir) {
+			final String predictedResultDir, final int smallChange) {
 		this.mode = mode;
 		this.format = format;
 		this.dbPath = dbPath;
@@ -114,6 +119,7 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 		this.isTracking = isTracking;
 		this.minimumChangeCount = minimumChangeCount;
 		this.predictedResultDir = predictedResultDir;
+		this.smallChange = smallChange;
 	}
 
 	final VectorWriterMode getMode() {
@@ -170,6 +176,10 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 
 	final String getPredictedResultDir() {
 		return predictedResultDir;
+	}
+
+	final int getSmallChange() {
+		return smallChange;
 	}
 
 	public static VectorWriterSettings parseArgs(final String[] args)
@@ -255,10 +265,13 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 		final String predictedResultDir = (cmd.hasOption("p")) ? cmd
 				.getOptionValue("p") : null;
 
+		final int smallChange = (cmd.hasOption("sc")) ? Integer.parseInt(cmd
+				.getOptionValue("sc")) : 5;
+
 		return new VectorWriterSettings(mode, format, dbPath, outputFilePath,
 				query, startRevision, endRevision, ignoreList, relationName,
 				printMode, defaultQuery, isTracking, minimumChangeCounnt,
-				predictedResultDir);
+				predictedResultDir, smallChange);
 	}
 
 	private static Options defineOptions() {
@@ -372,6 +385,14 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 			p.setArgs(1);
 			p.setRequired(false);
 			options.addOption(p);
+		}
+
+		{
+			final Option sc = new Option("sc", "small change", true,
+					"the threshold for small change");
+			sc.setArgs(1);
+			sc.setRequired(false);
+			options.addOption(sc);
 		}
 
 		return options;
