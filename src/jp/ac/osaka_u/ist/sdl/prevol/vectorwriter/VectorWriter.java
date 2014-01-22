@@ -48,6 +48,8 @@ public class VectorWriter {
 				}
 			} else if (settings.getMode() == VectorWriterMode.RECURSIVE_EVALUATION) {
 				writer = new RecursiveEvaluationSetWriter(settings);
+			} else if (settings.getMode() == VectorWriterMode.TRAINING_WITH_ID) {
+				writer = new AllColumnsTrainingSetWriterWithId(settings);
 			}
 
 			writer.write();

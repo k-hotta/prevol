@@ -198,6 +198,8 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 			mode = VectorWriterMode.SINGLE_COLUMN_EVALUATION;
 		} else if (cmd.hasOption("R")) {
 			mode = VectorWriterMode.RECURSIVE_EVALUATION;
+		} else if (cmd.hasOption("I")) {
+			mode = VectorWriterMode.TRAINING_WITH_ID;
 		}
 
 		final String dbPath = cmd.getOptionValue("d");
@@ -312,6 +314,13 @@ public class VectorWriterSettings implements DefaultVectorWriterSettingValues {
 			options.addOption(R);
 		}
 
+		{
+			final Option I = new Option("I", "ID", false,
+					"TRAINING WITH IDs");
+			I.setRequired(false);
+			options.addOption(I);
+		}
+		
 		{
 			final Option d = new Option("d", "db", true, "database");
 			d.setArgs(1);
